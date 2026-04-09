@@ -18,4 +18,8 @@ application-local.yaml
 
 # Misc
 *.html
-WEB_IDEA.pdf
+
+
+WEB IDEA.pdf
+/package-lock.json
+/package.json
