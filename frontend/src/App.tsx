@@ -1,22 +1,11 @@
-import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import ProblemDetail from './pages/ProblemDetail';
 
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Home from "./pages/Home";
-import Problems from "./pages/Problems";
-import ProblemDetail from "./pages/ProblemDetail";
-
-function App(){
+function App() {
   return (
-    <BrowserRouter>
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/" element={<Home />} />
-      <Route path="/problems" element={<Problems />} />
-      <Route path="/problems/:id" element={<ProblemDetail />} />
-    </Routes>
-    </BrowserRouter>
+    <div style={{ background: 'lightblue', color: 'black', minHeight: '100vh', padding: '20px' }}>
+      <ProblemDetail />
+    </div>
   );
 }
-export default App
+
+export default App;
