@@ -1,6 +1,25 @@
 .env
 .env.local
 application-local.properties
-.vscode/
 .DS_Store
 Thumbs.db
+
+# VS Code
+.vscode/
+*.code-workspace
+.history/
+
+# JetBrains
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
