@@ -1,0 +1,35 @@
+# Dependency directories
+node_modules
+**/node_modules
+npm-debug.log
+yarn-error.log
+
+# Build artifacts
+build/
+dist/
+out/
+
+# Docker files
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Version control
+.git
+.gitignore
+.hg
+.svn
+
+# Environment and secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Editor/IDE configs
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
