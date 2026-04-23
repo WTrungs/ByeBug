@@ -17,9 +17,17 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
+            .cors(cors -> cors.configurationSource(request -> {
+                var corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
+                corsConfiguration.setAllowedOrigins(java.util.List.of("http://localhost:3000")); // Port của FE
+                corsConfiguration.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE"));
+                corsConfiguration.setAllowedHeaders(java.util.List.of("*"));
+                return corsConfiguration;
+            }))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/users/**").permitAll()
                 .anyRequest().authenticated()
@@ -27,3 +35,4 @@ public class SecurityConfig {
         return http.build();
     }
 }
+
