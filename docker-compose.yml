@@ -10,9 +10,16 @@ services:
       - "${DB_PORT}:${DB_PORT}"
     volumes:
       - db-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      target: build
     container_name: spring-boot-app
     env_file:
       - .env
@@ -23,7 +30,12 @@ services:
       SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+      - m2:/root/.m2
+    command: mvn spring-boot:run
 
   frontend:
     build: ./frontend
@@ -32,6 +44,11 @@ services:
       - "${VITE_PORT}:${VITE_PORT}"
     depends_on:
       - backend
+    volumes:
+      - ./frontend:/app
+      - node_modules:/app/node_modules
 
 volumes:
   db-data:
+  m2:
+  node_modules:
