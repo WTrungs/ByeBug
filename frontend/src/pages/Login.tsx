@@ -44,13 +44,13 @@ const Login = () => {
                 onClick={handleLogin}
             />
 
-            <div style={{ marginTop: '20px' }}>
-                <span style={{ color: 'gray', marginRight: '10px' }}>Bạn chưa có tài khoản?</span>
-                <button onClick={() => navigate('/register')} style={{ cursor: 'pointer', padding: '5px 10px' }}>
-                    Đăng Ký
-                </button>
+           <div style={{ marginTop: '20px' }}>
+                <span style={{ color: 'gray', marginRight: '10px' }}>Bạn chưa có tài khoản?
+                </span>
+            <Button text="Đăng Ký" onClick={() => navigate('/register')} />
             </div>
 
+            
             <p style={{ marginTop: '20px', color: 'gray' }}>
                 Đang nhập: {username} | Mật khẩu: {password}
             </p>
