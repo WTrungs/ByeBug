@@ -1,16 +1,12 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import type { Problem } from "../api/problemApi"
 
-interface Problem{
-    id: number;
-    title: string;
-    difficulty:string;
-    category: string;
-    status: string;
-}
 interface TableProps {
-    problems: Problem[]; // Chỗ này phải khớp với tên biến bên dưới
+    problems: Problem[]; 
 }
 const ProblemTable:React.FC<TableProps>=({problems}) =>{
+    const navigate=useNavigate();
     return (
         <table style = {{width:'100%'}}>
             <thead>
@@ -23,19 +19,20 @@ const ProblemTable:React.FC<TableProps>=({problems}) =>{
             </thead>
             <tbody>
                 {problems.map((prob)=>(
-                        <tr key={prob.id}>
+                        <tr key={prob.problemId}>
                             <td>
-                                {prob.status==='Done'?'✅' : '⚪'}
-                            </td>
+                                ⚪
+                            </td> //chừa lại cho query status
 
-                            <td>
-                                {prob.id}.{prob.title}
+                            <td onClick={()=>navigate('/problems/${prob.problemId}')}
+                                style={{cursor:'pointer', color: 'lightblue'}}>
+                                {prob.problemId}.{prob.title}
                             </td>
                             <td>
                                 {prob.difficulty}
                             </td>
                             <td>
-                                {prob.category}
+                                {prob.tags?.join(', ')}
                             </td>
 
                         </tr>

@@ -66,11 +66,11 @@ const Register =() => {
         <Button text="Đăng ký" onClick={handleRegister}/>
 
         <div style={{ marginTop: '20px' }}>
-            <span style={{ color: 'gray', marginRight: '10px' }}>Bạn đã có tài khoản?</span>
-            <button onClick={() => navigate('/login')} style={{ cursor: 'pointer', padding: '5px 10px' }}>
-                Đăng Nhập
-            </button>
+            <span style={{ color: 'gray', marginRight: '10px' }}>Bạn đã có tài khoản?
+            </span>
+            <Button text="Đăng Nhập" onClick={() => navigate('/login')} />
         </div>
+
 
         <p style={{ marginTop: '20px', color: 'gray', fontSize: '12px' }}>
                 Preview: {username} | {email}
