@@ -1,5 +1,6 @@
 package com.group5.byebug.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,6 +12,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    @Value("${CORS_ALLOWED_ORIGIN}")
+    private String allowedOrigin;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -23,7 +26,7 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(request -> {
                 var corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
-                corsConfiguration.setAllowedOrigins(java.util.List.of("http://localhost:3000")); // Port của FE
+                corsConfiguration.setAllowedOrigins(java.util.List.of(allowedOrigin)); // Port của FE
                 corsConfiguration.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE"));
                 corsConfiguration.setAllowedHeaders(java.util.List.of("*"));
                 return corsConfiguration;

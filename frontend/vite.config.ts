@@ -13,8 +13,9 @@ export default defineConfig(({ mode }) => {
       babel({ presets: [reactCompilerPreset()] })
     ],
     server: {
-      port: parseInt(env.VITE_PORT) || 3000,
+      port: parseInt(env.VITE_PORT) || 5173,
       strictPort: true,
+      host: true,
     },
   }
 })
