@@ -4,16 +4,15 @@ import babel from '@rolldown/plugin-babel'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
-  const envDir = './..'; 
-  const env = loadEnv(mode, envDir, '');
-
+  const env = loadEnv(mode, '../', '');
   return {
+    envDir: '../',
     plugins: [
       react(),
       babel({ presets: [reactCompilerPreset()] })
     ],
     server: {
-      port: parseInt(env.VITE_PORT) || 5173,
+      port: parseInt(env.VITE_PORT || process.env.VITE_PORT),
       strictPort: true,
       host: true,
     },

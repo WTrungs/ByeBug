@@ -12,9 +12,9 @@ services:
       - db-data:/var/lib/postgresql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_NAME}"]
-      interval: 6s
-      timeout: 3s
-      retries: 5
+      interval: 10s
+      timeout: 5s
+      retries: 6
       start_period: 30s
 
   backend:
@@ -22,15 +22,12 @@ services:
       context: ./backend
       target: build
     container_name: spring-boot-app
-    env_file:
-      - .env
     ports:
       - "${SPRING_PORT}:8080"
+    env_file:
+      - .env
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${DB_NAME}
-      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
-      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
-      CORS_ALLOWED_ORIGIN: ${CORS_ALLOWED_ORIGIN}
     depends_on:
       db:
         condition: service_healthy
@@ -40,9 +37,9 @@ services:
     command: mvn spring-boot:run
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
-      interval: 6s
-      timeout: 3s
-      retries: 5
+      interval: 10s
+      timeout: 5s
+      retries: 6
       start_period: 60s
 
   frontend:
@@ -50,6 +47,9 @@ services:
     container_name: react-app
     ports:
       - "${VITE_PORT}:5173"
+    environment:
+      VITE_PORT: ${VITE_PORT}
+      VITE_API_BASE_URL: ${VITE_API_BASE_URL}
     depends_on:
       backend:
         condition: service_healthy
