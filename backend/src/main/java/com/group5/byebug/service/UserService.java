@@ -37,8 +37,9 @@ public class UserService {
         user.setEmail(request.getEmail());
         user.setPasswordHash(passwordEncoder.encode(request.getPassword())); 
 
+        user.setRole("USER"); 
         User savedUser = userRepository.save(user);
-        return new UserResponse(savedUser.getUserId(), savedUser.getUsername(), savedUser.getFullName(), savedUser.getEmail(), "Đăng ký thành công");
+        return new UserResponse(savedUser.getUserId(), savedUser.getUsername(), savedUser.getFullName(), savedUser.getEmail(), "Đăng ký thành công", savedUser.getRole());
     }
 
     public UserResponse login(LoginRequest request) {
@@ -49,7 +50,7 @@ public class UserService {
             if (passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
                 user.setLastLoginAt(LocalDateTime.now());
                 userRepository.save(user);
-                return new UserResponse(user.getUserId(), user.getUsername(), user.getFullName(), user.getEmail(), "Đăng nhập thành công");
+                return new UserResponse(user.getUserId(), user.getUsername(), user.getFullName(), user.getEmail(), "Đăng nhập thành công", user.getRole());
             }
         }
         throw new RuntimeException("Sai tên đăng nhập hoặc mật khẩu");
@@ -62,7 +63,7 @@ public class UserService {
             User user = userOpt.get();
             user.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
             userRepository.save(user);
-            return new UserResponse(user.getUserId(), user.getUsername(), user.getFullName(), user.getEmail(), "Khôi phục mật khẩu thành công");
+            return new UserResponse(user.getUserId(), user.getUsername(), user.getFullName(), user.getEmail(), "Khôi phục mật khẩu thành công", user.getRole());
         }
         throw new RuntimeException("Không tìm thấy email");
     }
