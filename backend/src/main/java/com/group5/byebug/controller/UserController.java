@@ -23,7 +23,7 @@ public class UserController {
         try {
             return ResponseEntity.ok(userService.register(request));
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(new UserResponse(null, null, null, null, e.getMessage()));
+            return ResponseEntity.badRequest().body(new UserResponse(null, null, null, null, e.getMessage(), "USER" ));
         }
     }
 
@@ -32,7 +32,7 @@ public class UserController {
         try {
             return ResponseEntity.ok(userService.login(request));
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(new UserResponse(null, null, null, null, e.getMessage()));
+            return ResponseEntity.badRequest().body(new UserResponse(null, null, null, null, e.getMessage(), "USER"));
         }
     }
 
@@ -41,7 +41,7 @@ public class UserController {
         try {
             return ResponseEntity.ok(userService.forgotPassword(request));
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(new UserResponse(null, null, null, null, e.getMessage()));
+            return ResponseEntity.badRequest().body(new UserResponse(null, null, null, null, e.getMessage(), "USER"));
         }
     }
 }

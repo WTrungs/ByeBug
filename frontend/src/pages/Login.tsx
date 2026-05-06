@@ -10,17 +10,26 @@ const Login = () => {
     const navigate = useNavigate();
 
     const handleLogin = async () => {
-        if (!username || !password) {
-            alert("Vui lòng nhập đầy đủ");
-            return;
+    if (!username || !password) {
+        alert("Vui lòng nhập đầy đủ");
+        return;
+    }
+    try {
+        const response = await api.post('/users/login', { username, password });
+        
+        localStorage.setItem('USER', JSON.stringify(response.data));
+
+        // Xét role để điều hướng
+        if (response.data.role === 'ADMIN') {
+            navigate('/admin');       // trang quản lý
+        } else {
+            navigate('/problems');    // trang bài tập
         }
-        try {
-            const response = await api.post('/users/login', { username, password });
-            alert(response.data.message);
-        } catch (error: any) {
-            alert(error.response?.data?.message || "Sai tên đăng nhập hoặc mật khẩu");
-        }
-    };
+
+    } catch (error: any) {
+        alert(error.response?.data?.message || "Sai tên đăng nhập hoặc mật khẩu");
+    }
+};
 
     return (
         <div style={{ padding: '20px' }}>
@@ -50,10 +59,6 @@ const Login = () => {
             <Button text="Đăng Ký" onClick={() => navigate('/register')} />
             </div>
 
-            
-            <p style={{ marginTop: '20px', color: 'gray' }}>
-                Đang nhập: {username} | Mật khẩu: {password}
-            </p>
         </div>
     );
 };
