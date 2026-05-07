@@ -31,6 +31,9 @@ public class User {
     @Column(length = 10)
     private String gender;
 
+    @Column(name = "role", length = 10, nullable = false)
+    private String role = "USER";
+    
     @Column(name = "total_score")
     private Integer totalScore = 0;
 

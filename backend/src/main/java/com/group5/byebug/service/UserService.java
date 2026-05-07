@@ -35,25 +35,36 @@ public class UserService {
         user.setUsername(request.getUsername());
         user.setFullName(request.getFullName());
         user.setEmail(request.getEmail());
-        user.setPasswordHash(passwordEncoder.encode(request.getPassword())); 
+        user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
+        
 
+        user.setRole("USER"); 
         User savedUser = userRepository.save(user);
-        return new UserResponse(savedUser.getUserId(), savedUser.getUsername(), savedUser.getFullName(), savedUser.getEmail(), "Đăng ký thành công");
+        return new UserResponse(savedUser.getUserId(), savedUser.getUsername(), savedUser.getFullName(), savedUser.getEmail(), "Đăng ký thành công", savedUser.getRole());
     }
 
     public UserResponse login(LoginRequest request) {
-        Optional<User> userOpt = userRepository.findByUsername(request.getUsername());
-        
-        if (userOpt.isPresent()) {
-            User user = userOpt.get();
-            if (passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
-                user.setLastLoginAt(LocalDateTime.now());
-                userRepository.save(user);
-                return new UserResponse(user.getUserId(), user.getUsername(), user.getFullName(), user.getEmail(), "Đăng nhập thành công");
-            }
+    System.out.println("--- Login Debug ---");
+    Optional<User> userOpt = userRepository.findByUsername(request.getUsername());
+    
+    if (userOpt.isPresent()) {
+        User user = userOpt.get();
+        System.out.println("Found user: " + user.getUsername());
+        System.out.println("Comparing: " + request.getPassword() + " vs " + user.getPasswordHash());
+
+       if (passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
+            System.out.println("Login Success!");
+            user.setLastLoginAt(LocalDateTime.now());
+            userRepository.save(user);
+            return new UserResponse(user.getUserId(), user.getUsername(), user.getFullName(), user.getEmail(), "Đăng nhập thành công", user.getRole());
+        } else {
+            System.out.println("Password mismatch!");
         }
-        throw new RuntimeException("Sai tên đăng nhập hoặc mật khẩu");
+    } else {
+        System.out.println("Username not found!");
     }
+    throw new RuntimeException("Sai tên đăng nhập hoặc mật khẩu");
+}
 
     public UserResponse forgotPassword(ForgotPasswordRequest request) {
         Optional<User> userOpt = userRepository.findByEmail(request.getEmail());
@@ -62,7 +73,7 @@ public class UserService {
             User user = userOpt.get();
             user.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
             userRepository.save(user);
-            return new UserResponse(user.getUserId(), user.getUsername(), user.getFullName(), user.getEmail(), "Khôi phục mật khẩu thành công");
+            return new UserResponse(user.getUserId(), user.getUsername(), user.getFullName(), user.getEmail(), "Khôi phục mật khẩu thành công", user.getRole());
         }
         throw new RuntimeException("Không tìm thấy email");
     }

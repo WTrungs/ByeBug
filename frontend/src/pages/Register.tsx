@@ -25,7 +25,9 @@ const Register =() => {
             });
             alert(response.data.message);
         } catch (error: any) {
-            alert(error.response?.data?.message || "Đăng ký thất bại");
+            console.error("Full error:", error); 
+    const errorMessage = error.response?.data?.message || error.message || "Đăng ký thất bại";
+    alert(errorMessage);
         }
     };
 
@@ -70,11 +72,6 @@ const Register =() => {
             </span>
             <Button text="Đăng Nhập" onClick={() => navigate('/login')} />
         </div>
-
-
-        <p style={{ marginTop: '20px', color: 'gray', fontSize: '12px' }}>
-                Preview: {username} | {email}
-            </p>
 
         </div>
     );
