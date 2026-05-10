@@ -1,0 +1,24 @@
+spring:
+  data:
+    redis:
+      port: '6379'
+      host: 127.0.0.1
+  application:
+    name: judge
+judge:
+  docker:
+    host: unix:///var/run/docker.sock
+    images:
+      cpp: "oj-cpp:latest"
+    dockerfiles:
+      cpp: "./docker-env/cpp/"
+logging:
+  level:
+    root: INFO
+# logging:
+#   level:
+#     org:
+#       springframework:
+#         data:
+#           redis: DEBUG
+# debug: true
