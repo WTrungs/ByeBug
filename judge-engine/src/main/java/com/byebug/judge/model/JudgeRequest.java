@@ -12,6 +12,6 @@ public class JudgeRequest implements Serializable {
     private String language;
     private String input;
     private String expectedOutput;
-    private Long timeLimit;    // ms
-    private Long memoryLimit;  // byte
+    private Long timeLimit;    // second
+    private Long memoryLimit;  // MB
 }

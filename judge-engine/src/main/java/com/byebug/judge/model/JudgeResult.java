@@ -13,7 +13,7 @@ public class JudgeResult implements Serializable {
     private String submissionId;
     private String status;       // AC, WA, TLE, MLE, RE, CE, SE
     private Double timeUsed;     // seconds
-    private Integer memoryUsed;  // KB
+    private Integer memoryUsed;  // MB
     private String message;
     private String output;
 }

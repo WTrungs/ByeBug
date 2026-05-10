@@ -45,10 +45,10 @@ public class CppJudgeStrategy implements JudgeStrategy {
             Files.writeString(inputPath, request.getInput() != null ? request.getInput() : "");
 
             // Tao container co bind mount thu muc workDir
-            containerId = dockerService.createContainer("cpp", workDir.toString());
+            containerId = dockerService.createContainer("cpp", workDir.toString(), request.getMemoryLimit());
 
             //Bien dich code
-            String compileError = dockerService.execCommand(containerId, 10, "g++", "solution.cpp", "-o", "solution");
+            String compileError = dockerService.execCommand(containerId, 10L, "g++", "solution.cpp", "-o", "solution");
             
             if (compileError.startsWith("ERROR:") || Files.notExists(workDir.resolve("solution"))) {
                 result.setStatus("CE"); // Compile Error
@@ -58,7 +58,7 @@ public class CppJudgeStrategy implements JudgeStrategy {
 
             long startTime = System.currentTimeMillis();
             // Chay code, truyen vao file input
-            String output = dockerService.execCommand(containerId, 5, "sh", "-c", "./solution < input.txt");
+            String output = dockerService.execCommand(containerId, request.getTimeLimit(), "sh", "-c", "./solution < input.txt");
             // Tinh thoi gian chay
             long timeUsed = System.currentTimeMillis() - startTime;
 

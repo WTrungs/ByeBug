@@ -27,10 +27,10 @@ public class DockerService {
 
     private final DockerClient dockerClient;
 
-    @Value("${judge.docker.images.cpp:oj-cpp:latest}")
+    @Value("${judge.docker.images.cpp}")
     private String cppImage;
 
-    @Value("${judge.docker.dockerfiles.cpp:./docker-env/cpp/}")
+    @Value("${judge.docker.dockerfiles.cpp}")
     private String cppDockerfilePath;
 
     public void buildImage(String language) { //Ham build image cho tung ngon ngu
@@ -63,7 +63,7 @@ public class DockerService {
         }
     }
 
-    public String createContainer(String language, String hostPath) { //Tao container
+    public String createContainer(String language, String hostPath, Long memoryLimit) { //Tao container
         String image = switch (language.toLowerCase()) {
             case "cpp" -> cppImage;
             default -> throw new IllegalArgumentException("Unsupported language: " + language);
@@ -71,8 +71,8 @@ public class DockerService {
 
         HostConfig hostConfig = HostConfig.newHostConfig()
                 .withBinds(new Bind(hostPath, new Volume("/sandbox")))
-                .withMemory(256L * 1024 * 1024) // 256MB RAM
-                .withMemorySwap(256L * 1024 * 1024) // Khong cho dung swap
+                .withMemory(memoryLimit * 1024 * 1024) // 256MB RAM
+                .withMemorySwap(memoryLimit * 1024 * 1024) // Khong cho dung swap
                 .withPidsLimit(100L) // Tranh Fork Bomb bang cach gioi han tien trinh
                 .withNetworkMode("none") // Ngat mang tranh gian lan
                 .withAutoRemove(false); // Xoa thu cong container sau khi cham
@@ -88,7 +88,7 @@ public class DockerService {
         return containerId;
     }
 
-    public String execCommand(String containerId, int timeoutSeconds, String... cmd) { //Chay code gi do o trong container
+    public String execCommand(String containerId, Long timeoutSeconds, String... cmd) { //Chay code gi do o trong container
         ExecCreateCmdResponse exec = dockerClient.execCreateCmd(containerId)
                 .withCmd(cmd)
                 .withAttachStdout(true)

@@ -26,7 +26,6 @@ public class JudgeWorker implements CommandLineRunner {
     private final ObjectMapper objectMapper;
 
     private static final String QUEUE_NAME = "judge-queue";
-    private static final String RESULT_NAME = "result-queue";
 
     @Override
     public void run(String... args) {
@@ -45,13 +44,11 @@ public class JudgeWorker implements CommandLineRunner {
                 String message = stringRedisTemplate.opsForList().rightPop(QUEUE_NAME, 30, TimeUnit.SECONDS); //Lay request ra tu redis
                 
                 if (message != null) {
-                    log.info("Redis da duoc them du lieu!!!");
                     //Convert message sang JudgeRequest
                     JudgeRequest request = objectMapper.readValue(message, JudgeRequest.class);
                     log.info("Received submission: {}", request.getSubmissionId());
                     //Cham bai
                     JudgeResult result = judgeService.judge(request);
-                    stringRedisTemplate.opsForList().leftPush(RESULT_NAME, objectMapper.writeValueAsString(result));
                     log.info("Judge result for {}: {}", request.getSubmissionId(), result.getStatus());
                 }
             } catch (Exception e) {

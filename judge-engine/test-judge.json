@@ -1,6 +1,0 @@
-{
-  "submissionId": "test-123",
-  "code": "#include <iostream>\nint main() { std::cout << \"Hello World\"; while (true) {\n}\n return 0; }",
-  "language": "cpp",
-  "input": ""
-}
