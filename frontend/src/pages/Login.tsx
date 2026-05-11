@@ -1,66 +1,632 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import InputField from '../components/InputField';
-import Button from '../components/Button';
 import api from '../api/axios';
 
-const Login = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+import bugLogo from '../assets/bug.svg';
+import codeLogo from '../assets/div.svg';
+import bblg from '../assets/bblogo.svg';
+
+const Login: React.FC = () => {
+
     const navigate = useNavigate();
 
-    const handleLogin = async () => {
-    if (!username || !password) {
-        alert("Vui lòng nhập đầy đủ");
-        return;
-    }
-    try {
-        const response = await api.post('/users/login', { username, password });
-        
-        localStorage.setItem('USER', JSON.stringify(response.data));
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
-        // Xét role để điều hướng
-        if (response.data.role === 'ADMIN') {
-            navigate('/admin');       // trang quản lý
-        } else {
-            navigate('/problems');    // trang bài tập
+    const [focusedInput, setFocusedInput] = useState('');
+
+    const [isLoginHover, setIsLoginHover] = useState(false);
+    const [isSignUpHover, setIsSignUpHover] = useState(false);
+    const [isLogoHover, setIsLogoHover] = useState(false);
+    const [isSubmitHover, setIsSubmitHover] = useState(false);
+    const [isCardHeaderHover, setIsCardHeaderHover] = useState(false);
+
+    const handleLogin = async () => {
+
+        if (!username || !password) {
+            alert("Vui lòng nhập đầy đủ");
+            return;
         }
 
-    } catch (error: any) {
-        alert(error.response?.data?.message || "Sai tên đăng nhập hoặc mật khẩu");
-    }
-};
+        try {
+
+            const response = await api.post('/users/login', {
+                username,
+                password
+            });
+
+            localStorage.setItem(
+                'USER',
+                JSON.stringify(response.data)
+            );
+
+            if (response.data.role === 'ADMIN') {
+                navigate('/admin');
+            } else {
+                navigate('/problems');
+            }
+
+        } catch (error: any) {
+
+            alert(
+                error.response?.data?.message ||
+                "Sai tên đăng nhập hoặc mật khẩu"
+            );
+        }
+    };
 
     return (
-        <div style={{ padding: '20px' }}>
-            <h2>Login</h2>
-            <InputField
-                label="Tên đăng nhập:"
-                type="text"
-                value={username}
-                placeholder="Enter here"
-                onChange={(e) => setUsername(e.target.value)}
-            />
-            <InputField
-                label="Mật khẩu:"
-                type="password"
-                value={password}
-                placeholder="(6-15 kí tự)"
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            <Button
-                text="Gửi"
-                onClick={handleLogin}
-            />
 
-           <div style={{ marginTop: '20px' }}>
-                <span style={{ color: 'gray', marginRight: '10px' }}>Bạn chưa có tài khoản?
-                </span>
-            <Button text="Đăng Ký" onClick={() => navigate('/register')} />
-            </div>
+        <div style={styles.wrapper}>
+
+            {/* HEADER */}
+            <header style={styles.header}>
+
+                <div
+                    style={{
+                        ...styles.logo,
+
+                        transform: isLogoHover
+                            ? 'translateY(-2px)'
+                            : 'translateY(0)',
+
+                        textShadow: isLogoHover
+                            ? '4px 4px 0px #FFB338'
+                            : '2px 2px 0px #FFB338'
+                    }}
+
+                    onMouseEnter={() => setIsLogoHover(true)}
+                    onMouseLeave={() => setIsLogoHover(false)}
+                >
+
+                    <img
+                        src={bugLogo}
+                        alt="bug logo"
+                        style={styles.logoIcon}
+                    />
+
+                    <span>BYEBUG</span>
+
+                </div>
+
+                <div style={styles.authButtons}>
+
+                    <button
+                        style={{
+                            ...styles.loginBtn,
+
+                            transform: isLoginHover
+                                ? 'translate(-3px, -3px)'
+                                : 'translate(0,0)',
+
+                            boxShadow: isLoginHover
+                                ? '4px 4px 0px #111'
+                                : '0px 0px 0px #111'
+                        }}
+
+                        onMouseEnter={() => setIsLoginHover(true)}
+                        onMouseLeave={() => setIsLoginHover(false)}
+                    >
+                        Đăng nhập
+                    </button>
+
+                    <button
+                        style={{
+                            ...styles.signUpHeaderBtn,
+
+                            transform: isSignUpHover
+                                ? 'translate(-3px, -3px)'
+                                : 'translate(0,0)',
+
+                            boxShadow: isSignUpHover
+                                ? '4px 4px 0px #111'
+                                : '0px 0px 0px #111'
+                        }}
+
+                        onMouseEnter={() => setIsSignUpHover(true)}
+                        onMouseLeave={() => setIsSignUpHover(false)}
+
+                        onClick={() => navigate('/register')}
+                    >
+                        Đăng ký
+                    </button>
+
+                </div>
+
+            </header>
+
+            {/* MAIN */}
+            <main style={styles.main}>
+
+                {/* LEFT */}
+                <div style={styles.contentLeft}>
+
+                    <h1 style={styles.heroText}>
+                        start from <span style={{ color: '#000' }}>BUGS</span>
+                        <br />
+
+                        <span style={{ color: '#FFB338' }}>
+                            rise to PRO
+                        </span>
+                    </h1>
+
+                    <p style={styles.subText}>
+                        Tiếp tục hành trình luyện thuật toán,
+                        <br />
+                        sửa bug và nâng cấp kỹ năng lập trình.
+                    </p>
+
+                    <div style={styles.badge}>
+
+                        <div style={styles.badgeIconBox}>
+
+                            <img
+                                src={codeLogo}
+                                alt="code logo"
+                                style={styles.badgeIcon}
+                            />
+
+                        </div>
+
+                        <span style={styles.badgeText}>
+                            10,000+ Bug đã “bay màu”
+                        </span>
+
+                    </div>
+
+                </div>
+
+                {/* RIGHT */}
+                <div style={styles.contentRight}>
+
+                    <div style={styles.loginCard}>
+
+                        {/* CARD HEADER */}
+                        <div
+                            style={{
+                                ...styles.cardHeader,
+
+                                transform: isCardHeaderHover
+                                    ? 'translateY(-2px)'
+                                    : 'translateY(0)',
+
+                                transition: '0.2s',
+                            }}
+
+                            onMouseEnter={() => setIsCardHeaderHover(true)}
+                            onMouseLeave={() => setIsCardHeaderHover(false)}
+                        >
+
+                            <img
+                                src={bblg}
+                                alt="bblg"
+
+                                style={{
+                                    ...styles.bbogo,
+
+                                    transform: isCardHeaderHover
+                                        ? 'translateY(-2px) scale(1.03)'
+                                        : 'translateY(0) scale(1)',
+
+                                    transition: '0.2s',
+                                }}
+                            />
+
+                            <h2
+                                style={{
+                                    ...styles.cardTitle,
+
+                                    textShadow: isCardHeaderHover
+                                        ? '4px 4px 0px #FFB338'
+                                        : '2px 2px 0px #FFB338',
+                                }}
+                            >
+                                Đăng Nhập
+                            </h2>
+
+                        </div>
+
+                        {/* USERNAME */}
+                        <div style={styles.inputGroup}>
+
+                            <label style={styles.label}>
+                                Tên người dùng
+                            </label>
+
+                            <input
+                                style={{
+                                    ...styles.input,
+
+                                    backgroundColor:
+                                        focusedInput === 'username' || username
+                                            ? '#FFFBEF'
+                                            : '#FFF',
+                                }}
+
+                                placeholder="coder_01"
+
+                                value={username}
+
+                                onChange={(e) =>
+                                    setUsername(e.target.value)
+                                }
+
+                                onFocus={() =>
+                                    setFocusedInput('username')
+                                }
+
+                                onBlur={() =>
+                                    setFocusedInput('')
+                                }
+
+                                onKeyDown={(e) =>
+                                    e.key === 'Enter' && handleLogin()
+                                }
+                            />
+
+                        </div>
+
+                        {/* PASSWORD */}
+                        <div style={styles.inputGroup}>
+
+                            <label style={styles.label}>
+                                Mật khẩu
+                            </label>
+
+                            <input
+                                style={{
+                                    ...styles.input,
+
+                                    backgroundColor:
+                                        focusedInput === 'password' || password
+                                            ? '#FFFBEF'
+                                            : '#FFF',
+                                }}
+
+                                type="password"
+                                placeholder="********"
+
+                                value={password}
+
+                                onChange={(e) =>
+                                    setPassword(e.target.value)
+                                }
+
+                                onFocus={() =>
+                                    setFocusedInput('password')
+                                }
+
+                                onBlur={() =>
+                                    setFocusedInput('')
+                                }
+
+                                onKeyDown={(e) =>
+                                    e.key === 'Enter' && handleLogin()
+                                }
+                            />
+
+                        </div>
+
+                        {/* FORGOT PASSWORD */}
+                        <div style={styles.forgotPassword}>
+
+                            <button style={styles.forgotBtn}>
+                                Quên mật khẩu?
+                            </button>
+
+                        </div>
+
+                        {/* LOGIN BUTTON */}
+                        <button
+                            style={{
+                                ...styles.submitBtn,
+
+                                transform: isSubmitHover
+                                    ? 'translate(-4px, -4px)'
+                                    : 'translate(0,0)',
+
+                                boxShadow: isSubmitHover
+                                    ? '8px 8px 0px #111'
+                                    : '5px 5px 0px #111',
+                            }}
+
+                            onMouseEnter={() => setIsSubmitHover(true)}
+                            onMouseLeave={() => setIsSubmitHover(false)}
+
+                            onClick={handleLogin}
+                        >
+                            Đăng nhập ➔
+                        </button>
+
+                        {/* FOOTER LINK */}
+                        <div style={styles.footerLink}>
+
+                            <p style={{ margin: 0 }}>
+                                Chưa có tài khoản?
+                            </p>
+
+                            <button
+                                style={styles.ghostBtn}
+                                onClick={() => navigate('/register')}
+                            >
+                                Đăng Ký
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </main>
+
+            {/* FOOTER */}
+            <footer
+                style={{
+                    ...styles.footer,
+                    justifyContent: 'center',
+                    gap: '20px',
+                }}
+            >
+
+                <span>ByeBug</span>
+                <span>© 2026 ByeBug Team</span>
+
+            </footer>
 
         </div>
     );
+};
+
+const styles: { [key: string]: React.CSSProperties } = {
+
+    wrapper: {
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        backgroundColor: '#FDFDFD',
+        fontFamily: 'sans-serif',
+    },
+
+    header: {
+        height: '40px',
+        display: 'flex',
+        alignItems: 'center',
+        padding: '3px 30px',
+        borderBottom: '2px solid #111',
+        justifyContent: 'space-between',
+        backgroundColor: '#FFF',
+        position: 'relative',
+        zIndex: 10,
+    },
+
+    main: {
+        flex: 1,
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0 100px',
+
+        backgroundColor: '#fff',
+
+        backgroundImage: `
+        linear-gradient(45deg, #FAF3DD 25%, transparent 25%),
+        linear-gradient(-45deg, #FAF3DD 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #FAF3DD 75%),
+        linear-gradient(-45deg, transparent 75%, #FAF3DD 75%)
+        `,
+
+        backgroundSize: '120px 120px',
+
+        backgroundPosition:
+            '0 0, 0 60px, 60px -60px, -60px 0px'
+    },
+
+    authButtons: {
+        display: 'flex',
+        gap: '10px',
+        alignItems: 'center',
+    },
+
+    loginBtn: {
+        padding: '7px 20px',
+        border: '2px solid #111',
+        backgroundColor: '#FFB338',
+        borderRadius: '999px',
+        fontWeight: 600,
+        cursor: 'pointer',
+        transition: '0.2s',
+        color: '#111'
+    },
+
+    signUpHeaderBtn: {
+        padding: '7px 20px',
+        border: '2px solid #111',
+        backgroundColor: '#fff',
+        borderRadius: '999px',
+        fontWeight: 600,
+        cursor: 'pointer',
+        transition: '0.2s',
+        color: '#111'
+    },
+
+    logo: {
+        fontSize: '28px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        fontWeight: 900,
+        letterSpacing: '-1px',
+        color: '#111',
+        cursor: 'pointer',
+        userSelect: 'none',
+        transition: '0.2s',
+        textShadow: '2px 2px 0px #FFB338',
+    },
+
+    logoIcon: {
+        width: '40px',
+        height: '40px',
+        objectFit: 'contain',
+    },
+
+    badge: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        marginTop: '40px',
+    },
+
+    badgeIcon: {
+        width: '40px',
+        height: '40px',
+        objectFit: 'contain',
+    },
+
+    badgeText: {
+        fontSize: '15px',
+        fontWeight: 500,
+        color: '#111',
+        lineHeight: 1,
+    },
+
+    subText: {
+        fontSize: '15px',
+        fontWeight: 500,
+        color: '#111',
+        lineHeight: 1.5,
+    },
+
+    contentLeft: {
+        flex: 1
+    },
+
+    contentRight: {
+        flex: 1,
+        display: 'flex',
+        justifyContent: 'center'
+    },
+
+    heroText: {
+        fontSize: '60px',
+        fontWeight: 'bold',
+        lineHeight: 1.1
+    },
+
+    loginCard: {
+        backgroundColor: '#fff',
+        border: '3px solid #000',
+        padding: '30px',
+        width: '320px',
+        boxShadow: '10px 10px 0px #000',
+    },
+
+    cardHeader: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        marginBottom: '10px',
+    },
+
+    cardTitle: {
+        fontSize: '24px',
+        fontWeight: 700,
+        color: '#111',
+        textShadow: '2px 2px 0px #FFB338',
+        transition: '0.2s',
+    },
+
+    inputGroup: {
+        marginBottom: '14px',
+    },
+
+    label: {
+        display: 'block',
+        marginBottom: '5px',
+        marginTop: '18px',
+        fontSize: '12px',
+        fontWeight: 700,
+        color: '#111',
+    },
+
+    input: {
+        width: '100%',
+        padding: '7px 14px',
+        border: '2px solid #111',
+        backgroundColor: '#FFF',
+        boxSizing: 'border-box',
+        fontSize: '15px',
+        fontWeight: 500,
+        outline: 'none',
+        transition: '0.2s',
+        boxShadow: '4px 4px 0px #111',
+    },
+
+    forgotPassword: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+        marginTop: '10px',
+    },
+
+    forgotBtn: {
+        border: 'none',
+        background: 'transparent',
+        color: '#FFB338',
+        fontWeight: 700,
+        cursor: 'pointer',
+        fontSize: '13px',
+    },
+
+    submitBtn: {
+        width: '100%',
+        backgroundColor: '#FFB338',
+        border: '2px solid #000',
+        padding: '13px',
+        fontWeight: 700,
+        cursor: 'pointer',
+        boxShadow: '4px 4px 0px #000',
+        marginTop: '20px',
+        borderRadius: '999px',
+        transition: '0.2s',
+        color: '#111',
+    },
+
+    footerLink: {
+        marginTop: '18px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '18px',
+        flexWrap: 'wrap',
+    },
+
+    ghostBtn: {
+        border: 'none',
+        background: 'transparent',
+        fontWeight: 700,
+        cursor: 'pointer',
+        color: '#FFB338',
+        fontSize: '14px',
+    },
+
+    footer: {
+        height: '40px',
+        borderTop: '2px solid #000',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '0 40px',
+        fontSize: '13px',
+        fontWeight: 600,
+        color: '#111',
+        backgroundColor: '#fff'
+    },
+
+    bbogo: {
+        boxShadow: '3px 3px 0px #111',
+        border: '2px solid #111',
+        backgroundColor: '#FFB338',
+    },
 };
 
 export default Login;
