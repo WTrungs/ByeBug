@@ -1,8 +1,11 @@
-FROM ubuntu:24.04
-
-RUN apt-get update && apt-get install -y \
-    g++ \
-    && rm -rf /var/lib/apt/lists/*
+FROM gcc:13-bookworm
 
 WORKDIR /sandbox
+
+RUN useradd -m judge
+
+RUN chown -R judge:judge .
+
+USER judge
+
 CMD ["tail", "-f", "/dev/null"]

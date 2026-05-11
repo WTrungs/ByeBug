@@ -1,0 +1,10 @@
+{
+    "submissionId": "sub-004-mle",
+    "problemId": "P101",
+    "code": "#include <vector>\nusing namespace std;\nint main() {\n    // Cấp phát mảng quá lớn vượt mức 256MB\n    vector<long long> v(50000000, 1);\n    return 0;\n}",
+    "language": "cpp",
+    "input": "5 10",
+    "expectedOutput": "15",
+    "timeLimit": 1,
+    "memoryLimit": 256
+}
