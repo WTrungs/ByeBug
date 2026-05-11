@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.byebug.judge.model.CommandResult;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.async.ResultCallback;
 import com.github.dockerjava.api.command.BuildImageResultCallback;
@@ -88,7 +89,7 @@ public class DockerService {
         return containerId;
     }
 
-    public String execCommand(String containerId, Long timeoutSeconds, String... cmd) { //Chay code gi do o trong container
+    public CommandResult execCommand(String containerId, Long timeoutSeconds, String... cmd) { //Chay code gi do o trong container
         ExecCreateCmdResponse exec = dockerClient.execCreateCmd(containerId)
                 .withCmd(cmd)
                 .withAttachStdout(true)
@@ -115,19 +116,15 @@ public class DockerService {
                     .awaitCompletion(timeoutSeconds, TimeUnit.SECONDS);
 
             if (!completed) {
-                return "TIME_LIMIT_EXCEEDED";
+                return new CommandResult(-1L, "", "", true);
             }
+            Long exitCode = dockerClient.inspectExecCmd(exec.getId()).exec().getExitCodeLong();
+            return new CommandResult(exitCode != null ? exitCode : 0, stdout.toString(), stderr.toString(), false);
         } catch (InterruptedException e) {
             log.error("Execution interrupted", e);
             Thread.currentThread().interrupt();
-            return "INTERRUPTED";
+            return new CommandResult(-1L, "", e.getMessage(), false);
         }
-
-        if (stderr.length() > 0) {
-            return "ERROR: " + stderr.toString();
-        }
-
-        return stdout.toString().trim(); //Tra ve ket qua
     }
     
     public void stopAndRemoveContainer(String containerId) { //Don dep container
