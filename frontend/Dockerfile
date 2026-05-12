@@ -1,5 +1,5 @@
 FROM node:25-bookworm-slim AS build
-WORKDIR /app
+WORKDIR /app/frontend
 
 COPY package*.json ./
 RUN npm install
