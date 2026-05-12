@@ -24,7 +24,7 @@ const ProblemTable:React.FC<TableProps>=({problems}) =>{
                                 ⚪
                             </td> //chừa lại cho query status
 
-                            <td onClick={()=>navigate('/problems/${prob.problemId}')}
+                            <td onClick={()=>navigate(`/problems/${prob.problemId}`)}
                                 style={{cursor:'pointer', color: 'lightblue'}}>
                                 {prob.problemId}.{prob.title}
                             </td>

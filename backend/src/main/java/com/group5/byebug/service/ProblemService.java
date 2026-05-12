@@ -1,13 +1,16 @@
 package com.group5.byebug.service;
 
-import com.group5.byebug.entity.Problem;
 import java.util.List;
 
+import com.group5.byebug.dto.ProblemResponseDTO;
+import com.group5.byebug.entity.Problem;
 
 public interface ProblemService {
 
-    List<Problem> getAllPublicProblems();
-    Problem getProblemById(Long id);
-    List<Problem> getProblemsByDifficulty(String difficulty);
-    List<Problem> searchProblems(String keyword);
+    List<ProblemResponseDTO> getAllPublicProblems();
+    ProblemResponseDTO getProblemById(Long id);
+    List<ProblemResponseDTO> getProblemsByDifficulty(String difficulty);
+    List<ProblemResponseDTO> searchProblems(String keyword);
+    ProblemResponseDTO convertToDTO(Problem problem);
+
 }
