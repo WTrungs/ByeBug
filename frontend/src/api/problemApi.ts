@@ -8,6 +8,21 @@ export interface Problem {
     isPublic: boolean;
 }
 
+export interface TestCase {
+    testcaseId: number;
+    input: string;
+    expectedOutput: string;
+    isVisible: boolean;
+    displayOrder: number;
+}
+
+export interface ProblemDetail extends Problem {
+    description: string;
+    timeLimitMs: number;
+    memoryLimitMb: number;
+    testcases: TestCase[];
+}
+
 export const getAllProblems = async (): Promise<Problem[]> => {
     const response = await api.get('/problems');
     return response.data;
@@ -16,6 +31,11 @@ export const getAllProblems = async (): Promise<Problem[]> => {
 
 export const getProblemsByDifficulty = async (difficulty: string): Promise<Problem[]> => {
     const response = await api.get(`/problems/difficulty/${difficulty}`);
+    return response.data;
+};
+
+export const getProblemById = async (id: number): Promise<ProblemDetail> => {
+    const response = await api.get(`/problems/${id}`);
     return response.data;
 };
 
