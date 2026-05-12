@@ -6,11 +6,16 @@ import Register from './pages/Register';
 import Problems from './pages/Problems';
 import ProblemDetail from './pages/ProblemDetail';
 import ProtectedRoute from './components/ProtectedRoute';
+import Admin from './pages/admin/Admin'; // Nhớ import file Admin vào nè
 
 const App: React.FC = () => {
     const location = useLocation();
+    
+    // Thêm các đường dẫn admin vào danh sách ẩn Navbar
+    // Vì Admin đã có Sidebar riêng rồi, không nên hiện Navbar chung nữa
     const noNavbarRoutes = ['/', '/login', '/register'];
-    const hideNavbar = noNavbarRoutes.includes(location.pathname);
+    const isAdminRoute = location.pathname.startsWith('/admin');
+    const hideNavbar = noNavbarRoutes.includes(location.pathname) || isAdminRoute;
 
     return (
         <div className="app-container">
@@ -18,12 +23,12 @@ const App: React.FC = () => {
 
             <main>
                 <Routes>
-                    {/*ai vào cũng ok*/}
+                    {/* Public Routes */}
                     <Route path="/" element={<Login />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
 
-                    {/*có tài khoản mới dc vô*/}
+                    {/* User Routes (Cần đăng nhập) */}
                     <Route 
                         path="/problems" 
                         element={
@@ -37,6 +42,16 @@ const App: React.FC = () => {
                         element={
                             <ProtectedRoute>
                                 <ProblemDetail />
+                            </ProtectedRoute>
+                        } 
+                    />
+
+                    
+                    <Route 
+                        path="/admin/*" 
+                        element={
+                            <ProtectedRoute>
+                                <Admin />
                             </ProtectedRoute>
                         } 
                     />

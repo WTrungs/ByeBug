@@ -1,0 +1,262 @@
+
+/* 1. BIẾN MÀU ADMIN */
+.admin-wrapper {
+    --admin-red:      #fa375e;
+    --admin-red-soft: #ffdae4;
+    --admin-red-dark: #d62a4d;
+}
+
+/* 2. LAYOUT CHÍNH */
+.admin-main {
+    flex: 1;
+    margin-left: 220px;
+    width: calc(100% - 220px);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: var(--white);
+    background-image:
+        linear-gradient(45deg,  #f6d0d8 25%, transparent 25%),
+        linear-gradient(-45deg, #f6d0d8 25%, transparent 25%),
+        linear-gradient(45deg,  transparent 75%, #f6d0d8 75%),
+        linear-gradient(-45deg, transparent 75%, #f6d0d8 75%);
+    background-size: 120px 120px;
+    background-position: 0 0, 0 60px, 60px -60px, -60px 0px;
+}
+
+.admin-content {
+    padding: 32px;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* 3. LOGO */
+.logo-container-admin {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.logo-container-admin:hover {
+    transform: translateY(-2px);
+}
+
+.logo-text-admin {
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    color: var(--black);
+    text-shadow: 2px 2px 0px var(--admin-red);
+    transition: all 0.2s ease;
+}
+
+.logo-container-admin:hover .logo-text-admin {
+    text-shadow: 4px 4px 0px var(--admin-red);
+}
+
+.admin-name {
+    color: var(--admin-red);
+    font-weight: 800;
+    text-decoration: underline;
+}
+
+/* 4. SIDEBAR NAVIGATION */
+.menu-item.active {
+    background: var(--admin-red) !important;
+    border-left: 4px solid var(--admin-red-dark) !important;
+    color: var(--white) !important;
+}
+
+.menu-item:hover:not(.active) {
+    background: var(--admin-red-soft);
+    transform: translateX(4px);
+}
+
+.logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--admin-red);
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+.logout-btn:hover {
+    background: var(--admin-red-soft);
+}
+
+/* 5. SHARED BUTTONS */
+.btn-act-log {
+    background-color: var(--admin-red);
+    color: var(--white);
+    border: 2px solid var(--black);
+    padding: 8px 20px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.15s ease;
+}
+
+.btn-act-log:hover {
+    background-color: var(--admin-red-dark);
+    transform: translate(-3px, -3px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-neo-sub {
+    width: 100%;
+    color: var(--white);
+    background-color: var(--admin-red);
+    border: 2px solid var(--black);
+    padding: 10px 13px;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-sm);
+    transition: 0.2s;
+}
+
+.btn-neo-sub:hover {
+    background-color: var(--admin-red-dark);
+    transform: translate(-3px, -3px);
+    box-shadow: var(--shadow-md);
+}
+
+/* 6. SHARED INPUT */
+.neo-input {
+    border: 2px solid var(--black);
+    padding: 8px 14px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    background: var(--white);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.15s;
+}
+
+.neo-input:focus {
+    box-shadow: var(--shadow-md);
+    background: var(--bg-soft);
+}
+
+/* 7. OVERVIEW / DASHBOARD */
+.card-danger {
+    background-color: var(--admin-red) !important;
+    color: var(--white) !important;
+    border-color: var(--admin-red-dark) !important;
+}
+
+.cpu-dot { background-color: var(--admin-red); }
+.ram-dot { background-color: var(--primary); }
+
+.overview-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+/* 8. TOPBAR */
+.topbar {
+    height: 64px;
+    background: var(--white);
+    border-bottom: 3px solid var(--black);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.topbar-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.topbar-title {
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 0.3px;
+    color: var(--black);
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.topbar-welcome {
+    font-size: 12px;
+    color: #666;
+    font-weight: 600;
+    margin: 0;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* 9. LIVE STATUS BADGE */
+.status-live {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #F0FFF4;
+    border: 2px solid var(--black);
+    padding: 6px 16px;
+    font-size: 11px;
+    font-weight: 900;
+    box-shadow: var(--shadow-sm);
+    letter-spacing: 0.4px;
+}
+
+.pulse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #38A169;
+    border: 1px solid var(--black);
+    flex-shrink: 0;
+    animation: pulse-live 1.5s infinite;
+}
+
+@keyframes pulse-live {
+    0%   { transform: scale(0.95); opacity: 1; }
+    70%  { transform: scale(1.1);  opacity: 0.7; }
+    100% { transform: scale(0.95); opacity: 1; }
+}
+
+/* 10. TOPBAR ACTION BOX */
+.topbar-action-box {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--black);
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: 0.1s;
+}
+
+.topbar-action-box:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-md);
+    background: var(--bg-soft);
+}

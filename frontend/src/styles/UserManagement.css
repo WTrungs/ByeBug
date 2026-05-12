@@ -1,0 +1,329 @@
+
+
+/* ---- WRAPPER ---- */
+.um-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+/* ---- CARD BASE ---- */
+.um-card {
+    background: var(--white);
+    border: 3px solid var(--black);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+
+/* ---- CARD HEADER ---- */
+.um-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+    border-bottom: 3px solid var(--black);
+}
+
+.um-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.um-card-icon { font-size: 18px; }
+
+.um-card-title {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--black);
+    margin: 0;
+}
+
+.um-table-title {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--black);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.um-view-all-btn {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--admin-red);
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0;
+    transition: opacity 0.15s, transform 0.15s;
+}
+
+.um-view-all-btn:hover {
+    opacity: 0.75;
+    transform: translateX(2px);
+}
+
+/* ---- LEADERBOARD ---- */
+.um-leaderboard {
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.um-rank-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border: 2px solid var(--black);
+    background: var(--white);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.15s;
+}
+
+.um-rank-item:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-md);
+}
+
+.um-rank-gold {
+    background: var(--bg-soft);
+}
+
+.um-rank-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.um-rank-medal {
+    font-size: 22px;
+    min-width: 28px;
+}
+
+.um-avatar {
+    width: 38px;
+    height: 38px;
+    background: var(--black);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 15px;
+    flex-shrink: 0;
+    border: 2px solid var(--black);
+}
+
+.um-rank-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.um-rank-name {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--black);
+}
+
+.um-rank-email {
+    font-size: 11px;
+    color: #9ca3af;
+}
+
+.um-score-badge {
+    background: var(--black);
+    color: var(--white);
+    padding: 5px 14px;
+    border: 2px solid var(--black);
+    font-weight: 800;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    box-shadow: var(--shadow-sm);
+}
+
+.um-pts-label {
+    font-size: 10px;
+    font-weight: 400;
+    opacity: 0.7;
+}
+
+/* ---- SEARCH BOX ---- */
+.um-search-box {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 2px solid var(--black);
+    padding: 6px 12px;
+    background: var(--white);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.15s;
+}
+
+.um-search-box:focus-within {
+    background: var(--bg-soft);
+    box-shadow: var(--shadow-md);
+}
+
+.um-search-box input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--black);
+    width: 200px;
+}
+
+.um-search-box input::placeholder {
+    color: #999;
+    font-weight: 400;
+}
+
+/* ---- TABLE ---- */
+.um-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.um-table thead th {
+    padding: 13px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: #1A1A1A;
+}
+
+.um-table tbody tr {
+    border-bottom: 1px solid #E5E5E5;
+    transition: background 0.12s;
+}
+
+.um-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.um-table tbody tr:hover {
+    background: var(--bg-soft);
+}
+
+.um-table tbody tr:hover .um-date-cell {
+    color: var(--admin-red);
+}
+
+.um-table td {
+    padding: 14px 16px;
+    font-size: 13px;
+    color: #374151;
+}
+
+.um-date-cell {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--admin-red);
+    transition: color 0.12s;
+}
+
+.um-user-cell {
+    font-weight: 700;
+    color: var(--black);
+}
+
+.um-email-cell {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.um-score-cell {
+    text-align: center;
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+    color: var(--black);
+}
+
+/* ---- ROLE BADGES ---- */
+.um-role-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border: 1.5px solid var(--black);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.um-role-admin      { background: var(--admin-red);  color: var(--white); }
+.um-role-moderator  { background: #00E5FF;            color: var(--black); }
+.um-role-user       { background: #e5e7eb;            color: #374151;      }
+
+/* ---- STATUS BADGES ---- */
+.um-status-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border: 1.5px solid var(--black);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.um-status-online  { background: #dcfce7; color: #16a34a; }
+.um-status-offline { background: #f3f4f6; color: #6b7280; }
+.um-status-banned  { background: var(--admin-red-soft); color: var(--admin-red); }
+
+/* ---- ACTION BUTTONS ---- */
+.um-actions {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+}
+
+.um-btn-edit,
+.um-btn-ban,
+.um-btn-delete {
+    width: 32px;
+    height: 32px;
+    border: 2px solid var(--black);
+    background: var(--white);
+    cursor: pointer;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.1s;
+}
+
+.um-btn-edit:hover {
+    background: var(--bg-soft);
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-md);
+}
+
+.um-btn-ban:hover {
+    background: #fff4d6;
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-md);
+}
+
+.um-btn-delete:hover {
+    background: var(--admin-red-soft);
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-md);
+}
+
+.um-btn-edit:active,
+.um-btn-ban:active,
+.um-btn-delete:active {
+    transform: scale(0.95);
+    box-shadow: none;
+}
