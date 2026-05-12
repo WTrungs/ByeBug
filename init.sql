@@ -37,3 +37,68 @@ VALUES (
     150, 
     true
 );
+
+INSERT INTO tags (tag_name) VALUES 
+('Math'), ('Dynamic Programming'), ('Greedy'), ('String'), 
+('Data Structure'), ('Graph'), ('Binary Search'), ('Sorting'), 
+('Geometry'), ('Bitmask');
+
+INSERT INTO problems (title, description, difficulty, time_limit_ms, memory_limit_mb, is_public, created_by) VALUES
+('A + B Problem', 'Tính tổng hai số nguyên a và b.', 'EASY', 1000, 256, true, 1),
+('Prime Check', 'Kiểm tra một số có phải số nguyên tố hay không.', 'EASY', 500, 64, true, 1),
+('Fibonacci', 'Tìm số Fibonacci thứ n.', 'EASY', 1000, 128, true, 1),
+('Longest Common Subsequence', 'Tìm độ dài xâu con chung dài nhất.', 'MEDIUM', 2000, 256, true, 1),
+('Dijkstra Algorithm', 'Tìm đường đi ngắn nhất từ 1 đỉnh đến các đỉnh còn lại.', 'MEDIUM', 1500, 256, true, 1),
+('Quick Sort Implementation', 'Cài đặt thuật toán sắp xếp nhanh.', 'EASY', 1000, 256, true, 1),
+('Knapsack 0/1', 'Bài toán cái túi với các vật phẩm không thể chia cắt.', 'MEDIUM', 1000, 256, true, 1),
+('Binary Search Tree Check', 'Kiểm tra một cây có phải cây tìm kiếm nhị phân không.', 'MEDIUM', 1000, 256, true, 1),
+('Palindrome String', 'Kiểm tra xâu đối xứng.', 'EASY', 500, 64, true, 1),
+('N-Queens Problem', 'Xếp n quân hậu trên bàn cờ n x n.', 'HARD', 3000, 256, true, 1),
+('Segment Tree Query', 'Cập nhật và truy vấn tổng đoạn.', 'HARD', 2000, 512, true, 1),
+('Convex Hull', 'Tìm bao lồi của một tập điểm trên mặt phẳng.', 'HARD', 2000, 256, true, 1),
+('Factorial Large Number', 'Tính giai thừa của một số lớn.', 'EASY', 1000, 128, true, 1),
+('Max Flow', 'Tìm luồng cực đại trong mạng tải.', 'HARD', 2000, 256, true, 1),
+('BFS Traversal', 'Duyệt đồ thị theo chiều rộng.', 'EASY', 1000, 256, true, 1),
+('Merge Intervals', 'Hợp nhất các khoảng giá trị bị chồng lấn.', 'MEDIUM', 1000, 256, true, 1),
+('Longest Palindromic Substring', 'Tìm xâu đối xứng dài nhất.', 'MEDIUM', 1500, 256, true, 1),
+('Valid Parentheses', 'Kiểm tra tính đúng đắn của các dấu ngoặc.', 'EASY', 500, 64, true, 1),
+('Subset Sum', 'Kiểm tra sự tồn tại của tập con có tổng bằng K.', 'MEDIUM', 2000, 256, true, 1),
+('Counting Bits', 'Đếm số lượng bit 1 từ 0 đến n.', 'EASY', 500, 64, true, 1);
+
+INSERT INTO problem_tags (problem_id, tag_id)
+SELECT p.problem_id, t.tag_id 
+FROM problems p, tags t
+WHERE 
+(p.title = 'A + B Problem' AND t.tag_name = 'Math') OR
+(p.title = 'Longest Common Subsequence' AND t.tag_name = 'Dynamic Programming') OR
+(p.title = 'Dijkstra Algorithm' AND t.tag_name = 'Graph') OR
+(p.title = 'Counting Bits' AND t.tag_name = 'Bitmask') OR
+(p.title = 'Palindrome String' AND t.tag_name = 'String');
+
+INSERT INTO testcases (problem_id, input_path, output_path, is_visible, score_weight)
+VALUES 
+(1, 'tc/1/in_1.txt', 'tc/1/out_1.txt', true, 50),
+(1, 'tc/1/in_2.txt', 'tc/1/out_2.txt', false, 50);
+
+
+INSERT INTO submissions (problem_id, user_id, language, source_code, verdict, score, total_time_ms, max_memory_kb)
+VALUES 
+(1, 2, 'C++', '#include <iostream>...', 'AC', 100, 15, 1024),
+(4, 2, 'Python', 'def lcs(a, b):...', 'WA', 0, 450, 8192);
+
+
+INSERT INTO testcase_results (submission_id, testcase_id, verdict, time_ms, memory_kb)
+VALUES 
+(1, 1, 'AC', 5, 512),
+(1, 2, 'AC', 10, 512);
+
+
+INSERT INTO notifications (user_id, title, content)
+VALUES 
+(2, 'Kết quả chấm bài', 'Bài nộp A + B Problem của bạn đã đạt 100 điểm.'),
+(2, 'Nhắc nhở', 'Đừng quên hoàn thành thử thách hàng ngày nhé!');
+
+
+SELECT setval(pg_get_serial_sequence('problems', 'problem_id'), coalesce(max(problem_id), 1)) FROM problems;
+SELECT setval(pg_get_serial_sequence('tags', 'tag_id'), coalesce(max(tag_id), 1)) FROM tags;
+SELECT setval(pg_get_serial_sequence('submissions', 'submission_id'), coalesce(max(submission_id), 1)) FROM submissions;
