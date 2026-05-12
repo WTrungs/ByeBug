@@ -53,7 +53,7 @@ const Register: React.FC = () => {
             <header className="header">
                 <div className="logo-container" onClick={() => navigate('/')}>
                     <img src={bugLogo} alt="bug logo" className="logo-icon" />
-                    <span>BYEBUG</span>
+                    <span className="logo-text">BYEBUG</span>
                 </div>
                 <div className="auth-buttons">
                     <button className="btn-neo-secondary" onClick={() => navigate('/login')}>Đăng nhập</button>
@@ -140,7 +140,7 @@ const Register: React.FC = () => {
                             />
                         </div>
 
-                        {/* CONFIRM PASSWORD - ĐÃ THÊM LẠI Ở ĐÂY */}
+                        {/* CONFIRM PASSWORD */}
                         <div className="input-group">
                             <label className="label">Xác nhận mật khẩu</label>
                             <input 

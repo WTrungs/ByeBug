@@ -1,0 +1,331 @@
+
+
+.pm-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+/* ---- CARD BASE ---- */
+.pm-card {
+    background: var(--white);
+    border: 3px solid var(--black);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+
+/* ---- TOP 2-COLUMN GRID ---- */
+.pm-top-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+/* ---- CARD HEADER ---- */
+.pm-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 18px 20px;
+    border-bottom: 3px solid var(--black);
+}
+
+.pm-card-icon { font-size: 18px; }
+
+.pm-card-title {
+    font-size: 15px;
+    font-weight: 900;
+    color: var(--black);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+/* ---- LIST ITEMS ---- */
+.pm-list {
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.pm-list-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border: 2px solid var(--black);
+    background: var(--white);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.15s;
+}
+
+.pm-list-item:hover {
+    background: var(--bg-soft);
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-md);
+}
+
+.pm-item-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.pm-item-name {
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--black);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pm-item-meta {
+    font-size: 11px;
+    color: #9ca3af;
+    margin-top: 2px;
+}
+
+.pm-item-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 3px;
+}
+
+.pm-rank-num {
+    font-size: 20px;
+    font-weight: 800;
+    min-width: 32px;
+    opacity: 0.85;
+}
+
+/* Level badge */
+.pm-level-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border: 1.5px solid var(--black);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* AC badge */
+.pm-ac-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border: 1.5px solid var(--black);
+}
+
+.pm-subs-text {
+    font-size: 11px;
+    color: #9ca3af;
+}
+
+/* ---- TABLE SECTION HEADER ---- */
+.pm-table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px;
+    border-bottom: 3px solid var(--black);
+}
+
+.pm-table-title {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--black);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.pm-filter-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Search box */
+.pm-search-box {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 2px solid var(--black);
+    padding: 6px 12px;
+    background: var(--white);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.15s;
+}
+
+.pm-search-box:focus-within {
+    background: var(--bg-soft);
+    box-shadow: var(--shadow-md);
+}
+
+.pm-search-box input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--black);
+    width: 180px;
+}
+
+.pm-search-box input::placeholder {
+    color: #999;
+    font-weight: 400;
+}
+
+/* Filter selects */
+.pm-select {
+    border: 2px solid var(--black);
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--black);
+    background: var(--white);
+    cursor: pointer;
+    outline: none;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.15s;
+    appearance: none;
+}
+
+.pm-select:focus {
+    background: var(--bg-soft);
+    box-shadow: var(--shadow-md);
+}
+
+/* ---- MAIN TABLE ---- */
+.pm-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.pm-table thead th {
+    padding: 13px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: #1A1A1A;
+}
+
+.pm-table tbody tr {
+    border-bottom: 1px solid #E5E5E5;
+    transition: background 0.12s;
+}
+
+.pm-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.pm-table tbody tr:hover {
+    background: var(--bg-soft);
+}
+
+.pm-table tbody tr:hover .pm-id-cell {
+    color: var(--admin-red);
+}
+
+.pm-table td {
+    padding: 14px 16px;
+    font-size: 13px;
+    color: #374151;
+}
+
+.pm-id-cell {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--admin-red);
+    transition: color 0.12s;
+}
+
+.pm-name-cell {
+    font-weight: 700;
+    color: var(--black);
+}
+
+.pm-subs-cell {
+    text-align: center;
+    font-weight: 600;
+    color: #374151;
+}
+
+.pm-date-cell {
+    text-align: center;
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+/* Difficulty badges */
+.pm-diff-badge {
+    display: inline-block;
+    padding: 3px 12px;
+    border: 1.5px solid var(--black);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.pm-diff-easy   { background: #dcfce7; color: #16a34a; }
+.pm-diff-medium { background: #fff4d6; color: #a66a00; }
+.pm-diff-hard   { background: var(--admin-red-soft); color: var(--admin-red-dark); }
+
+/* Status badges */
+.pm-status-badge {
+    display: inline-block;
+    padding: 3px 12px;
+    border: 1.5px solid var(--black);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.pm-status-stable { background: #dbeafe; color: #1d4ed8; }
+.pm-status-bugged { background: #fef9c3; color: #a16207; }
+
+/* Action buttons */
+.pm-actions {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+}
+
+.pm-btn-edit,
+.pm-btn-delete {
+    width: 32px;
+    height: 32px;
+    border: 2px solid var(--black);
+    background: var(--white);
+    cursor: pointer;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.1s;
+}
+
+.pm-btn-edit:hover {
+    background: var(--bg-soft);
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-md);
+}
+
+.pm-btn-delete:hover {
+    background: var(--admin-red-soft);
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-md);
+}
+
+.pm-btn-edit:active,
+.pm-btn-delete:active {
+    transform: scale(0.95);
+    box-shadow: none;
+}
