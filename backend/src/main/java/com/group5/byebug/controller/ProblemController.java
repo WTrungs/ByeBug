@@ -10,11 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.group5.byebug.dto.ProblemResponseDTO;
-import com.group5.byebug.entity.Problem;
 import com.group5.byebug.service.ProblemService;
+
 @RestController
 @RequestMapping("/api/problems")
-
 public class ProblemController {
 
     private final ProblemService problemService;
@@ -44,4 +43,5 @@ public class ProblemController {
     public ResponseEntity<List<ProblemResponseDTO>> searchProblems(@RequestParam String keyword) {
         return ResponseEntity.ok(problemService.searchProblems(keyword));
     }
+    
 }

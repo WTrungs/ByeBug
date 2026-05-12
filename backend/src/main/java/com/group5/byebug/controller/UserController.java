@@ -1,12 +1,16 @@
 package com.group5.byebug.controller;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.group5.byebug.dto.ForgotPasswordRequest;
 import com.group5.byebug.dto.LoginRequest;
 import com.group5.byebug.dto.RegisterRequest;
 import com.group5.byebug.dto.UserResponse;
 import com.group5.byebug.service.UserService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/users")
@@ -44,4 +48,5 @@ public class UserController {
             return ResponseEntity.badRequest().body(new UserResponse(null, null, null, null, e.getMessage(), "USER"));
         }
     }
+    
 }

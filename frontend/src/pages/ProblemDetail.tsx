@@ -204,12 +204,12 @@ export default function ProblemDetail() {
                                 {DIFFICULTY_LABEL[problem.difficulty?.toLowerCase()] ?? problem.difficulty}
                             </span>
                             {/* Tags */}
-                            {problem.tags?.map((tag: string) => (
-                                <span key={tag} style={{
+                            {problem.tags?.map((tag: any) => (
+                                <span key={tag.tagId} style={{
                                     padding: '3px 10px', border: '1.5px solid #111',
                                     background: '#FDFDFD', fontSize: 11, fontWeight: 600,
                                 }}>
-                                    {tag}
+                                    {tag.tagName} {}
                                 </span>
                             ))}
                         </div>
