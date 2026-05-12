@@ -1,16 +1,31 @@
 package com.group5.byebug.entity;
-import jakarta.persistence.*;
-import lombok.Data;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-@Data
+import org.hibernate.annotations.CreationTimestamp;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.Data;
+
 @Entity
 @Table(name = "problems")
+@Data
 public class Problem {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "problem_id")
     private Long problemId;
 
     @Column(nullable = false, length = 200)
@@ -22,30 +37,26 @@ public class Problem {
     @Column(nullable = false, length = 10)
     private String difficulty;
 
-    @Column(columnDefinition = "TEXT")
-    private String[] tags;
-
-    @Column(name = "time_limit_ms")
     private Integer timeLimitMs = 2000;
-
-    @Column(name = "memory_limit_mb")
     private Integer memoryLimitMb = 256;
-
-    @Column(name = "allow_file_submit")
     private Boolean allowFileSubmit = false;
-
-    @Column(name = "is_public")
     private Boolean isPublic = false;
 
     @ManyToOne
     @JoinColumn(name = "created_by")
-    private User createdBy;
+    private User creator;
 
-    @Column(name = "created_at")
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-    }
+    @ManyToMany
+    @JoinTable(
+        name = "problem_tags",
+        joinColumns = @JoinColumn(name = "problem_id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private Set<Tag> tags = new HashSet<>();
+
+    @OneToMany(mappedBy = "problem", cascade = CascadeType.ALL)
+    private List<Testcase> testcases;
 }
