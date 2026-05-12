@@ -18,6 +18,60 @@ services:
       retries: 6
       start_period: 30s
 
+  redis:
+    image: redis:7-alpine
+    container_name: redis-cache
+    command: redis-server --appendonly yes
+    env_file:
+      - .env
+    ports:
+      - "${REDIS_PORT}:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  
+  oj-cpp-runner:
+    build:
+      context: ./judge-engine/docker-env/cpp
+    image: oj-cpp:latest
+    deploy:
+      replicas: 0
+
+  judge-engine:
+    build:
+      context: ./judge-engine
+      target: build
+    container_name: judge-app
+    ports:
+      - "${JUDGE_PORT}:4000"
+    env_file:
+      - .env
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${DB_NAME}
+      JUDGE_CPP_DOCKERFILE_PATH: /app/judge-engine/docker-env/cpp/
+    depends_on:
+      oj-cpp-runner:
+        condition: service_started
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./judge-engine:/app/judge-engine
+      - m2:/root/.m2
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: mvn spring-boot:run
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 60s
+
   backend:
     build:
       context: ./backend
@@ -30,10 +84,10 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${DB_NAME}
     depends_on:
-      db:
+      judge-engine:
         condition: service_healthy
     volumes:
-      - ./backend:/app
+      - ./backend:/app/backend
       - m2:/root/.m2
     command: mvn spring-boot:run
     healthcheck:
@@ -55,10 +109,11 @@ services:
       backend:
         condition: service_healthy
     volumes:
-      - ./frontend:/app
-      - node_modules:/app/node_modules
+      - ./frontend:/app/frontend
+      - node_modules:/app/frontend/node_modules
 
 volumes:
   db-data:
   m2:
   node_modules:
+  redis-data:

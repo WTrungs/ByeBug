@@ -19,13 +19,13 @@ public class AppInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception { //Build image cham bai cho tung ngon ngu
-        log.info("Project is starting. Initializing Docker images...");
+        // log.info("Project is starting. Initializing Docker images...");
 
-        try {
-            dockerService.buildImage("cpp");
-        } catch (Exception e) {
-            log.error("Error during initial image build", e);
-        }
+        // try {
+        //     dockerService.buildImage("cpp");
+        // } catch (Exception e) {
+        //     log.error("Error during initial image build", e);
+        // }
     }
     
 }

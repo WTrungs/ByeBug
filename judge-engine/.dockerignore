@@ -1,0 +1,31 @@
+# Exclude build output directories
+**/target/
+**/build/
+**/out/
+
+# Exclude Maven/Gradle wrappers and local configs
+.mvn/
+.gradle/
+gradle/
+bin/
+*.iml
+*.ipr
+*.iws
+
+# Exclude IDE settings and temporary files
+.idea/
+.vscode/
+.settings/
+.classpath/
+.project/
+.nb-gradle/
+
+# Exclude logs and local environment variables
+*.log
+.env
+.env.local
+
+# Exclude version control metadata
+.git/
+.gitignore
+.gitattributes

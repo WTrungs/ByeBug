@@ -1,4 +1,3 @@
-# Stage 1: Build the application
 FROM maven:3.9.15-eclipse-temurin-25-noble AS build
 WORKDIR /app
 
