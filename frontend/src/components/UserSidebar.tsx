@@ -12,7 +12,7 @@ const menuItems = [
     { key: 'profile', label: 'Profile', icon: '', path: '/profile/me' },
     { key: 'settings', label: 'Settings', icon: '', path: '/settings' },
     { key: 'contests', label: 'Contests', icon: '', path: null },
-    { key: 'leaderboard', label: 'Leaderboard', icon: '', path: null },
+    { key: 'leaderboard', label: 'Leaderboard', icon: '', path: '/leaderboard' },
     { key: 'submission', label: 'Submission', icon: '', path: null },
     { key: 'report', label: 'Report', icon: '', path: null },
 ];

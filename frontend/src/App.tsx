@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
@@ -22,6 +21,7 @@ const App: React.FC = () => {
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+
 
           <Route path="/home" element={<ProtectedRoute userOnly><Home /></ProtectedRoute>} />
           <Route path="/statistics" element={<ProtectedRoute userOnly><Statistics /></ProtectedRoute>} />
