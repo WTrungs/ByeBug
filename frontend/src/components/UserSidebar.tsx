@@ -12,7 +12,7 @@ const menuItems = [
   { key: "profile", label: "Profile", icon: "", path: "/profile/me" },
   { key: "settings", label: "Settings", icon: "", path: "/settings" },
   { key: "leaderboard", label: "Leaderboard", icon: "", path: "/leaderboard" },
-  { key: "submission", label: "Submission", icon: "", path: null },
+  { key: "submission", label: "Submission", icon: "", path: "/submissions" },
 ];
 
 const UserSidebar: React.FC = () => {
@@ -39,6 +39,8 @@ const UserSidebar: React.FC = () => {
               ? "settings"
               : location.pathname.startsWith("/leaderboard")
                 ? "leaderboard"
+                : location.pathname.startsWith("/submissions")
+                  ? "submission"
                 : "";
 
   const handleLogout = () => {

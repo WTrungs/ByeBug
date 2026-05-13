@@ -11,6 +11,7 @@ import Statistics from './pages/Statistics';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
+import Submission from './pages/Submission';
 
 const App: React.FC = () => {
   return (
@@ -25,6 +26,7 @@ const App: React.FC = () => {
           <Route path="/home" element={<ProtectedRoute userOnly><Home /></ProtectedRoute>} />
           <Route path="/statistics" element={<ProtectedRoute userOnly><Statistics /></ProtectedRoute>} />
           <Route path="/leaderboard" element={<ProtectedRoute userOnly><Leaderboard /></ProtectedRoute>} />
+          <Route path="/submissions" element={<ProtectedRoute userOnly><Submission /></ProtectedRoute>} />
           <Route path="/problems" element={<ProtectedRoute><Problems /></ProtectedRoute>} />
           <Route path="/problems/:id" element={<ProtectedRoute><ProblemDetail /></ProtectedRoute>} />
 
