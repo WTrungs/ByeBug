@@ -14,6 +14,7 @@ import UserSidebar from "../components/UserSidebar";
 import UserStatCard from "../components/UserStatCard";
 import Navbar from "../components/Navbar";
 import DifficultyBadge from "../components/DifficultyBadge";
+import VerdictBadge from "../components/VerdictBadge";
 
 import { getUser } from "../utils/auth";
 import { getAllProblems, type Problem } from "../api/problemApi";
@@ -91,17 +92,6 @@ const recentSubmissions: SubmissionRow[] = [
     submittedAt: "2026-05-11 18:55",
   },
 ];
-
-const verdictClass: Record<Verdict, string> = {
-  AC: styles.verdictAC,
-  WA: styles.verdictWA,
-  TLE: styles.verdictTLE,
-  MLE: styles.verdictMLE,
-  RE: styles.verdictRE,
-  CE: styles.verdictCE,
-  SE: styles.verdictSE,
-  PENDING: styles.verdictPending,
-};
 
 // ── Main ───────────────────────────────────────────────────────────────────
 const Statistics: React.FC = () => {
@@ -315,11 +305,7 @@ const Statistics: React.FC = () => {
                     <td className={styles.cellProblem}>{s.problem}</td>
                     <td className={styles.cellMonoMid}>{s.language}</td>
                     <td>
-                      <span
-                        className={`${styles.verdictBadge} ${verdictClass[s.verdict] ?? styles.verdictPending}`}
-                      >
-                        {s.verdict}
-                      </span>
+                      <VerdictBadge verdict={s.verdict} />
                     </td>
                     <td className={styles.cellMonoMid}>
                       {s.timeMs != null ? `${s.timeMs} ms` : "—"}

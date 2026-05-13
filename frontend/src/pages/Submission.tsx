@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import UserSidebar from "../components/UserSidebar";
 import Navbar from "../components/Navbar";
+import VerdictBadge from "../components/VerdictBadge";
 import {
   getSubmissionHistory,
   type SubmissionHistoryItem,
@@ -21,17 +22,6 @@ const verdictOptions: Array<Verdict | "ALL"> = [
   "SE",
   "PENDING",
 ];
-
-const verdictClass: Record<Verdict, string> = {
-  AC: tableStyles.verdictAC,
-  WA: tableStyles.verdictWA,
-  TLE: tableStyles.verdictTLE,
-  MLE: tableStyles.verdictMLE,
-  RE: tableStyles.verdictRE,
-  CE: tableStyles.verdictCE,
-  SE: tableStyles.verdictSE,
-  PENDING: tableStyles.verdictPending,
-};
 
 const formatRuntime = (timeMs: number | null) =>
   timeMs == null ? "-" : `${timeMs} ms`;
@@ -226,13 +216,7 @@ const Submission = () => {
                         {submission.language}
                       </td>
                       <td>
-                        <span
-                          className={`${tableStyles.verdictBadge} ${
-                            verdictClass[submission.verdict]
-                          }`}
-                        >
-                          {submission.verdict}
-                        </span>
+                        <VerdictBadge verdict={submission.verdict} />
                       </td>
                       <td className={tableStyles.cellMonoMid}>
                         {formatRuntime(submission.totalTimeMs)}

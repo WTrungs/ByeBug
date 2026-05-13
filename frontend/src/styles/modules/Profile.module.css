@@ -305,9 +305,6 @@
   text-underline-offset: 3px;
 }
 
-.verdictAC { color: #22C55E; }
-.verdictWA { color: #EF4444; }
-
 @media (max-width: 1000px) {
   .profileGrid {
     grid-template-columns: 1fr;
