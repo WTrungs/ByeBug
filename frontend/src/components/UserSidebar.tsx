@@ -1,5 +1,5 @@
-import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getUser } from "../utils/auth";
 import BrandLogo from "./BrandLogo";
 import s from "../styles/modules/UserSidebar.module.css";
@@ -13,13 +13,18 @@ const menuItems = [
   { key: "settings", label: "Settings", icon: "", path: "/settings" },
   { key: "leaderboard", label: "Leaderboard", icon: "", path: "/leaderboard" },
   { key: "submission", label: "Submission", icon: "", path: null },
-  { key: "report", label: "Report", icon: "", path: null },
 ];
 
 const UserSidebar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const user = getUser();
+  const [hasAvatarError, setHasAvatarError] = useState(false);
+
+  const displayName = user?.username ?? "Người dùng";
+  const avatarFallback = displayName.charAt(0).toUpperCase();
+  const avatarSeed = encodeURIComponent(user?.username ?? "guest");
+  const avatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${avatarSeed}`;
 
   const activeKey =
     location.pathname === "/home"
@@ -44,16 +49,15 @@ const UserSidebar: React.FC = () => {
 
   return (
     <div className="sidebar">
-      {/* LOGO */}
       <div className="sidebar-logo" style={{ padding: "16px 18px" }}>
         <BrandLogo onClick={() => navigate("/home")} />
       </div>
 
-      {/* MENU */}
       <nav className="menu">
         {menuItems.map((item) => {
           const disabled = item.path === null;
           const isActive = activeKey === item.key;
+
           return (
             <div
               key={item.key}
@@ -68,24 +72,41 @@ const UserSidebar: React.FC = () => {
         })}
       </nav>
 
-      {/* FOOTER — User info + logout */}
       <div className="sidebar-footer">
         <div className={s.sidebarUser}>
-          <div className={s.sidebarUserRow}>
-            <div className={s.sidebarAvatar}>
-              {user?.username?.[0]?.toUpperCase() ?? "?"}
+          <button
+            type="button"
+            className={s.sidebarUserCard}
+            onClick={() => navigate("/profile/me")}
+            title={displayName}
+          >
+            <div className={s.sidebarAvatar} aria-hidden="true">
+              {hasAvatarError ? (
+                <span className={s.sidebarAvatarFallback}>
+                  {avatarFallback}
+                </span>
+              ) : (
+                <img
+                  src={avatarUrl}
+                  alt=""
+                  className={s.sidebarAvatarImg}
+                  onError={() => setHasAvatarError(true)}
+                />
+              )}
             </div>
-            <div>
-              <div className={s.sidebarUsername}>
-                {user?.username ?? "Người dùng"}
-              </div>
+            <div className={s.sidebarUserMeta}>
+              <div className={s.sidebarUsername}>{displayName}</div>
               <div className={s.sidebarRole}>{user?.role ?? ""}</div>
             </div>
-          </div>
-          <div className={s.sidebarLogout} onClick={handleLogout}>
-            <span>🚪</span>
+          </button>
+
+          <button
+            type="button"
+            className={s.sidebarLogout}
+            onClick={handleLogout}
+          >
             <span>Đăng xuất</span>
-          </div>
+          </button>
         </div>
       </div>
     </div>

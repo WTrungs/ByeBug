@@ -11,13 +11,13 @@ export default function ResizableProblemLayout({ left, right }: ResizableProblem
     return (
         <main className={styles.body}>
             <Group orientation="horizontal" className={styles.panelGroup}>
-                <Panel defaultSize={50} minSize={32} className={styles.resizablePanel}>
+                <Panel defaultSize={58} minSize={36} className={styles.resizablePanel}>
                     {left}
                 </Panel>
                 <Separator className={styles.resizeHandle}>
                     <span className={styles.resizeHandleGrip} />
                 </Separator>
-                <Panel defaultSize={50} minSize={34} className={styles.resizablePanel}>
+                <Panel defaultSize={42} minSize={28} className={styles.resizablePanel}>
                     {right}
                 </Panel>
             </Group>
