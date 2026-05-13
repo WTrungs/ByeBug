@@ -9,10 +9,16 @@ import './styles/UserManagement.css'
 import './styles/ActivityLog.css'
 import App from './App'
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <BrowserRouter>
-    <App />
-    </BrowserRouter>
-  </StrictMode>,
-)
+const rootElement = document.getElementById('root');
+
+if (rootElement) {
+    createRoot(rootElement).render(
+      <StrictMode>
+        <BrowserRouter>
+        <App />
+        </BrowserRouter>
+      </StrictMode>,
+    )
+}
+
+

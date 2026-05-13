@@ -17,6 +17,8 @@ const Navbar = () => {
       {/*chuyển trang bằng link */}
       <Link to="/problems" style={{ textDecoration: 'none', color: '#6b6375' }}>Problems</Link>
       <Link to="/ranking" style={{ textDecoration: 'none', color: '#6b6375' }}>Ranking</Link>
+      <Link to="/profile/me" style={{ textDecoration: 'none', color: '#6b6375' }}>Profile</Link>
+      <Link to="/settings" style={{ textDecoration: 'none', color: '#6b6375' }}>Settings</Link>
 
       <Link to="/login" style={{
         padding: '8px 16px',
