@@ -21,11 +21,21 @@ export interface TestCase {
     displayOrder: number;
 }
 
+export interface ProblemExample {
+    exampleId: number;
+    input: string;
+    output: string;
+    explanation?: string | null;
+    displayOrder: number;
+}
+
 export interface ProblemDetail extends Problem {
     description: string;
+    constraints?: string | null;
     timeLimitMs: number;
     memoryLimitMb: number;
     testcases: TestCase[];
+    examples?: ProblemExample[];
 }
 
 export const getAllProblems = async (): Promise<Problem[]> => {

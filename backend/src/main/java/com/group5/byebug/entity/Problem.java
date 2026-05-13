@@ -38,6 +38,9 @@ public class Problem {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
+    @Column(columnDefinition = "TEXT")
+    private String constraints;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private Difficulty difficulty;
@@ -64,4 +67,7 @@ public class Problem {
 
     @OneToMany(mappedBy = "problem", cascade = CascadeType.ALL)
     private List<Testcase> testcases;
+
+    @OneToMany(mappedBy = "problem", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProblemExample> examples;
 }

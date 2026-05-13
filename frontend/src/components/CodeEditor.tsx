@@ -21,7 +21,7 @@ const CodeEditor = ({ code, onChange, language = 'cpp', theme = 'vs-dark' }: Cod
                 scrollBeyondLastLine: false,
                 automaticLayout: true,
                 padding: { top: 16 },
-                fontFamily: "'Fira Code', monospace",
+                fontFamily: "var(--font-mono)",
                 cursorSmoothCaretAnimation: "on",
             }}
         />
