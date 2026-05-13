@@ -1,18 +1,25 @@
+import styles from '../styles/modules/ProblemDetail.module.css';
 
-interface ExampleProps{
-    id: number;
-    input:string;
+interface ExampleBoxProps {
+    index: number;
+    input: string;
     output: string;
-    explanation?: string;
 }
-const ExampleBox=({id, input, output, explanation}:ExampleProps)=>(
-    <div style={{paddingLeft: '20px'}}>
-        <h4>Example {id}:</h4>
-        <pre>
-            <strong>Input:</strong> {input}<br/>
-            <strong>Output:</strong> {output}<br/>
-            {explanation && <><strong>Explanation:</strong> {explanation}</>}
-        </pre>
+
+const ExampleBox = ({ index, input, output }: ExampleBoxProps) => (
+    <div className={styles.exampleBlock}>
+        <div className={styles.exampleHeader}>VÍ DỤ {index}</div>
+        <div className={styles.exampleBody}>
+            <div>
+                <div className={styles.exampleLabel}>Input</div>
+                <pre className={styles.examplePre}>{input}</pre>
+            </div>
+            <div>
+                <div className={styles.exampleLabel}>Output</div>
+                <pre className={styles.examplePre}>{output}</pre>
+            </div>
+        </div>
     </div>
 );
+
 export default ExampleBox;

@@ -26,7 +26,7 @@ const Login: React.FC = () => {
             if (response.data.role === 'ADMIN') {
                 navigate('/admin');
             } else {
-                navigate('/problems');
+                navigate('/home');
             }
         } catch (error: any) {
             alert(error.response?.data?.message || "Sai tên đăng nhập hoặc mật khẩu");

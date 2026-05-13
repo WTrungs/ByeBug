@@ -1,0 +1,433 @@
+/* ── Layout ──────────────────────────────────────── */
+.pageLayout {
+  display: flex;
+}
+
+.mainArea {
+  margin-left: 240px;
+  min-height: 100vh;
+  background: var(--white);
+  background-image:
+    linear-gradient(45deg, #F0F0F0 25%, transparent 25%),
+    linear-gradient(-45deg, #F0F0F0 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #F0F0F0 75%),
+    linear-gradient(-45deg, transparent 75%, #F0F0F0 75%);
+  background-size: 120px 120px;
+  background-position: 0 0, 0 60px, 60px -60px, -60px 0px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* ── Topbar overrides (height + shadow differ from admin topbar) ─ */
+.topbar {
+  height: 100px;
+  box-shadow: 0 2px 0 var(--black);
+}
+
+.topbarLeft {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* ── Content area ────────────────────────────────── */
+.content {
+  padding: 32px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* ── Stats row ───────────────────────────────────── */
+.statsRow {
+  display: flex;
+  gap: 16px;
+}
+
+.statCard {
+  flex: 1;
+  border: var(--border-main);
+  box-shadow: var(--shadow-md);
+  background: var(--white);
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.statCardIcon {
+  font-size: 26px;
+}
+
+.statCardValue {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  font-size: 32px;
+  color: var(--black);
+  line-height: 1;
+}
+
+.statCardLabel {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #888;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.statCardAccent {
+  height: 3px;
+  background: var(--accent, var(--primary));
+  margin-top: 4px;
+  width: 48px;
+}
+
+/* ── Two-col row (chart + featured) ─────────────── */
+.twoColRow {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.rightCol {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+/* ── Shared card base (border + shadow) ─────────── */
+.card {
+  border: var(--border-main);
+  box-shadow: var(--shadow-md);
+  background: var(--white);
+}
+
+.chartCard {
+  flex: 0 0 58%;
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+}
+
+.featuredCard {
+  flex: 1;
+  padding: 24px 28px;
+  min-width: 0;
+}
+
+.submissionCard {
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
+}
+
+/* ── Section title ───────────────────────────────── */
+.sectionTitle {
+  font-family: 'Courier New', monospace;
+  font-weight: 800;
+  font-size: 17px;
+  letter-spacing: 0.8px;
+  color: var(--black);
+  text-transform: uppercase;
+}
+
+/* ── Chart header row ────────────────────────────── */
+.chartHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.filterGroup {
+  display: flex;
+  gap: 4px;
+}
+
+/* ── Featured problems ───────────────────────────── */
+.problemList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.muted {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 15px;
+  color: #aaa;
+}
+
+.errorText {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 15px;
+  color: #9F1239;
+}
+
+.problemRow {
+  border: var(--border-main);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--bg-soft);
+}
+
+.problemRowHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.problemTitle {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--black);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.difficultyBadge {
+  border: 1.5px solid var(--black);
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.doNowBtn {
+  background: var(--primary);
+  border: var(--border-main);
+  box-shadow: var(--shadow-sm);
+  padding: 8px 14px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  align-self: flex-end;
+  transition: all 0.1s;
+}
+
+.doNowBtn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-md);
+}
+
+.seeAllLink {
+  margin-top: 16px;
+  text-align: right;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--black);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.1s;
+  display: block;
+}
+
+.seeAllLink:hover {
+  color: var(--primary);
+}
+
+/* ── Submission history ──────────────────────────── */
+.tableHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 28px;
+  border-bottom: var(--border-main);
+}
+
+.tableSearchInput {
+  border: var(--border-main);
+  padding: 8px 14px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  outline: none;
+  width: 220px;
+  background: #FDFDFD;
+}
+
+.submissionTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.submissionTable thead tr {
+  background: #1A1A1A;
+  color: var(--white);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+}
+
+.submissionTable thead th {
+  padding: 12px 18px;
+  text-align: left;
+}
+
+.submissionTable thead th:first-child {
+  padding-left: 28px;
+}
+
+.submissionTable thead th:last-child {
+  padding-right: 28px;
+  text-align: right;
+}
+
+.submissionTable tbody tr {
+  transition: background 0.1s;
+}
+
+.submissionTable tbody tr:nth-child(odd) {
+  background: var(--white);
+}
+
+.submissionTable tbody tr:nth-child(even) {
+  background: var(--bg-soft);
+}
+
+.submissionTable tbody tr:hover {
+  background: #FFF7E0;
+}
+
+.submissionTable tbody td {
+  padding: 14px 18px;
+  border-bottom: 1px solid #eee;
+}
+
+.submissionTable tbody td:first-child {
+  padding-left: 28px;
+}
+
+.submissionTable tbody td:last-child {
+  padding-right: 28px;
+  text-align: right;
+}
+
+.cellMono {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px;
+  color: #888;
+}
+
+.cellMonoMid {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px;
+  color: #555;
+}
+
+.cellProblem {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--black);
+}
+
+.verdictBadge {
+  display: inline-block;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  letter-spacing: 0.3px;
+}
+
+.emptyRow {
+  padding: 28px;
+  text-align: center;
+  color: #aaa;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 15px;
+}
+
+/* ── Section title block variant ─────────────────── */
+.sectionTitleBlock {
+  display: block;
+  margin-bottom: 18px;
+}
+
+/* ── Verdict badge colors ────────────────────────── */
+.verdictAC {
+  background: #DCFCE7;
+  color: #166534;
+  border: 1.5px solid #22C55E;
+}
+
+.verdictWA {
+  background: #FFE4E6;
+  color: #9F1239;
+  border: 1.5px solid #EF4444;
+}
+
+.verdictTLE {
+  background: #FEF3C7;
+  color: #92400E;
+  border: 1.5px solid #F59E0B;
+}
+
+.verdictMLE {
+  background: #EFF6FF;
+  color: #1E40AF;
+  border: 1.5px solid #3B82F6;
+}
+
+.verdictRE {
+  background: #F5F3FF;
+  color: #4C1D95;
+  border: 1.5px solid #8B5CF6;
+}
+
+.verdictCE {
+  background: #F3F4F6;
+  color: #374151;
+  border: 1.5px solid #9CA3AF;
+}
+
+.verdictSE {
+  background: #F3F4F6;
+  color: #374151;
+  border: 1.5px solid #9CA3AF;
+}
+
+.verdictPending {
+  background: #FAFAFA;
+  color: #6B7280;
+  border: 1.5px solid #D1D5DB;
+}
+
+/* ── Difficulty badge colors ─────────────────────── */
+.diffEasy {
+  background: #DCFCE7;
+  color: #166534;
+}
+
+.diffMedium {
+  background: #FEF9C3;
+  color: #854D0E;
+}
+
+.diffHard {
+  background: #FFE4E6;
+  color: #9F1239;
+}
+
+.diffDefault {
+  background: #eee;
+  color: #555;
+}
