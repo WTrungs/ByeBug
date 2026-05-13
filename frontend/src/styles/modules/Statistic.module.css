@@ -4,7 +4,7 @@
 }
 
 .mainArea {
-  margin-left: 240px;
+  margin-left: 220px;
   min-height: 100vh;
   background: var(--white);
   background-image:
@@ -128,7 +128,7 @@
 
 /* ── Section title ───────────────────────────────── */
 .sectionTitle {
-  font-family: 'Courier New', monospace;
+  font-family: 'Bricolage Grotesque', 'Plus Jakarta Sans', sans-serif;
   font-weight: 800;
   font-size: 17px;
   letter-spacing: 0.8px;
