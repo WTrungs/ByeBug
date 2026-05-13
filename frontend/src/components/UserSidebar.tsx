@@ -9,6 +9,8 @@ const menuItems = [
     { key: 'home', label: 'Trang chủ', icon: '🏠', path: '/home' },
     { key: 'statistics', label: 'Statistics', icon: '📊', path: '/statistics' },
     { key: 'problems', label: 'Problems', icon: '📚', path: '/problems' },
+    { key: 'profile', label: 'Profile', icon: '👤', path: '/profile/me' },
+    { key: 'settings', label: 'Settings', icon: '⚙️', path: '/settings' },
     { key: 'contests', label: 'Contests', icon: '🏆', path: null },
     { key: 'leaderboard', label: 'Leaderboard', icon: '🥇', path: null },
     { key: 'submission', label: 'Submission', icon: '📄', path: null },
@@ -23,7 +25,9 @@ const UserSidebar: React.FC = () => {
     const activeKey = location.pathname === '/home' ? 'home'
         : location.pathname === '/statistics' ? 'statistics'
             : location.pathname.startsWith('/problems') ? 'problems'
-                : '';
+                : location.pathname.startsWith('/profile') ? 'profile'
+                    : location.pathname === '/settings' ? 'settings'
+                        : '';
 
     const handleLogout = () => {
         localStorage.removeItem('USER');
