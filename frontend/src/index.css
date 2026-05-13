@@ -1,31 +1,35 @@
-
 /* ─────────────────────────────────────────────
    1. CSS VARIABLES
    ───────────────────────────────────────────── */
 :root {
-  --primary:     #FFB338;
-  --bg-main:     #FDFDFD;
-  --bg-soft:     #FFFBEF;
-  --black:       #111111;
-  --white:       #FFFFFF;
+  --primary: #FFB338;
+  --bg-main: #FDFDFD;
+  --bg-soft: #FFFBEF;
+  --black: #111111;
+  --white: #FFFFFF;
 
   --border-main: 2px solid var(--black);
-  --shadow-sm:   2px 2px 0px var(--black);
-  --shadow-md:   4px 4px 0px var(--black);
-  --shadow-lg:   10px 10px 0px var(--black);
+  --shadow-sm: 2px 2px 0px var(--black);
+  --shadow-md: 4px 4px 0px var(--black);
+  --shadow-lg: 10px 10px 0px var(--black);
 
   --radius-pill: 999px;
 
-  --success-bg:   #F0FFF4; --success-text: #22543D;
-  --warning-bg:   #FFFAF0; --warning-text: #C05621;
-  --danger-bg:    #FFF5F5; --danger-text:  #C53030;
-  --info-bg:      #EBF8FF; --info-text:    #2B6CB0;
+  --success-bg: #F0FFF4;
+  --success-text: #22543D;
+  --warning-bg: #FFFAF0;
+  --warning-text: #C05621;
+  --danger-bg: #FFF5F5;
+  --danger-text: #C53030;
+  --info-bg: #EBF8FF;
+  --info-text: #2B6CB0;
 }
 
 /* ─────────────────────────────────────────────
    2. BASE
    ───────────────────────────────────────────── */
-html, body {
+html,
+body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background-color: var(--bg-main);
 }
@@ -65,8 +69,14 @@ html, body {
   cursor: pointer;
   transition: all 0.2s ease;
 }
-.logo-container:hover                { transform: translateY(-2px); }
-.logo-container:hover .logo-text     { text-shadow: 4px 4px 0px var(--primary); }
+
+.logo-container:hover {
+  transform: translateY(-2px);
+}
+
+.logo-container:hover .logo-text {
+  text-shadow: 4px 4px 0px var(--primary);
+}
 
 .logo-text {
   font-size: 28px;
@@ -77,12 +87,19 @@ html, body {
   transition: all 0.2s ease;
 }
 
-.logo-icon { width: 40px; height: 40px; object-fit: contain; }
+.logo-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
 
 /* ─────────────────────────────────────────────
    6. AUTH BUTTONS
    ───────────────────────────────────────────── */
-.auth-buttons { display: flex; gap: 10px; }
+.auth-buttons {
+  display: flex;
+  gap: 10px;
+}
 
 /* ─────────────────────────────────────────────
    7. MAIN CONTENT / HERO (User pages)
@@ -94,16 +111,23 @@ html, body {
   padding: 0 100px;
   background-color: var(--white);
   background-image:
-    linear-gradient(45deg,  #FAF3DD 25%, transparent 25%),
+    linear-gradient(45deg, #FAF3DD 25%, transparent 25%),
     linear-gradient(-45deg, #FAF3DD 25%, transparent 25%),
-    linear-gradient(45deg,  transparent 75%, #FAF3DD 75%),
+    linear-gradient(45deg, transparent 75%, #FAF3DD 75%),
     linear-gradient(-45deg, transparent 75%, #FAF3DD 75%);
   background-size: 120px 120px;
   background-position: 0 0, 0 60px, 60px -60px, -60px 0px;
 }
 
-.content-left  { flex: 1; }
-.content-right { flex: 1; display: flex; justify-content: center; }
+.content-left {
+  flex: 1;
+}
+
+.content-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
 
 /* ─────────────────────────────────────────────
    8. TYPOGRAPHY
@@ -114,8 +138,14 @@ html, body {
   line-height: 1.1;
   margin-bottom: 15px;
 }
-.text-primary { color: var(--primary); }
-.text-black   { color: var(--black); }
+
+.text-primary {
+  color: var(--primary);
+}
+
+.text-black {
+  color: var(--black);
+}
 
 .sub-text {
   font-size: 15px;
@@ -143,12 +173,23 @@ html, body {
   cursor: pointer;
   transition: all 0.2s ease;
 }
-.card-header:hover                  { transform: translateY(-2px); }
-.card-header:hover .bb-logo-small   { transform: scale(1.03); box-shadow: 4px 4px 0px var(--black); }
-.card-header:hover .card-title      { text-shadow: 4px 4px 0px var(--primary); }
+
+.card-header:hover {
+  transform: translateY(-2px);
+}
+
+.card-header:hover .bb-logo-small {
+  transform: scale(1.03);
+  box-shadow: 4px 4px 0px var(--black);
+}
+
+.card-header:hover .card-title {
+  text-shadow: 4px 4px 0px var(--primary);
+}
 
 .bb-logo-small {
-  width: 35px; height: 35px;
+  width: 35px;
+  height: 35px;
   background: var(--primary);
   border: 2px solid var(--black);
   box-shadow: 3px 3px 0px var(--black);
@@ -166,8 +207,14 @@ html, body {
 /* ─────────────────────────────────────────────
    10. FORM
    ───────────────────────────────────────────── */
-.form-row    { display: flex; gap: 10px; }
-.input-group { margin-bottom: 0; }
+.form-row {
+  display: flex;
+  gap: 10px;
+}
+
+.input-group {
+  margin-bottom: 0;
+}
 
 .label {
   display: block;
@@ -187,7 +234,10 @@ html, body {
   box-shadow: var(--shadow-md);
   transition: 0.2s;
 }
-.input-neo.focused { background-color: var(--bg-soft); }
+
+.input-neo.focused {
+  background-color: var(--bg-soft);
+}
 
 /* ─────────────────────────────────────────────
    11. BUTTONS (shared / user)
@@ -201,8 +251,15 @@ html, body {
   cursor: pointer;
   transition: 0.2s;
 }
-.btn-neo-primary   { background: var(--primary); }
-.btn-neo-secondary { background: var(--white); }
+
+.btn-neo-primary {
+  background: var(--primary);
+}
+
+.btn-neo-secondary {
+  background: var(--white);
+}
+
 .btn-neo-primary:hover,
 .btn-neo-secondary:hover {
   transform: translate(-3px, -3px);
@@ -221,6 +278,7 @@ html, body {
   border-radius: var(--radius-pill);
   transition: 0.2s;
 }
+
 .btn-neo-submit:hover {
   transform: translate(-4px, -4px);
   box-shadow: 8px 8px 0px var(--black);
@@ -237,6 +295,7 @@ html, body {
   gap: 18px;
   font-size: 14px;
 }
+
 .ghost-btn,
 .forgot-btn {
   border: none;
@@ -245,6 +304,7 @@ html, body {
   color: var(--primary);
   cursor: pointer;
 }
+
 .forgot-password-container {
   display: flex;
   justify-content: flex-end;
@@ -268,9 +328,21 @@ html, body {
 /* ─────────────────────────────────────────────
    14. BADGE NEO
    ───────────────────────────────────────────── */
-.badge-neo      { display: flex; align-items: center; gap: 10px; margin-top: 40px; }
-.badge-icon-box { display: flex; }
-.badge-icon     { width: 40px; height: 40px; }
+.badge-neo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 40px;
+}
+
+.badge-icon-box {
+  display: flex;
+}
+
+.badge-icon {
+  width: 40px;
+  height: 40px;
+}
 
 /* ─────────────────────────────────────────────
    15. STATUS BADGE (shared)
@@ -289,7 +361,8 @@ html, body {
    ───────────────────────────────────────────── */
 .admin-wrapper {
   min-height: 100vh;
-  display: flex;          /* ← fix: thiếu ở snippet mới */
+  display: flex;
+  /* ← fix: thiếu ở snippet mới */
   background-color: var(--white);
 }
 
@@ -308,13 +381,15 @@ html, body {
   box-shadow: var(--shadow-md);
   transition: 0.2s;
 }
+
 .admin-card:hover {
   transform: translate(-2px, -2px);
   box-shadow: 8px 8px 0px var(--black);
 }
 
 .stat-icon-box {
-  width: 32px; height: 32px;
+  width: 32px;
+  height: 32px;
   border: 2px solid var(--black);
   background: var(--primary);
   display: flex;
@@ -339,6 +414,7 @@ html, body {
   top: 0;
   z-index: 10;
 }
+
 .topbar-title {
   font-size: 24px;
   font-weight: 900;
@@ -346,13 +422,19 @@ html, body {
   letter-spacing: -0.5px;
   margin: 0;
 }
+
 .topbar-welcome {
   font-size: 13px;
   color: #666;
   font-weight: 600;
   margin-top: 4px;
 }
-.topbar-right { display: flex; align-items: center; gap: 20px; }
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
 
 .status-live {
   display: flex;
@@ -365,20 +447,36 @@ html, body {
   font-weight: 900;
   box-shadow: 3px 3px 0px var(--black);
 }
+
 .pulse-dot {
-  width: 10px; height: 10px;
+  width: 10px;
+  height: 10px;
   background-color: #38A169;
   border-radius: 50%;
   border: 1px solid var(--black);
   animation: pulse 1.5s infinite;
 }
+
 @keyframes pulse {
-  0%   { transform: scale(0.95); opacity: 1; }
-  70%  { transform: scale(1.1);  opacity: 0.7; }
-  100% { transform: scale(0.95); opacity: 1; }
+  0% {
+    transform: scale(0.95);
+    opacity: 1;
+  }
+
+  70% {
+    transform: scale(1.1);
+    opacity: 0.7;
+  }
+
+  100% {
+    transform: scale(0.95);
+    opacity: 1;
+  }
 }
+
 .topbar-action-box {
-  width: 45px; height: 45px;
+  width: 45px;
+  height: 45px;
   border: 2px solid var(--black);
   background: var(--white);
   display: flex;
@@ -388,6 +486,7 @@ html, body {
   box-shadow: 3px 3px 0px var(--black);
   transition: 0.1s;
 }
+
 .topbar-action-box:hover {
   transform: translate(-2px, -2px);
   box-shadow: 5px 5px 0px var(--black);
@@ -405,9 +504,11 @@ html, body {
   display: flex;
   flex-direction: column;
   position: fixed;
-  top: 0; left: 0;
+  top: 0;
+  left: 0;
   z-index: 100;
 }
+
 .sidebar-logo {
   display: flex;
   align-items: center;
@@ -415,14 +516,28 @@ html, body {
   padding: 16px;
   border-bottom: var(--border-main);
 }
+
 .sidebar-logo-img {
-  width: 36px; height: 36px;
+  width: 36px;
+  height: 36px;
   background: var(--primary);
   border: var(--border-main);
   box-shadow: var(--shadow-sm);
 }
-.sidebar-logo-title { font-size: 16px; font-weight: 900; color: var(--black); line-height: 1; }
-.sidebar-logo-sub   { font-size: 10px; font-weight: 600; color: #888; letter-spacing: 1px; }
+
+.sidebar-logo-title {
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--black);
+  line-height: 1;
+}
+
+.sidebar-logo-sub {
+  font-size: 10px;
+  font-weight: 600;
+  color: #888;
+  letter-spacing: 1px;
+}
 
 .menu {
   flex: 1;
@@ -431,6 +546,7 @@ html, body {
   padding: 12px 0;
   gap: 2px;
 }
+
 .menu-item {
   display: flex;
   align-items: center;
@@ -439,13 +555,48 @@ html, body {
   cursor: pointer;
   font-size: 14px;
   font-weight: 600;
+  color: #555;
   border-left: 4px solid transparent;
   user-select: none;
-  transition: 0.2s;
+  transition: 0.15s;
 }
-.menu-icon { width: 20px; text-align: center; }
 
-.sidebar-footer { border-top: var(--border-main); padding: 8px 0; }
+.menu-item:hover:not(.active):not(.disabled) {
+  background: var(--bg-soft);
+  border-left-color: var(--primary);
+  color: var(--black);
+}
+
+.menu-item.active {
+  background: var(--primary);
+  border-left: 4px solid var(--black);
+  font-weight: 800;
+  color: var(--black);
+  box-shadow: inset 0 -2px 0 var(--black);
+}
+
+.menu-item.disabled {
+  cursor: not-allowed;
+  color: #ccc;
+}
+
+.menu-icon {
+  width: 20px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.menu-item-soon {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 600;
+  color: #bbb;
+}
+
+.sidebar-footer {
+  border-top: var(--border-main);
+  padding: 8px 0;
+}
 
 /* ─────────────────────────────────────────────
    20. NEO TABLE
@@ -459,18 +610,53 @@ html, body {
   letter-spacing: 0.5px;
   padding: 15px 12px;
 }
-.neo-table tbody tr { transition: background-color 0.15s ease; }
-.neo-table tbody tr:hover { background-color: var(--bg-soft); }
-.neo-table td { border-bottom: 1px solid #E5E5E5; padding: 16px 12px; }
+
+.neo-table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.neo-table tbody tr:hover {
+  background-color: var(--bg-soft);
+}
+
+.neo-table td {
+  border-bottom: 1px solid #E5E5E5;
+  padding: 16px 12px;
+}
 
 /* ─────────────────────────────────────────────
    21. CHART CARD
    ───────────────────────────────────────────── */
-.chart-card     { padding: 24px; margin-bottom: 24px; min-height: 370px; }
-.chart-header   { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.chart-title    { font-size: 16px; font-weight: 900; letter-spacing: 0.5px; margin: 0; }
-.chart-subtitle { font-size: 11px; color: #888; font-weight: 600; }
-.chart-filters  { display: flex; gap: 8px; }
+.chart-card {
+  padding: 24px;
+  margin-bottom: 24px;
+  min-height: 370px;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.chart-title {
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+.chart-subtitle {
+  font-size: 11px;
+  color: #888;
+  font-weight: 600;
+}
+
+.chart-filters {
+  display: flex;
+  gap: 8px;
+}
 
 .filter-btn {
   padding: 5px 12px;
@@ -482,13 +668,24 @@ html, body {
   box-shadow: 2px 2px 0px var(--black);
   transition: 0.1s;
 }
+
+.filter-btn:hover:not(.active) {
+  background: #FFF7E0;
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px var(--black);
+}
+
 .filter-btn.active {
   background: var(--primary);
   transform: translate(-1px, -1px);
   box-shadow: 3px 3px 0px var(--black);
 }
 
-.chart-wrapper { height: 220px; width: 100%; }
+.chart-wrapper {
+  height: 220px;
+  width: 100%;
+}
+
 .chart-legend {
   display: flex;
   justify-content: center;
@@ -497,9 +694,21 @@ html, body {
   padding-top: 15px;
   border-top: 2px dashed #eee;
 }
-.legend-item { display: flex; align-items: center; gap: 8px; font-size: 10px; font-weight: 800; }
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  font-weight: 800;
+}
+
 /* [BUG FIX #5] .cpu-dot và .ram-dot chuyển sang admin.css */
-.dot { width: 10px; height: 10px; border: 1.5px solid var(--black); }
+.dot {
+  width: 10px;
+  height: 10px;
+  border: 1.5px solid var(--black);
+}
 
 /* ─────────────────────────────────────────────
    22. ACTIVITY LOG CARD
@@ -513,6 +722,7 @@ html, body {
   padding: 0 !important;
   overflow: hidden;
 }
+
 .activity-header {
   display: flex;
   justify-content: space-between;
@@ -520,7 +730,12 @@ html, body {
   padding: 20px 24px;
   border-bottom: 3px solid var(--black);
 }
-.activity-table           { width: 100%; border-collapse: collapse; }
+
+.activity-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
 .activity-table thead th {
   background-color: var(--black);
   color: var(--white);
@@ -530,10 +745,14 @@ html, body {
   font-size: 11px;
   letter-spacing: 1px;
 }
+
 .activity-table tbody td {
   padding: 18px 24px;
   border-bottom: 1px solid #eee;
   font-size: 13px;
   font-weight: 600;
 }
-.activity-table tbody tr:hover { background-color: var(--bg-soft); }
+
+.activity-table tbody tr:hover {
+  background-color: var(--bg-soft);
+}
