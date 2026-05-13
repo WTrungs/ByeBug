@@ -23,6 +23,15 @@
   --danger-text: #C53030;
   --info-bg: #EBF8FF;
   --info-text: #2B6CB0;
+
+  /* Chart Colors */
+  --chart-ac: #38A169;
+  --chart-wa: #E53E3E;
+  --chart-tle: #DD6B20;
+  --chart-mle: #3182CE;
+  --chart-re: #805AD5;
+  --chart-ce: #718096;
+
 }
 
 /* ─────────────────────────────────────────────
