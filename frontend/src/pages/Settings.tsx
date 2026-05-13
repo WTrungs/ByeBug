@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import UserSidebar from '../components/UserSidebar';
+import Navbar from '../components/Navbar';
 import styles from '../styles/modules/Settings.module.css';
 
 const Settings: React.FC = () => {
@@ -21,16 +22,10 @@ const Settings: React.FC = () => {
             <UserSidebar />
 
             <div className={styles.mainArea}>
-                {/* TOPBAR */}
-                <div className={styles.topbar}>
-                    <div className="topbar-title">THIẾT LẬP TÀI KHOẢN</div>
-                    <div className="topbar-right">
-                        <div className="status-live">
-                            <span className="pulse-dot" />
-                            SECURE
-                        </div>
-                    </div>
-                </div>
+                <Navbar
+                    title="THIẾT LẬP TÀI KHOẢN"
+                    subtitle="Quản lý thông tin cá nhân và bảo mật tài khoản."
+                />
 
                 {/* CONTENT */}
                 <div className={styles.content}>

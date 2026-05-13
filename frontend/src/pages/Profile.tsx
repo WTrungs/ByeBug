@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import UserSidebar from '../components/UserSidebar';
+import Navbar from '../components/Navbar';
 import UserStatCard from '../components/UserStatCard';
 import { getUserProfile, type UserProfile } from '../api/userApi';
 import styles from '../styles/modules/Profile.module.css';
@@ -57,16 +58,14 @@ const Profile: React.FC = () => {
             <UserSidebar />
 
             <div className={styles.mainArea}>
-                {/* TOPBAR */}
-                <div className={styles.topbar}>
-                    <div className="topbar-title">HỒ SƠ CÁ NHÂN</div>
-                    <div className="topbar-right">
-                        <div className="status-live">
-                            <span className="pulse-dot" />
-                            ONLINE
-                        </div>
-                    </div>
-                </div>
+                <Navbar
+                    title="HỒ SƠ CÁ NHÂN"
+                    subtitle={
+                        <>
+                            Theo dõi thành tích và hoạt động của <strong>{profile.username}</strong>.
+                        </>
+                    }
+                />
 
                 {/* CONTENT */}
                 <div className={styles.content}>
