@@ -1,6 +1,6 @@
 import { defineConfig, loadEnv } from 'vite'
-import react, { reactCompilerPreset } from '@vitejs/plugin-react'
-import babel from '@rolldown/plugin-babel'
+import react from '@vitejs/plugin-react'
+// import babel from '@rolldown/plugin-babel'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
@@ -9,10 +9,11 @@ export default defineConfig(({ mode }) => {
     envDir: '../',
     plugins: [
       react(),
-      babel({ presets: [reactCompilerPreset()] })
+      // babel({ presets: [reactCompilerPreset()] })
     ],
+
     server: {
-      port: parseInt(env.VITE_PORT || process.env.VITE_PORT),
+      port: parseInt((env.VITE_PORT || process.env.VITE_PORT || '5173') as string),
       strictPort: true,
       host: true,
       watch: {

@@ -9,6 +9,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Admin from './pages/admin/Admin';
 import Statistics from './pages/Statistics';
 import Home from './pages/Home';
+import Profile from './pages/Profile';
+import Settings from './pages/Settings';
 
 const App: React.FC = () => {
     const location = useLocation();
@@ -19,6 +21,8 @@ const App: React.FC = () => {
         ['/', '/login', '/register'].includes(location.pathname) ||
         location.pathname.startsWith('/home') ||
         location.pathname.startsWith('/statistics') ||
+        location.pathname.startsWith('/profile') ||
+        location.pathname.startsWith('/settings') ||
         location.pathname.startsWith('/problems') ||
         location.pathname.startsWith('/admin');
 
@@ -76,7 +80,29 @@ const App: React.FC = () => {
                             </ProtectedRoute>
                         }
                     />
+
+                    {/* Profile & Settings */}
+                    <Route 
+                        path="/profile/:username" 
+                        element={
+                            <ProtectedRoute>
+                                <Profile />
+                            </ProtectedRoute>
+                        } 
+                    />
+                    <Route 
+                        path="/settings" 
+                        element={
+                            <ProtectedRoute>
+                                <Settings />
+                            </ProtectedRoute>
+                        } 
+                    />
+
+                    {/* Catch-all route */}
+                    <Route path="*" element={<Login />} />
                 </Routes>
+
             </main>
         </div>
     );
