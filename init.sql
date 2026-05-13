@@ -87,7 +87,7 @@ VALUES (
     'admin123', 
     'Chủ Trang Web', 
     'admin123@gmail.com', 
-    '$2a$10$dXjKgBlHHRGGa3Zy5Ijc4uFkwgL01oj.95oAn6AmvKSppe/S4/aCC', 
+    '$2a$12$XrTpI8KgCw7Si5rwdXLYYe8zbH5AETiZUXahya9mzfKWSb2rxDYNW', 
     'female', 
     'ADMIN',
     0, 
