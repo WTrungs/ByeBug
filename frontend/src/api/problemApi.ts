@@ -4,7 +4,7 @@ export interface Problem {
     problemId: number;
     title: string;
     difficulty: string;
-    tags: string[];
+    tags: Array<string | ProblemTag>;
     isPublic: boolean;
     description?: string;
     examples?: {
@@ -13,6 +13,11 @@ export interface Problem {
         explanation?: string;
     }[];
     constraints?: string[];
+}
+
+export interface ProblemTag {
+    tagId: number;
+    tagName: string;
 }
 
 export interface TestCase {

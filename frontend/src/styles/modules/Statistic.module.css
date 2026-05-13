@@ -4,7 +4,7 @@
 }
 
 .mainArea {
-  margin-left: 240px;
+  margin-left: 220px;
   min-height: 100vh;
   background: var(--white);
   background-image:
@@ -62,7 +62,7 @@
 }
 
 .statCardValue {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 800;
   font-size: 32px;
   color: var(--black);
@@ -70,7 +70,7 @@
 }
 
 .statCardLabel {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 700;
   color: #888;
@@ -128,7 +128,7 @@
 
 /* ── Section title ───────────────────────────────── */
 .sectionTitle {
-  font-family: 'Courier New', monospace;
+  font-family: var(--font-heading);
   font-weight: 800;
   font-size: 17px;
   letter-spacing: 0.8px;
@@ -157,13 +157,13 @@
 }
 
 .muted {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   font-size: 15px;
   color: #aaa;
 }
 
 .errorText {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   font-size: 15px;
   color: #9F1239;
 }
@@ -185,7 +185,7 @@
 }
 
 .problemTitle {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 700;
   font-size: 15px;
   color: var(--black);
@@ -200,7 +200,7 @@
   padding: 3px 10px;
   font-size: 12px;
   font-weight: 700;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   letter-spacing: 0.4px;
   text-transform: uppercase;
   flex-shrink: 0;
@@ -211,7 +211,7 @@
   border: var(--border-main);
   box-shadow: var(--shadow-sm);
   padding: 8px 14px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 700;
   font-size: 14px;
   cursor: pointer;
@@ -228,7 +228,7 @@
 .seeAllLink {
   margin-top: 16px;
   text-align: right;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   font-size: 14px;
   font-weight: 700;
   color: var(--black);
@@ -255,7 +255,7 @@
 .tableSearchInput {
   border: var(--border-main);
   padding: 8px 14px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   font-size: 14px;
   outline: none;
   width: 220px;
@@ -270,7 +270,7 @@
 .submissionTable thead tr {
   background: #1A1A1A;
   color: var(--white);
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 700;
   font-size: 13px;
   letter-spacing: 0.5px;
@@ -321,19 +321,19 @@
 }
 
 .cellMono {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   font-size: 13px;
   color: #888;
 }
 
 .cellMonoMid {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   font-size: 13px;
   color: #555;
 }
 
 .cellProblem {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   font-size: 15px;
   font-weight: 700;
   color: var(--black);
@@ -344,7 +344,7 @@
   padding: 4px 12px;
   font-size: 12px;
   font-weight: 700;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   letter-spacing: 0.3px;
 }
 
@@ -352,7 +352,7 @@
   padding: 28px;
   text-align: center;
   color: #aaa;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   font-size: 15px;
 }
 

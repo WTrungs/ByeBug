@@ -1,0 +1,204 @@
+.pageLayout {
+  display: flex;
+}
+
+.mainArea {
+  margin-left: 220px;
+  min-height: 100vh;
+  flex: 1;
+  background: var(--white);
+  background-image:
+    linear-gradient(45deg, #F0F0F0 25%, transparent 25%),
+    linear-gradient(-45deg, #F0F0F0 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #F0F0F0 75%),
+    linear-gradient(-45deg, transparent 75%, #F0F0F0 75%);
+  background-size: 120px 120px;
+  background-position: 0 0, 0 60px, 60px -60px, -60px 0px;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  border-bottom: 2px solid var(--black);
+  background: var(--white);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.content {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.profileGrid {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.userCard {
+  background: var(--white);
+  border: 3px solid var(--black);
+  padding: 32px;
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar {
+  width: 150px;
+  height: 150px;
+  border: 3px solid var(--black);
+  border-radius: 50%;
+  margin-bottom: 20px;
+  object-fit: cover;
+  background: var(--bg-soft);
+  box-shadow: var(--shadow-md);
+}
+
+.name {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--black);
+  margin: 0 0 4px;
+}
+
+.username {
+  font-size: 16px;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 24px;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  width: 100%;
+}
+
+.editBtn {
+  width: 100%;
+  margin-top: 32px;
+  padding: 12px;
+  background: var(--primary);
+  border: 2px solid var(--black);
+  font-weight: 800;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: 0.15s;
+  border-radius: var(--radius-pill);
+  text-align: center;
+  text-decoration: none;
+  color: var(--black);
+}
+
+.editBtn:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: var(--shadow-md);
+}
+
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.section {
+  background: var(--white);
+  border: 2px solid var(--black);
+  padding: 24px;
+  box-shadow: var(--shadow-md);
+}
+
+.sectionTitle {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Verdict Distribution */
+.verdictBar {
+  display: flex;
+  height: 24px;
+  width: 100%;
+  border: 2px solid var(--black);
+  margin-bottom: 12px;
+}
+
+.verdictLegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legendDot {
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--black);
+}
+
+/* Recent Submissions Table */
+.submissionTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.submissionTable th {
+  background: var(--black);
+  color: var(--white);
+  padding: 12px;
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.submissionTable td {
+  padding: 16px 12px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.submissionTable tr:hover {
+  background: var(--bg-soft);
+}
+
+.verdictAC { color: #22C55E; }
+.verdictWA { color: #EF4444; }
+
+@media (max-width: 1000px) {
+  .profileGrid {
+    grid-template-columns: 1fr;
+  }
+  .userCard {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}

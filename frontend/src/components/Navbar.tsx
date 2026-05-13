@@ -1,108 +1,83 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import bugLogo from '../assets/bug.svg';
-import { useState, useEffect } from 'react';
+import { useState, type ReactNode } from "react";
+import { Link } from "react-router-dom";
+import { getUser } from "../utils/auth";
 
-const Navbar = () => {
-<<<<<<< Updated upstream
+interface NavbarProps {
+  title: string;
+  subtitle?: ReactNode;
+}
+
+const Navbar = ({ title, subtitle }: NavbarProps) => {
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [hasAvatarError, setHasAvatarError] = useState(false);
+  const user = getUser();
+  const displayName = user?.username ?? "Người dùng";
+  const avatarFallback = displayName.charAt(0).toUpperCase();
+  const avatarSeed = encodeURIComponent(user?.username ?? "guest");
+  const avatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${avatarSeed}`;
+
   return (
-    <nav style={{
-      display: 'flex',
-      gap: '20px',
-      padding: '15px 20px',
-      backgroundColor: '#fff',
-      borderBottom: '1px solid #e5e4e7',
-      alignItems: 'center'
-    }}>
-      <div style={{ fontWeight: 'bold', fontSize: '20px', color: '#aa3bff', marginRight: 'auto' }}>
-        ByeBug
+    <div className="topbar user-navbar">
+      <div>
+        <p className="topbar-title">{title}</p>
+        <p className="topbar-welcome">
+          {subtitle ?? (
+            <>
+              Chào mừng trở lại, <strong>{displayName}</strong>.
+            </>
+          )}
+        </p>
       </div>
 
-      {/*chuyển trang bằng link */}
-      <Link to="/problems" style={{ textDecoration: 'none', color: '#6b6375' }}>Problems</Link>
-      <Link to="/ranking" style={{ textDecoration: 'none', color: '#6b6375' }}>Ranking</Link>
+      <div className="topbar-right navbar-actions">
+        <div
+          className={`navbar-notification ${isNotificationOpen ? "is-open" : ""}`}
+          onMouseLeave={() => setIsNotificationOpen(false)}
+        >
+          <button
+            type="button"
+            className="navbar-bell-btn"
+            aria-label="Thông báo"
+            aria-expanded={isNotificationOpen}
+            onClick={() => setIsNotificationOpen((isOpen) => !isOpen)}
+            onMouseEnter={() => setIsNotificationOpen(true)}
+          >
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              className="navbar-bell-icon"
+            >
+              <path d="M18 8a6 6 0 0 0-12 0c0 7-3 8-3 8h18s-3-1-3-8" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            </svg>
+          </button>
 
-      <Link to="/login" style={{
-        padding: '8px 16px',
-        borderRadius: '6px',
-        backgroundColor: 'purple',
-        color: '#fff',
-        textDecoration: 'none'
-      }}>Logout</Link>
-    </nav>
+          <div className="navbar-notification-panel">
+            <strong>Thông báo</strong>
+            <p>Bạn chưa có thông báo mới.</p>
+          </div>
+        </div>
+
+        <Link
+          to="/profile/me"
+          className="navbar-avatar-link"
+          aria-label={`Mở hồ sơ của ${displayName}`}
+          title={displayName}
+        >
+          {hasAvatarError ? (
+            <span className="navbar-avatar-fallback">{avatarFallback}</span>
+          ) : (
+            <img
+              src={avatarUrl}
+              alt=""
+              className="navbar-avatar-img"
+              onError={() => setHasAvatarError(true)}
+            />
+          )}
+        </Link>
+      </div>
+    </div>
   );
-=======
-    const location = useLocation();
-    const navigate = useNavigate();
-    
-    // 1. Khai báo state để chứa username
-    const [username, setUsername] = useState<string>('Guest');
-
-    // 2. Lấy username từ localStorage khi component load
-    useEffect(() => {
-        const storedUser = localStorage.getItem('user');
-        if (storedUser) {
-            try {
-                const user = JSON.parse(storedUser);
-                // Lấy trường username từ JSON trong Database của bạn
-                setUsername(user.username || 'User'); 
-            } catch (error) {
-                console.error("Lỗi parse user data:", error);
-            }
-        }
-    }, []);
-
-    const isActive = (path: string) => location.pathname === path;
-
-    // Hàm xử lý Logout
-    const handleLogout = () => {
-        localStorage.removeItem('user'); // Xóa dữ liệu user
-        navigate('/login'); // Đá về trang login
-    };
-
-    return (
-        <header className="header">
-            <div className="logo-container" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
-                <img src={bugLogo} alt="bug logo" className="logo-icon" />
-                <span className="logo-text">BYEBUG</span>
-            </div>
-
-            <nav className="prob-nav">
-                <Link 
-                    to="/problems" 
-                    className={`prob-nav__link ${isActive('/problems') ? 'prob-nav__link--active' : ''}`}
-                >
-                    Bài tập
-                </Link>
-                
-                <Link 
-                    to="/leaderboard" 
-                    className={`prob-nav__link ${isActive('/leaderboard') ? 'prob-nav__link--active' : ''}`}
-                >
-                    Xếp hạng
-                </Link>
-            </nav>
-
-            <div className="auth-buttons">
-                <button className="btn-neo-secondary">🔔</button>
-                
-                {/* 3. Hiển thị username động và dẫn vào Profile */}
-                <Link to="/profile" style={{ textDecoration: 'none' }}>
-                    <button className="btn-neo-primary" title="Vào trang cá nhân">
-                        {username}
-                    </button>
-                </Link>
-                
-                <button 
-                    className="btn-neo-black" 
-                    onClick={handleLogout}
-                    style={{ marginLeft: '10px' }}
-                >
-                    Logout
-                </button>
-            </div>
-        </header>
-    );
->>>>>>> Stashed changes
 };
 
 export default Navbar;

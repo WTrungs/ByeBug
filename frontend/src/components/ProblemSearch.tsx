@@ -1,36 +1,28 @@
-import React from 'react';
+import React from "react";
 
 interface SearchProps {
     onSearch: (term: string) => void;
     onFilter: (level: string) => void;
 }
 
-const ProblemSearch: React.FC<SearchProps> = ({ onSearch, onFilter }) => {
+const ProblemSearch: React.FC<SearchProps> = ({ onSearch, onFilter }: SearchProps) => {
     return (
-        <div className="problems-search-bar">
-
-            {/* SEARCH INPUT */}
-            <div className="problems-search-input-wrap">
-                <span>🔍</span>
-                <input
-                    type="text"
-                    placeholder="Tìm kiếm bài tập..."
-                    onChange={(e) => onSearch(e.target.value)}
-                />
-            </div>
-
-            {/* FILTER SELECT */}
+        <div style={{ display: 'flex', gap: '15px' }}>
+            <input
+                type="text"
+                placeholder="Tìm kiếm bài tập..."
+                style={{ padding: '10px', color: 'red' }}
+                onChange={(e) => onSearch(e.target.value)}
+            />
             <select
-                className="problems-filter-select"
+                style={{ padding: '10px' }}
                 onChange={(e) => onFilter(e.target.value)}
-                defaultValue="All"
             >
                 <option value="All">Tất cả</option>
-                <option value="Dễ">Dễ</option>
-                <option value="Trung bình">Trung bình</option>
-                <option value="Khó">Khó</option>
+                <option value="easy">Dễ</option>
+                <option value="medium">Vừa</option>
+                <option value="hard">Khó</option>
             </select>
-
         </div>
     );
 };
