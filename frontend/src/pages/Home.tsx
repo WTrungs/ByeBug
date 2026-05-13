@@ -90,14 +90,12 @@ const Home: React.FC = () => {
                   to <span className={styles.heroTitleAccent}>bugs.</span>
                 </h1>
                 <p className={styles.heroSub}>
-                  {TOTAL_PROBLEMS} bài toán · C++, Python,... · Kết quả tức thì
+                  {TOTAL_PROBLEMS} bài toán C++, Python,...
                 </p>
               </div>
               <div className={styles.progressSection}>
                 <div className={styles.progressLabelRow}>
-                  <span className={styles.progressLabel}>
-                    Tiến trình lên Đại Kiện Tướng
-                  </span>
+                  <span className={styles.progressLabel}>Tiến trình...</span>
                   <span className={styles.progressPct}>{PROGRESS_PCT}%</span>
                 </div>
                 <div className={styles.progressTrack}>

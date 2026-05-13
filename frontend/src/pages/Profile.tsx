@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import UserSidebar from "../components/UserSidebar";
 import Navbar from "../components/Navbar";
 import UserStatCard from "../components/UserStatCard";
+import VerdictBadge from "../components/VerdictBadge";
 import { getUserProfile, type UserProfile } from "../api/userApi";
 import styles from "../styles/modules/Profile.module.css";
 
@@ -211,14 +212,8 @@ const Profile: React.FC = () => {
                             {sub.problemTitle}
                           </button>
                         </td>
-                        <td
-                          className={
-                            sub.result === "AC"
-                              ? styles.verdictAC
-                              : styles.verdictWA
-                          }
-                        >
-                          {sub.result}
+                        <td>
+                          <VerdictBadge verdict={sub.result} />
                         </td>
                         <td style={{ fontSize: "12px", color: "#888" }}>
                           {sub.time}

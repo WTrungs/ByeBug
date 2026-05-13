@@ -339,15 +339,6 @@
   color: var(--black);
 }
 
-.verdictBadge {
-  display: inline-block;
-  padding: 4px 12px;
-  font-size: 12px;
-  font-weight: 700;
-  font-family: var(--font-sans);
-  letter-spacing: 0.3px;
-}
-
 .emptyRow {
   padding: 28px;
   text-align: center;
@@ -363,54 +354,6 @@
 }
 
 /* ── Verdict badge colors ────────────────────────── */
-.verdictAC {
-  background: #DCFCE7;
-  color: #166534;
-  border: 1.5px solid #22C55E;
-}
-
-.verdictWA {
-  background: #FFE4E6;
-  color: #9F1239;
-  border: 1.5px solid #EF4444;
-}
-
-.verdictTLE {
-  background: #FEF3C7;
-  color: #92400E;
-  border: 1.5px solid #F59E0B;
-}
-
-.verdictMLE {
-  background: #EFF6FF;
-  color: #1E40AF;
-  border: 1.5px solid #3B82F6;
-}
-
-.verdictRE {
-  background: #F5F3FF;
-  color: #4C1D95;
-  border: 1.5px solid #8B5CF6;
-}
-
-.verdictCE {
-  background: #F3F4F6;
-  color: #374151;
-  border: 1.5px solid #9CA3AF;
-}
-
-.verdictSE {
-  background: #F3F4F6;
-  color: #374151;
-  border: 1.5px solid #9CA3AF;
-}
-
-.verdictPending {
-  background: #FAFAFA;
-  color: #6B7280;
-  border: 1.5px solid #D1D5DB;
-}
-
 /* ── Difficulty badge colors ─────────────────────── */
 .diffEasy {
   background: #DCFCE7;
