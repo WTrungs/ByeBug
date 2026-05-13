@@ -1,16 +1,17 @@
-import React from "react";
-import { Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Problems from "./pages/Problems";
-import ProblemDetail from "./pages/ProblemDetail";
-import ProtectedRoute from "./components/ProtectedRoute";
-import Admin from "./pages/admin/Admin";
-import Statistics from "./pages/Statistics";
-import Home from "./pages/Home";
-import Leaderboard from "./pages/Leaderboard";
-import Profile from "./pages/Profile";
-import Settings from "./pages/Settings";
+import React from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Problems from './pages/Problems';
+import ProblemDetail from './pages/ProblemDetail';
+import ProtectedRoute from './components/ProtectedRoute';
+import Admin from './pages/admin/Admin';
+import Leaderboard from './pages/Leaderboard';
+import Statistics from './pages/Statistics';
+import Home from './pages/Home';
+import Profile from './pages/Profile';
+import Settings from './pages/Settings';
 
 const App: React.FC = () => {
   return (
@@ -21,71 +22,17 @@ const App: React.FC = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
-          <Route
-            path="/home"
-            element={
-              <ProtectedRoute userOnly>
-                <Home />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/statistics"
-            element={
-              <ProtectedRoute userOnly>
-                <Statistics />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/leaderboard"
-            element={
-              <ProtectedRoute userOnly>
-                <Leaderboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/problems"
-            element={
-              <ProtectedRoute>
-                <Problems />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/problems/:id"
-            element={
-              <ProtectedRoute>
-                <ProblemDetail />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/profile/:username"
-            element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/settings"
-            element={
-              <ProtectedRoute>
-                <Settings />
-              </ProtectedRoute>
-            }
-          />
 
-          <Route
-            path="/admin/*"
-            element={
-              <ProtectedRoute adminOnly>
-                <Admin />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/home" element={<ProtectedRoute userOnly><Home /></ProtectedRoute>} />
+          <Route path="/statistics" element={<ProtectedRoute userOnly><Statistics /></ProtectedRoute>} />
+          <Route path="/leaderboard" element={<ProtectedRoute userOnly><Leaderboard /></ProtectedRoute>} />
+          <Route path="/problems" element={<ProtectedRoute><Problems /></ProtectedRoute>} />
+          <Route path="/problems/:id" element={<ProtectedRoute><ProblemDetail /></ProtectedRoute>} />
+
+          <Route path="/profile/:username" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+          <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+
+          <Route path="/admin/*" element={<ProtectedRoute adminOnly><Admin /></ProtectedRoute>} />
           <Route path="*" element={<Login />} />
         </Routes>
       </main>

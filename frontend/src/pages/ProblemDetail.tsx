@@ -9,6 +9,7 @@ import { getUser } from '../utils/auth';
 import DifficultyBadge from '../components/DifficultyBadge';
 import ExampleBox from '../components/ExampleBox';
 import styles from '../styles/modules/ProblemDetail.module.css';
+import MarkdownRenderer from '../components/MarkdownRenderer';
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
@@ -196,7 +197,7 @@ export default function ProblemDetail() {
                     <div className={styles.problemContent}>
 
                         {/* Description */}
-                        <div className={styles.descriptionText}>{problem.description}</div>
+                        <MarkdownRenderer content={problem.description} />
 
                         {/* Visible examples */}
                         {visibleTestcases.length > 0 && (

@@ -112,27 +112,413 @@ INSERT INTO tags (tag_name) VALUES
 ('Data Structure'), ('Graph'), ('Binary Search'), ('Sorting'), 
 ('Geometry'), ('Bitmask');
 
-INSERT INTO problems (title, description, difficulty, time_limit_ms, memory_limit_mb, is_public, created_by) VALUES
-('A + B Problem', 'Tính tổng hai số nguyên a và b.', 'EASY', 1000, 256, true, 1),
-('Prime Check', 'Kiểm tra một số có phải số nguyên tố hay không.', 'EASY', 500, 64, true, 1),
-('Fibonacci', 'Tìm số Fibonacci thứ n.', 'EASY', 1000, 128, true, 1),
-('Longest Common Subsequence', 'Tìm độ dài xâu con chung dài nhất.', 'MEDIUM', 2000, 256, true, 1),
-('Dijkstra Algorithm', 'Tìm đường đi ngắn nhất từ 1 đỉnh đến các đỉnh còn lại.', 'MEDIUM', 1500, 256, true, 1),
-('Quick Sort Implementation', 'Cài đặt thuật toán sắp xếp nhanh.', 'EASY', 1000, 256, true, 1),
-('Knapsack 0/1', 'Bài toán cái túi với các vật phẩm không thể chia cắt.', 'MEDIUM', 1000, 256, true, 1),
-('Binary Search Tree Check', 'Kiểm tra một cây có phải cây tìm kiếm nhị phân không.', 'MEDIUM', 1000, 256, true, 1),
-('Palindrome String', 'Kiểm tra xâu đối xứng.', 'EASY', 500, 64, true, 1),
-('N-Queens Problem', 'Xếp n quân hậu trên bàn cờ n x n.', 'HARD', 3000, 256, true, 1),
-('Segment Tree Query', 'Cập nhật và truy vấn tổng đoạn.', 'HARD', 2000, 512, true, 1),
-('Convex Hull', 'Tìm bao lồi của một tập điểm trên mặt phẳng.', 'HARD', 2000, 256, true, 1),
-('Factorial Large Number', 'Tính giai thừa của một số lớn.', 'EASY', 1000, 128, true, 1),
-('Max Flow', 'Tìm luồng cực đại trong mạng tải.', 'HARD', 2000, 256, true, 1),
-('BFS Traversal', 'Duyệt đồ thị theo chiều rộng.', 'EASY', 1000, 256, true, 1),
-('Merge Intervals', 'Hợp nhất các khoảng giá trị bị chồng lấn.', 'MEDIUM', 1000, 256, true, 1),
-('Longest Palindromic Substring', 'Tìm xâu đối xứng dài nhất.', 'MEDIUM', 1500, 256, true, 1),
-('Valid Parentheses', 'Kiểm tra tính đúng đắn của các dấu ngoặc.', 'EASY', 500, 64, true, 1),
-('Subset Sum', 'Kiểm tra sự tồn tại của tập con có tổng bằng K.', 'MEDIUM', 2000, 256, true, 1),
-('Counting Bits', 'Đếm số lượng bit 1 từ 0 đến n.', 'EASY', 500, 64, true, 1);
+INSERT INTO problems (
+  title,
+  description,
+  difficulty,
+  time_limit_ms,
+  memory_limit_mb,
+  is_public,
+  created_by
+) VALUES
+(
+  'A + B Problem',
+  $md$## Mô tả
+
+Cho hai số nguyên $a$ và $b$.
+
+Hãy tính tổng:
+
+$$
+a + b
+$$
+
+### Yêu cầu
+
+In ra tổng của hai số nguyên đã cho.$md$,
+  'EASY',
+  1000,
+  256,
+  true,
+  1
+),
+(
+  'Prime Check',
+  $md$## Mô tả
+
+Cho một số nguyên dương $n$.
+
+Hãy kiểm tra xem $n$ có phải là **số nguyên tố** hay không.
+
+Một số nguyên tố là số lớn hơn $1$ và chỉ có đúng hai ước dương là $1$ và chính nó.
+
+### Yêu cầu
+
+In ra kết quả kiểm tra tính nguyên tố của $n$.$md$,
+  'EASY',
+  500,
+  64,
+  true,
+  1
+),
+(
+  'Fibonacci',
+  $md$## Mô tả
+
+Cho số nguyên không âm $n$.
+
+Hãy tìm số Fibonacci thứ $n$.
+
+Dãy Fibonacci được định nghĩa như sau:
+
+$$
+F_0 = 0, \quad F_1 = 1
+$$
+
+và với $n \ge 2$:
+
+$$
+F_n = F_{n-1} + F_{n-2}
+$$
+
+### Yêu cầu
+
+In ra giá trị $F_n$.$md$,
+  'EASY',
+  1000,
+  128,
+  true,
+  1
+),
+(
+  'Longest Common Subsequence',
+  $md$## Mô tả
+
+Cho hai xâu ký tự $s$ và $t$.
+
+Hãy tìm độ dài của **xâu con chung dài nhất** giữa hai xâu.
+
+Một xâu con không nhất thiết phải liên tiếp, nhưng phải giữ nguyên thứ tự các ký tự.
+
+### Yêu cầu
+
+In ra độ dài LCS của hai xâu.$md$,
+  'MEDIUM',
+  2000,
+  256,
+  true,
+  1
+),
+(
+  'Dijkstra Algorithm',
+  $md$## Mô tả
+
+Cho một đồ thị có trọng số không âm gồm $n$ đỉnh và $m$ cạnh.
+
+Hãy tìm đường đi ngắn nhất từ một đỉnh nguồn đến các đỉnh còn lại bằng thuật toán Dijkstra.
+
+### Yêu cầu
+
+Với mỗi đỉnh, in ra khoảng cách ngắn nhất từ đỉnh nguồn đến đỉnh đó.$md$,
+  'MEDIUM',
+  1500,
+  256,
+  true,
+  1
+),
+(
+  'Quick Sort Implementation',
+  $md$## Mô tả
+
+Cho một mảng gồm $n$ số nguyên.
+
+Hãy sắp xếp mảng theo thứ tự không giảm bằng thuật toán **Quick Sort**.
+
+### Yêu cầu
+
+In ra mảng sau khi đã được sắp xếp.$md$,
+  'EASY',
+  1000,
+  256,
+  true,
+  1
+),
+(
+  'Knapsack 0/1',
+  $md$## Mô tả
+
+Cho $n$ vật phẩm, mỗi vật phẩm có trọng lượng $w_i$ và giá trị $v_i$.
+
+Bạn có một chiếc túi có sức chứa tối đa $W$.
+
+Mỗi vật phẩm chỉ có thể được chọn hoặc không chọn, không thể chia nhỏ.
+
+### Yêu cầu
+
+Tìm tổng giá trị lớn nhất có thể đạt được sao cho tổng trọng lượng không vượt quá $W$.$md$,
+  'MEDIUM',
+  1000,
+  256,
+  true,
+  1
+),
+(
+  'Binary Search Tree Check',
+  $md$## Mô tả
+
+Cho một cây nhị phân.
+
+Hãy kiểm tra xem cây đó có phải là **cây tìm kiếm nhị phân** hay không.
+
+Với cây tìm kiếm nhị phân, mọi nút trong cây con trái phải nhỏ hơn nút hiện tại, và mọi nút trong cây con phải phải lớn hơn nút hiện tại.
+
+### Yêu cầu
+
+In ra kết quả kiểm tra cây có phải BST hay không.$md$,
+  'MEDIUM',
+  1000,
+  256,
+  true,
+  1
+),
+(
+  'Palindrome String',
+  $md$## Mô tả
+
+Cho một xâu ký tự $s$.
+
+Hãy kiểm tra xem $s$ có phải là **xâu đối xứng** hay không.
+
+Một xâu được gọi là đối xứng nếu đọc từ trái sang phải giống như đọc từ phải sang trái.
+
+### Yêu cầu
+
+In ra kết quả kiểm tra xâu đối xứng.$md$,
+  'EASY',
+  500,
+  64,
+  true,
+  1
+),
+(
+  'N-Queens Problem',
+  $md$## Mô tả
+
+Cho bàn cờ kích thước $n \times n$.
+
+Hãy đặt $n$ quân hậu lên bàn cờ sao cho không có hai quân hậu nào tấn công nhau.
+
+Hai quân hậu tấn công nhau nếu chúng nằm cùng hàng, cùng cột hoặc cùng đường chéo.
+
+### Yêu cầu
+
+Tìm một hoặc tất cả cách đặt $n$ quân hậu hợp lệ.$md$,
+  'HARD',
+  3000,
+  256,
+  true,
+  1
+),
+(
+  'Segment Tree Query',
+  $md$## Mô tả
+
+Cho một mảng gồm $n$ số nguyên.
+
+Cần xử lý hai loại truy vấn:
+
+- Cập nhật giá trị tại một vị trí.
+- Tính tổng các phần tử trên đoạn $[l, r]$.
+
+### Yêu cầu
+
+Sử dụng Segment Tree để xử lý các truy vấn hiệu quả.$md$,
+  'HARD',
+  2000,
+  512,
+  true,
+  1
+),
+(
+  'Convex Hull',
+  $md$## Mô tả
+
+Cho một tập gồm $n$ điểm trên mặt phẳng tọa độ.
+
+Hãy tìm **bao lồi** của tập điểm đó.
+
+Bao lồi là đa giác lồi nhỏ nhất chứa tất cả các điểm đã cho.
+
+### Yêu cầu
+
+In ra các điểm thuộc bao lồi theo thứ tự phù hợp.$md$,
+  'HARD',
+  2000,
+  256,
+  true,
+  1
+),
+(
+  'Factorial Large Number',
+  $md$## Mô tả
+
+Cho số nguyên không âm $n$.
+
+Hãy tính giai thừa của $n$:
+
+$$
+n! = 1 \times 2 \times 3 \times \cdots \times n
+$$
+
+Với quy ước:
+
+$$
+0! = 1
+$$
+
+### Yêu cầu
+
+In ra giá trị $n!$. Kết quả có thể rất lớn.$md$,
+  'EASY',
+  1000,
+  128,
+  true,
+  1
+),
+(
+  'Max Flow',
+  $md$## Mô tả
+
+Cho một mạng luồng gồm các đỉnh, các cạnh có sức chứa và hai đỉnh đặc biệt là nguồn $s$ và đích $t$.
+
+Hãy tìm luồng cực đại từ $s$ đến $t$.
+
+### Yêu cầu
+
+In ra giá trị luồng cực đại của mạng.$md$,
+  'HARD',
+  2000,
+  256,
+  true,
+  1
+),
+(
+  'BFS Traversal',
+  $md$## Mô tả
+
+Cho một đồ thị gồm $n$ đỉnh và $m$ cạnh.
+
+Hãy duyệt đồ thị theo chiều rộng bắt đầu từ một đỉnh cho trước.
+
+### Yêu cầu
+
+In ra thứ tự các đỉnh được thăm bằng thuật toán BFS.$md$,
+  'EASY',
+  1000,
+  256,
+  true,
+  1
+),
+(
+  'Merge Intervals',
+  $md$## Mô tả
+
+Cho danh sách các khoảng $[l_i, r_i]$.
+
+Hãy hợp nhất các khoảng bị chồng lấn với nhau.
+
+Hai khoảng được xem là chồng lấn nếu chúng có phần giao nhau không rỗng.
+
+### Yêu cầu
+
+In ra danh sách các khoảng sau khi đã hợp nhất.$md$,
+  'MEDIUM',
+  1000,
+  256,
+  true,
+  1
+),
+(
+  'Longest Palindromic Substring',
+  $md$## Mô tả
+
+Cho một xâu ký tự $s$.
+
+Hãy tìm xâu con liên tiếp dài nhất của $s$ là xâu đối xứng.
+
+### Yêu cầu
+
+In ra độ dài hoặc nội dung xâu đối xứng dài nhất.$md$,
+  'MEDIUM',
+  1500,
+  256,
+  true,
+  1
+),
+(
+  'Valid Parentheses',
+  $md$## Mô tả
+
+Cho một xâu chỉ gồm các ký tự ngoặc:
+
+- `(`
+- `)`
+- `[`
+- `]`
+- `{`
+- `}`
+
+Hãy kiểm tra xem xâu ngoặc có hợp lệ hay không.
+
+Một xâu ngoặc hợp lệ nếu các dấu ngoặc được đóng đúng thứ tự.
+
+### Yêu cầu
+
+In ra kết quả kiểm tra tính hợp lệ của xâu.$md$,
+  'EASY',
+  500,
+  64,
+  true,
+  1
+),
+(
+  'Subset Sum',
+  $md$## Mô tả
+
+Cho một mảng gồm $n$ số nguyên và một số nguyên $K$.
+
+Hãy kiểm tra xem có tồn tại một tập con của mảng có tổng bằng $K$ hay không.
+
+### Yêu cầu
+
+In ra kết quả kiểm tra sự tồn tại của tập con thỏa mãn:
+
+$$
+\sum a_i = K
+$$$md$,
+  'MEDIUM',
+  2000,
+  256,
+  true,
+  1
+),
+(
+  'Counting Bits',
+  $md$## Mô tả
+
+Cho số nguyên không âm $n$.
+
+Với mỗi số nguyên $i$ thỏa mãn $0 \le i \le n$, hãy đếm số lượng bit `1` trong biểu diễn nhị phân của $i$.
+
+### Yêu cầu
+
+In ra mảng kết quả, trong đó phần tử thứ $i$ là số bit `1` của số $i$.$md$,
+  'EASY',
+  500,
+  64,
+  true,
+  1
+);
 
 INSERT INTO problem_tags (problem_id, tag_id)
 SELECT p.problem_id, t.tag_id 

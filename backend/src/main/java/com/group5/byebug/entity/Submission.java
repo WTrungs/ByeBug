@@ -2,8 +2,13 @@ package com.group5.byebug.entity;
 
 import java.time.LocalDateTime;
 
+import com.group5.byebug.enums.ProgrammingLanguage;
+import com.group5.byebug.enums.Verdict;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,8 +34,9 @@ public class Submission {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private String language;
+    private ProgrammingLanguage language;
 
     @Column(name = "source_code", columnDefinition = "TEXT")
     private String sourceCode;
@@ -38,8 +44,9 @@ public class Submission {
     @Column(name = "file_url", columnDefinition = "TEXT")
     private String fileUrl;
 
-    @Column(nullable = false, length = 10)
-    private String verdict; // AC, WA, TLE...
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private Verdict verdict = Verdict.PENDING;
 
     @Column(name = "compile_error", columnDefinition = "TEXT")
     private String compileError;
