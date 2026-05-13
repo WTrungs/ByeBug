@@ -6,6 +6,13 @@ export interface Problem {
     difficulty: string;
     tags: string[];
     isPublic: boolean;
+    description?: string;
+    examples?: {
+        input: string;
+        output: string;
+        explanation?: string;
+    }[];
+    constraints?: string[];
 }
 
 export interface TestCase {
@@ -28,14 +35,19 @@ export const getAllProblems = async (): Promise<Problem[]> => {
     return response.data;
 };
 
-
-export const getProblemsByDifficulty = async (difficulty: string): Promise<Problem[]> => {
-    const response = await api.get(`/problems/difficulty/${difficulty}`);
+export const getProblemById = async (id: number): Promise<Problem> => {
+    const response = await api.get(`/problems/${id}`);
     return response.data;
 };
 
-export const getProblemById = async (id: number): Promise<ProblemDetail> => {
+// ✅ Đổi tên hàm này
+export const getProblemDetailById = async (id: number): Promise<ProblemDetail> => {
     const response = await api.get(`/problems/${id}`);
+    return response.data;
+};
+
+export const getProblemsByDifficulty = async (difficulty: string): Promise<Problem[]> => {
+    const response = await api.get(`/problems/difficulty/${difficulty}`);
     return response.data;
 };
 

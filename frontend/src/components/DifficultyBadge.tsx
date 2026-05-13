@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import styles from '../styles/modules/ProblemDetail.module.css';
 
 const DIFFICULTY_MAP: Record<string, string> = {
@@ -23,6 +24,27 @@ const DifficultyBadge = ({ level }: DifficultyBadgeProps) => {
     return (
         <span className={`${styles.difficultyBadge} ${colorClass}`}>
             {label}
+=======
+import React from 'react';
+
+interface Props {
+    level: 'Easy' | 'Medium' | 'Hard' | string;
+}
+
+const classMap: Record<string, string> = {
+    Easy:   'detail-diff-badge detail-diff-easy',
+    Medium: 'detail-diff-badge detail-diff-medium',
+    Hard:   'detail-diff-badge detail-diff-hard',
+    'Dễ':        'detail-diff-badge detail-diff-easy',
+    'Trung bình':'detail-diff-badge detail-diff-medium',
+    'Khó':       'detail-diff-badge detail-diff-hard',
+};
+
+const DifficultyBadge: React.FC<Props> = ({ level }) => {
+    return (
+        <span className={classMap[level] ?? 'detail-diff-badge'}>
+            {level}
+>>>>>>> Stashed changes
         </span>
     );
 };

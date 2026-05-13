@@ -3,6 +3,7 @@ package com.group5.byebug.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+<<<<<<< Updated upstream
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,10 +11,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.group5.byebug.dto.ProblemResponseDTO;
+=======
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.group5.byebug.entity.Problem;
+>>>>>>> Stashed changes
 import com.group5.byebug.service.ProblemService;
 
 @RestController
 @RequestMapping("/api/problems")
+<<<<<<< Updated upstream
+=======
+@CrossOrigin(origins = "http://localhost:5173") // Cho phép Vite/React gọi API
+>>>>>>> Stashed changes
 public class ProblemController {
 
     private final ProblemService problemService;
@@ -31,6 +45,7 @@ public class ProblemController {
     public ResponseEntity<ProblemResponseDTO> getProblemById(@PathVariable Long id) {
         return ResponseEntity.ok(problemService.getProblemById(id));
     }
+<<<<<<< Updated upstream
 
     
     @GetMapping("/difficulty/{difficulty}")
@@ -44,4 +59,6 @@ public class ProblemController {
         return ResponseEntity.ok(problemService.searchProblems(keyword));
     }
     
+=======
+>>>>>>> Stashed changes
 }

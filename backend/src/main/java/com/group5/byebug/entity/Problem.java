@@ -20,9 +20,10 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
+
+@Data
 @Entity
 @Table(name = "problems")
-@Data
 public class Problem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,10 +38,16 @@ public class Problem {
     @Column(nullable = false, length = 10)
     private String difficulty;
 
+    @Column(name = "time_limit_ms")
     private Integer timeLimitMs = 2000;
     private Integer memoryLimitMb = 256;
     private Boolean allowFileSubmit = false;
-    private Boolean isPublic = false;
+
+    @Column(name = "is_public")
+    private Boolean isPublic = false;   // ✅ Chỉ giữ 1 cái
+
+    @Column(name = "required_solved")
+    private Integer requiredSolved = 0;
 
     @ManyToOne
     @JoinColumn(name = "created_by")
@@ -49,7 +56,7 @@ public class Problem {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @ManyToMany
+    @ManyToMany                          // ✅ Chỉ giữ 1 cái
     @JoinTable(
         name = "problem_tags",
         joinColumns = @JoinColumn(name = "problem_id"),

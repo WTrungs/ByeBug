@@ -3,7 +3,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Problems from './pages/Problems';
+import ProblemList from './pages/ProblemList';
 import ProblemDetail from './pages/ProblemDetail';
 import ProtectedRoute from './components/ProtectedRoute';
 import Admin from './pages/admin/Admin';
@@ -13,22 +13,16 @@ import Home from './pages/Home';
 const App: React.FC = () => {
     const location = useLocation();
 
-    // Thêm các đường dẫn admin vào danh sách ẩn Navbar
-    // Vì Admin đã có Sidebar riêng rồi, không nên hiện Navbar chung nữa
-    const hideNavbar =
-        ['/', '/login', '/register'].includes(location.pathname) ||
-        location.pathname.startsWith('/home') ||
-        location.pathname.startsWith('/statistics') ||
-        location.pathname.startsWith('/problems') ||
-        location.pathname.startsWith('/admin');
+    const noNavbarRoutes = ['/', '/login', '/register'];
+    const isAdminRoute = location.pathname.startsWith('/admin');
+    const hideNavbar = noNavbarRoutes.includes(location.pathname) || isAdminRoute;
 
     return (
-        <div className="app-container">
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
             {!hideNavbar && <Navbar />}
 
-            <main>
+            <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                 <Routes>
-                    {/* Public Routes */}
                     <Route path="/" element={<Login />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
@@ -54,7 +48,7 @@ const App: React.FC = () => {
                         path="/problems" 
                         element={
                             <ProtectedRoute>
-                                <Problems />
+                                <ProblemList />
                             </ProtectedRoute>
                         } 
                     />
@@ -80,6 +74,6 @@ const App: React.FC = () => {
             </main>
         </div>
     );
-}
+};
 
 export default App;

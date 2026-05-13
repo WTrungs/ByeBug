@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import BrandLogo from '../components/BrandLogo';
-import { getProblemById } from '../api/problemApi';
+import { getProblemDetailById } from '../api/problemApi';
 import type { ProblemDetail as ProblemDetailType, TestCase } from '../api/problemApi';
 import { submitSolution } from '../api/submissionApi';
 import type { Verdict, TestcaseResult } from '../api/submissionApi';
@@ -64,7 +64,7 @@ export default function ProblemDetail() {
             return;
         }
         setLoading(true);
-        getProblemById(numId)
+        getProblemDetailById(numId)
             .then((data: ProblemDetailType) => { setProblem(data); setError(''); })
             .catch((err: any) => {
                 if (err?.response?.status === 404) {

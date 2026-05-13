@@ -7,6 +7,8 @@ import './styles/ProblemManagement.css'
 import './styles/UserManagement.css'
 
 import './styles/ActivityLog.css'
+import './styles/problem-detail.css'
+import './styles/problems.css'
 import App from './App'
 
 createRoot(document.getElementById('root')!).render(
