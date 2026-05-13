@@ -4,7 +4,7 @@
   flex-direction: column;
   height: 100vh;
   overflow: hidden;
-  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  font-family: var(--font-sans);
 }
 
 /* ── Top navbar ──────────────────────────────────── */
@@ -82,7 +82,7 @@
   text-transform: uppercase;
   letter-spacing: 0.6px;
   margin-bottom: 6px;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-heading);
 }
 
 .problemTitle {
@@ -90,7 +90,7 @@
   font-size: 21px;
   font-weight: 800;
   line-height: 1.25;
-  font-family: 'Bricolage Grotesque', 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-heading);
 }
 
 .metaRow {
@@ -107,7 +107,7 @@
   font-size: 12px;
   font-weight: 700;
   box-shadow: var(--shadow-sm);
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-heading);
 }
 
 .diffEasy {
@@ -148,7 +148,7 @@
   font-size: 12px;
   font-weight: 600;
   color: #555;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-heading);
 }
 
 .limitValue {
@@ -180,7 +180,7 @@
   letter-spacing: 0.7px;
   color: var(--black);
   margin: 22px 0 10px;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-heading);
 }
 
 .sectionTitleBar {
@@ -207,7 +207,7 @@
 .constraintItem {
   font-size: 13.5px;
   line-height: 1.8;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
 }
 
 /* ── Example block ───────────────────────────────── */
@@ -225,7 +225,7 @@
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.5px;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-heading);
 }
 
 .exampleBody {
@@ -248,7 +248,7 @@
   background: #F8F8F8;
   border: 1px solid #E5E7EB;
   padding: 7px 10px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 13px;
   white-space: pre-wrap;
   margin: 0;
@@ -281,7 +281,7 @@
   padding: 4px 10px;
   font-size: 13px;
   outline: none;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
   font-weight: 600;
   cursor: pointer;
 }
@@ -289,7 +289,7 @@
 .filenameLabel {
   font-size: 12px;
   color: #555;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
 }
 
 /* Code textarea */
@@ -301,7 +301,7 @@
   border: none;
   outline: none;
   padding: 16px 20px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 14px;
   line-height: 1.6;
   tab-size: 4;
@@ -329,7 +329,7 @@
   color: #AAA;
   text-transform: uppercase;
   letter-spacing: 0.6px;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-heading);
 }
 
 /* Verdict badge inside test panel */
@@ -337,7 +337,7 @@
   padding: 3px 10px;
   font-size: 12px;
   font-weight: 700;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-heading);
 }
 
 /* Test-case dots row */
@@ -353,7 +353,7 @@
 .tcMessage {
   font-size: 12px;
   color: #666;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
 }
 
 /* Single TC dot */
@@ -365,7 +365,7 @@
   justify-content: center;
   font-size: 11px;
   font-weight: 700;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
   border-width: 1.5px;
   border-style: solid;
 }
@@ -402,7 +402,7 @@
 .statsHint {
   font-size: 12px;
   color: #555;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
 }
 
 .buttonGroup {
@@ -418,7 +418,7 @@
   font-size: 13px;
   font-weight: 700;
   cursor: not-allowed;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-heading);
   opacity: 0.4;
 }
 
@@ -431,7 +431,7 @@
   font-weight: 800;
   cursor: pointer;
   box-shadow: 3px 3px 0px var(--black);
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-heading);
   transition: transform 0.15s, box-shadow 0.15s;
 }
 

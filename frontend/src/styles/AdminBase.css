@@ -139,7 +139,7 @@
     border: 2px solid var(--black);
     padding: 8px 14px;
     font-weight: 600;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-sans);
     outline: none;
     background: var(--white);
     box-shadow: var(--shadow-sm);

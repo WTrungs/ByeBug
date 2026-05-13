@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
+import DifficultyBadge from './DifficultyBadge';
 
 const mockProblems = [
-    { id: 1, title: 'Tìm kiếm nhị phân nâng cao', author: 'coder_01', diff: 'Trung bình', status: 'pending' },
+    { id: 1, title: 'Tìm kiếm nhị phân nâng cao', author: 'coder_01', diff: 'Vừa', status: 'pending' },
     { id: 2, title: 'Đồ thị có hướng - DFS', author: 'thoang_la', diff: 'Khó', status: 'pending' },
     { id: 3, title: 'Sắp xếp nổi bọt', author: 'newbie_dev', diff: 'Dễ', status: 'pending' },
 ];
@@ -32,10 +33,7 @@ const ProblemApprovalTable: React.FC = () => {
                             <td style={{ fontWeight: 700 }}>{p.title}</td>
                             <td style={{ color: '#666' }}>@{p.author}</td>
                             <td>
-                                <span className={`status-badge ${p.diff === 'Khó' ? 'text-danger' : 'text-warning'}`} 
-                                      style={{ border: '1px solid #111', padding: '2px 6px', background: 'var(--bg-soft)' }}>
-                                    {p.diff}
-                                </span>
+                                <DifficultyBadge level={p.diff} />
                             </td>
                             <td>
                                 <div style={{ display: 'flex', gap: '8px' }}>

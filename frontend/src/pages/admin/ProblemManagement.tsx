@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import DifficultyBadge from '../../components/DifficultyBadge';
 
 const ProblemManagement: React.FC = () => {
     const [search, setSearch] = useState('');
@@ -19,15 +20,15 @@ const ProblemManagement: React.FC = () => {
     });
 
     const newest = [
-        { title: 'Tìm số đảo ngược', time: '12 phút trước', level: 'Dễ', color: '#16a34a', bg: '#dcfce7' },
-        { title: 'Thuật toán Dijkstra', time: '2 giờ trước', level: 'Khó', color: '#b42318', bg: '#ffe4e6' },
-        { title: 'Dãy con tăng dài nhất', time: '5 giờ trước', level: 'Vừa', color: '#a66a00', bg: '#fff4d6' },
+        { title: 'Tìm số đảo ngược', time: '12 phút trước', level: 'Dễ' },
+        { title: 'Thuật toán Dijkstra', time: '2 giờ trước', level: 'Khó' },
+        { title: 'Dãy con tăng dài nhất', time: '5 giờ trước', level: 'Vừa' },
     ];
 
     const popular = [
-        { id: '01', title: 'Tính tổng 2 số nguyên', rate: '92%', subs: '4.5k', level: 'Dễ', color: '#16a34a', bg: '#dcfce7' },
-        { id: '02', title: 'Kiểm tra số nguyên tố', rate: '85%', subs: '3.2k', level: 'Vừa', color: '#a66a00', bg: '#fff4d6' },
-        { id: '03', title: 'Bài toán đường đi', rate: '65%', subs: '1.8k', level: 'Khó', color: '#b42318', bg: '#ffe4e6' },
+        { id: '01', title: 'Tính tổng 2 số nguyên', rate: '92%', subs: '4.5k', level: 'Dễ' },
+        { id: '02', title: 'Kiểm tra số nguyên tố', rate: '85%', subs: '3.2k', level: 'Vừa' },
+        { id: '03', title: 'Bài toán đường đi', rate: '65%', subs: '1.8k', level: 'Khó' },
     ];
 
     return (
@@ -48,7 +49,7 @@ const ProblemManagement: React.FC = () => {
                                     <div className="pm-item-name">{p.title}</div>
                                     <div className="pm-item-meta">🕒 {p.time}</div>
                                 </div>
-                                <span className="pm-level-badge" style={{ color: p.color, background: p.bg }}>{p.level}</span>
+                                <DifficultyBadge level={p.level} />
                             </div>
                         ))}
                     </div>
@@ -63,15 +64,15 @@ const ProblemManagement: React.FC = () => {
                     <div className="pm-list">
                         {popular.map((p, i) => (
                             <div key={i} className="pm-list-item">
-                                <span className="pm-rank-num" style={{ color: p.color }}>{p.id}</span>
+                                <span className="pm-rank-num">{p.id}</span>
                                 <div className="pm-item-info">
                                     <div className="pm-item-name">{p.title}</div>
                                     <div className="pm-item-meta-row">
-                                        <span className="pm-ac-badge" style={{ color: p.color, background: p.bg }}>AC {p.rate}</span>
+                                        <span className="pm-ac-badge">AC {p.rate}</span>
                                         <span className="pm-subs-text">{p.subs} lượt giải</span>
                                     </div>
                                 </div>
-                                <span className="pm-level-badge" style={{ color: p.color, background: p.bg }}>{p.level}</span>
+                                <DifficultyBadge level={p.level} />
                             </div>
                         ))}
                     </div>
@@ -124,9 +125,7 @@ const ProblemManagement: React.FC = () => {
                                 <td className="pm-id-cell">#PB-00{prob.id}</td>
                                 <td className="pm-name-cell">{prob.title}</td>
                                 <td style={{ textAlign: 'center' }}>
-                                    <span className={`pm-diff-badge pm-diff-${prob.difficulty.toLowerCase()}`}>
-                                        {prob.difficulty === 'EASY' ? 'Dễ' : prob.difficulty === 'MEDIUM' ? 'Vừa' : 'Khó'}
-                                    </span>
+                                    <DifficultyBadge level={prob.difficulty} />
                                 </td>
                                 <td style={{ textAlign: 'center' }}>
                                     <span className={`pm-status-badge pm-status-${prob.status.toLowerCase()}`}>

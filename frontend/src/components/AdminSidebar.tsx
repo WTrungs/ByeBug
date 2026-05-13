@@ -1,6 +1,5 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import bblg from '../assets/bblogo.svg';
 import bugLogo from '../assets/bug.svg';
 import '../index.css';
 

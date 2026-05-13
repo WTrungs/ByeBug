@@ -1,27 +1,37 @@
-import styles from '../styles/modules/ProblemDetail.module.css';
+import styles from '../styles/modules/DifficultyBadge.module.css';
 
-const DIFFICULTY_MAP: Record<string, string> = {
-    easy:   'Dễ',
-    medium: 'Trung bình',
-    hard:   'Khó',
+const DIFFICULTY_LABEL: Record<string, string> = {
+    easy: 'Dễ',
+    'dễ': 'Dễ',
+    medium: 'Vừa',
+    'vừa': 'Vừa',
+    'trung bình': 'Vừa',
+    hard: 'Khó',
+    'khó': 'Khó',
 };
 
 const DIFFICULTY_CLASS: Record<string, string> = {
-    easy:   styles.diffEasy,
-    medium: styles.diffMedium,
-    hard:   styles.diffHard,
+    easy: styles.easy,
+    'dễ': styles.easy,
+    medium: styles.medium,
+    'vừa': styles.medium,
+    'trung bình': styles.medium,
+    hard: styles.hard,
+    'khó': styles.hard,
 };
 
 interface DifficultyBadgeProps {
-    level: string; // 'easy' | 'medium' | 'hard' or display label
+    level?: string | null;
 }
 
 const DifficultyBadge = ({ level }: DifficultyBadgeProps) => {
-    const key = level.toLowerCase();
-    const label = DIFFICULTY_MAP[key] ?? level;
-    const colorClass = DIFFICULTY_CLASS[key] ?? '';
+    const value = level?.trim() || '';
+    const key = value.toLowerCase();
+    const label = DIFFICULTY_LABEL[key] ?? value;
+    const colorClass = DIFFICULTY_CLASS[key] ?? styles.default;
+
     return (
-        <span className={`${styles.difficultyBadge} ${colorClass}`}>
+        <span className={`${styles.badge} ${colorClass}`}>
             {label}
         </span>
     );

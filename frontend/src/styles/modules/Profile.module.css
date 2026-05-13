@@ -68,7 +68,7 @@
 }
 
 .name {
-  font-family: 'Bricolage Grotesque', sans-serif;
+  font-family: var(--font-heading);
   font-size: 28px;
   font-weight: 800;
   color: var(--black);
@@ -125,7 +125,7 @@
 }
 
 .sectionTitle {
-  font-family: 'Bricolage Grotesque', sans-serif;
+  font-family: var(--font-heading);
   font-size: 20px;
   font-weight: 800;
   margin: 0 0 20px;

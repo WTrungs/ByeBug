@@ -13,7 +13,7 @@
 .icon  { font-size: 26px; }
 
 .value {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 800;
   font-size: 32px;
   color: var(--black);
@@ -21,7 +21,7 @@
 }
 
 .label {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 700;
   color: #888;

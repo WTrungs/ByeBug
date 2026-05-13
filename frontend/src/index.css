@@ -2,6 +2,10 @@
    1. CSS VARIABLES
    ───────────────────────────────────────────── */
 :root {
+  --font-sans: 'Be Vietnam Pro', 'Inter', "Segoe UI", Arial, sans-serif;
+  --font-heading: 'Be Vietnam Pro', 'Inter', "Segoe UI", Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', 'Courier New', monospace;
+
   --primary: #FFB338;
   --bg-main: #FDFDFD;
   --bg-soft: #FFFBEF;
@@ -39,7 +43,7 @@
    ───────────────────────────────────────────── */
 html,
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-sans);
   background-color: var(--bg-main);
 }
 

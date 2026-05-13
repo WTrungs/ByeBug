@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import BrandLogo from '../components/BrandLogo';
 import { getProblemById } from '../api/problemApi';
-import type { ProblemDetail as ProblemDetailType, TestCase } from '../api/problemApi';
+import type { ProblemDetail as ProblemDetailType, ProblemTag, TestCase } from '../api/problemApi';
 import { submitSolution } from '../api/submissionApi';
 import type { Verdict, TestcaseResult } from '../api/submissionApi';
 import { getUser } from '../utils/auth';
@@ -67,8 +67,12 @@ export default function ProblemDetail() {
         setLoading(true);
         getProblemById(numId)
             .then((data: ProblemDetailType) => { setProblem(data); setError(''); })
-            .catch((err: any) => {
-                if (err?.response?.status === 404) {
+            .catch((err: unknown) => {
+                const status = typeof err === 'object' && err !== null && 'response' in err
+                    ? (err as { response?: { status?: number } }).response?.status
+                    : undefined;
+
+                if (status === 404) {
                     setError('Bài toán không tồn tại.');
                 } else {
                     setError('Không thể kết nối tới máy chủ. Kiểm tra lại backend.');
@@ -173,11 +177,17 @@ export default function ProblemDetail() {
                         <h1 className={styles.problemTitle}>{problem.title}</h1>
                         <div className={styles.metaRow}>
                             <DifficultyBadge level={problem.difficulty ?? 'easy'} />
-                            {problem.tags?.map((tag: any) => (
-                                <span key={tag.tagId} className={styles.tagBadge}>
-                                    {tag.tagName}
-                                </span>
-                            ))}
+                            {problem.tags?.map((tag, index) => {
+                                const normalizedTag: ProblemTag = typeof tag === 'string'
+                                    ? { tagId: index, tagName: tag }
+                                    : tag;
+
+                                return (
+                                    <span key={normalizedTag.tagId} className={styles.tagBadge}>
+                                        {normalizedTag.tagName}
+                                    </span>
+                                );
+                            })}
                         </div>
                     </div>
 
