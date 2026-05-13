@@ -32,7 +32,7 @@ const UserSidebar: React.FC = () => {
       ? "home"
       : location.pathname === "/statistics"
         ? "statistics"
-        : location.pathname.startsWith("/problems")
+        : location.pathname === "/problems"
           ? "problems"
           : location.pathname.startsWith("/profile")
             ? "profile"
