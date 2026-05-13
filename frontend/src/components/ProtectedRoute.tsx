@@ -4,9 +4,10 @@ import { getUser, isAdmin } from '../utils/auth';
 interface Props {
     children: React.ReactNode;
     adminOnly?: boolean;
+    userOnly?: boolean;
 }
 
-const ProtectedRoute = ({ children, adminOnly = false }: Props) => {
+const ProtectedRoute = ({ children, adminOnly = false, userOnly = false }: Props) => {
     const user = getUser();
 
     if (!user) {
@@ -14,7 +15,11 @@ const ProtectedRoute = ({ children, adminOnly = false }: Props) => {
     }
 
     if (adminOnly && !isAdmin()) {
-        return <Navigate to="/problems" replace />;
+        return <Navigate to="/home" replace />;
+    }
+
+    if (userOnly && isAdmin()) {
+        return <Navigate to="/admin" replace />;
     }
 
     return <>{children}</>;

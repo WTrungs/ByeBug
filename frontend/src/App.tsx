@@ -6,16 +6,21 @@ import Register from './pages/Register';
 import Problems from './pages/Problems';
 import ProblemDetail from './pages/ProblemDetail';
 import ProtectedRoute from './components/ProtectedRoute';
-import Admin from './pages/admin/Admin'; // Nhớ import file Admin vào nè
+import Admin from './pages/admin/Admin';
+import Statistics from './pages/Statistics';
+import Home from './pages/Home';
 
 const App: React.FC = () => {
     const location = useLocation();
-    
+
     // Thêm các đường dẫn admin vào danh sách ẩn Navbar
     // Vì Admin đã có Sidebar riêng rồi, không nên hiện Navbar chung nữa
-    const noNavbarRoutes = ['/', '/login', '/register'];
-    const isAdminRoute = location.pathname.startsWith('/admin');
-    const hideNavbar = noNavbarRoutes.includes(location.pathname) || isAdminRoute;
+    const hideNavbar =
+        ['/', '/login', '/register'].includes(location.pathname) ||
+        location.pathname.startsWith('/home') ||
+        location.pathname.startsWith('/statistics') ||
+        location.pathname.startsWith('/problems') ||
+        location.pathname.startsWith('/admin');
 
     return (
         <div className="app-container">
@@ -29,7 +34,23 @@ const App: React.FC = () => {
                     <Route path="/register" element={<Register />} />
 
                     {/* User Routes (Cần đăng nhập) */}
-                    <Route 
+                    <Route
+                        path="/home"
+                        element={
+                            <ProtectedRoute userOnly>
+                                <Home />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/statistics"
+                        element={
+                            <ProtectedRoute userOnly>
+                                <Statistics />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
                         path="/problems" 
                         element={
                             <ProtectedRoute>
@@ -47,13 +68,13 @@ const App: React.FC = () => {
                     />
 
                     
-                    <Route 
-                        path="/admin/*" 
+                    <Route
+                        path="/admin/*"
                         element={
-                            <ProtectedRoute>
+                            <ProtectedRoute adminOnly>
                                 <Admin />
                             </ProtectedRoute>
-                        } 
+                        }
                     />
                 </Routes>
             </main>

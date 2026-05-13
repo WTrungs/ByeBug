@@ -15,6 +15,10 @@ export default defineConfig(({ mode }) => {
       port: parseInt(env.VITE_PORT || process.env.VITE_PORT),
       strictPort: true,
       host: true,
+      watch: {
+        usePolling: true,   // Required for Docker on Windows (WSL2 inotify issue)
+        interval: 300,      // Poll every 300ms
+      },
     },
   }
 })
