@@ -36,7 +36,7 @@
 }
 
 .topbarTitle {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
   font-style: italic;
   font-weight: 800;
   font-size: 20px;
@@ -51,7 +51,7 @@
 }
 
 .navLink {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-heading);
   font-weight: 700;
   font-size: 15px;
   color: var(--black);
@@ -140,7 +140,7 @@
 }
 
 .heroLabel {
-  font-family: 'Bricolage Grotesque', 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-heading);
   font-weight: 800;
   font-size: 12px;
   letter-spacing: 3px;
@@ -150,7 +150,7 @@
 }
 
 .heroTitle {
-  font-family: 'Bricolage Grotesque', 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-heading);
   font-weight: 800;
   font-size: 52px;
   line-height: 1.15;
@@ -163,7 +163,7 @@
 }
 
 .heroSub {
-  font-family: 'Bricolage Grotesque', 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-heading);
   font-weight: 400;
   font-size: 13px;
   color: #A1A1AA;
@@ -183,14 +183,14 @@
 }
 
 .progressLabel {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 700;
   font-size: 14px;
   color: #A1A1AA;
 }
 
 .progressPct {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 400;
   font-size: 22px;
   color: var(--primary);
@@ -225,7 +225,7 @@
 }
 
 .leaderTitle {
-  font-family: 'Bricolage Grotesque', 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-heading);
   font-weight: 700;
   font-size: 20px;
   color: #1C1B1B;
@@ -262,7 +262,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 800;
   font-size: 15px;
   color: var(--black);
@@ -283,7 +283,7 @@
 .podiumBarThird  { height: 35px; background: #CD7F32; }
 
 .podiumName {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 700;
   font-size: 10px;
   color: #1C1B1B;
@@ -291,7 +291,7 @@
 }
 
 .podiumScore {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   font-size: 10px;
   font-weight: 600;
   color: #666;
@@ -304,7 +304,7 @@
   background: var(--white);
   border: 2px solid var(--black);
   box-shadow: var(--shadow-sm);
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 700;
   font-size: 13px;
   cursor: pointer;
@@ -342,7 +342,7 @@
 }
 
 .cardTitle {
-  font-family: 'Bricolage Grotesque', 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-heading);
   font-weight: 700;
   font-size: 17px;
   color: var(--black);
@@ -375,7 +375,7 @@
 }
 
 .problemRowTitle {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 700;
   font-size: 14px;
   color: var(--black);
@@ -385,7 +385,7 @@
 }
 
 .problemRowMeta {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   font-size: 11px;
   color: #888;
   display: flex;
@@ -398,7 +398,7 @@
   padding: 2px 8px;
   font-size: 10px;
   font-weight: 700;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   border: 1.5px solid var(--black);
   flex-shrink: 0;
 }
@@ -434,7 +434,7 @@
 }
 
 .popularRank {
-  font-family: 'Bricolage Grotesque', 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-heading);
   font-weight: 800;
   font-size: 22px;
   color: var(--primary);
@@ -448,7 +448,7 @@
 }
 
 .popularTitle {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 700;
   font-size: 13px;
   color: var(--black);
@@ -463,7 +463,7 @@
   align-items: center;
   margin-top: 4px;
   font-size: 11px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   color: #888;
 }
 
@@ -483,7 +483,7 @@
 }
 
 .statsMotivation {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 600;
   color: #855500;
@@ -498,7 +498,7 @@
 .statsProgressLabel {
   display: flex;
   justify-content: space-between;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 600;
   color: var(--black);
@@ -538,7 +538,7 @@
 }
 
 .statsGridLabel {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   font-size: 10px;
   font-weight: 700;
   color: #888;
@@ -547,7 +547,7 @@
 }
 
 .statsGridValue {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 800;
   font-size: 24px;
   color: var(--black);
@@ -559,7 +559,7 @@
   background: var(--black);
   color: var(--white);
   border: 2px solid var(--black);
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 800;
   font-size: 13px;
   cursor: pointer;
@@ -577,7 +577,7 @@
 
 /* ── Loading / muted ─────────────────────────────────── */
 .muted {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
   font-size: 14px;
   color: #aaa;
 }

@@ -99,7 +99,7 @@
 /* 4. CÁC CELL ĐẶC BIỆT */
 .time-cell {
     color: var(--admin-red);
-    font-family: 'Courier New', monospace;
+    font-family: var(--font-mono);
     font-size: 12px;
     font-weight: 600;
     line-height: 1.6;
@@ -120,7 +120,7 @@
     font-weight: 700;
     font-size: 14px;
     text-align: center !important;
-    font-family: 'Courier New', monospace;
+    font-family: var(--font-mono);
 }
 
 /* 5. ACTION BADGES */
@@ -270,7 +270,7 @@
     padding: 5px 14px;
     border: 2px solid var(--black);
     font-weight: 700;
-    font-family: 'Courier New', monospace;
+    font-family: var(--font-mono);
     font-size: 13px;
     box-shadow: var(--shadow-sm);
 }

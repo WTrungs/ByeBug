@@ -47,7 +47,7 @@ const AdminStatsCards: React.FC = () => {
                         fontWeight: 900,
                         margin: '10px 0 6px',
                         color: card.type === 'danger' ? 'var(--white)' : 'var(--black)',
-                        fontFamily: "'Inter', sans-serif",
+                        fontFamily: "var(--font-sans)",
                         lineHeight: 1,
                     }}>
                         {card.value}

@@ -47,7 +47,7 @@ const ActivityLog: React.FC = () => {
                                 <tr key={log.id}>
                                     <td className="time-cell">{log.time}</td>
                                     <td className="user-cell">{log.user}</td>
-                                    <td style={{ fontFamily: 'monospace', fontSize: '12px' }}>{log.action}</td>
+                                    <td style={{ fontFamily: 'var(--font-mono)', fontSize: '12px' }}>{log.action}</td>
                                     <td>{log.target}</td>
                                     <td style={{ textAlign: 'right' }}>
                                         <span

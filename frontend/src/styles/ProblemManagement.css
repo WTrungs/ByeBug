@@ -241,7 +241,7 @@
 }
 
 .pm-id-cell {
-    font-family: 'Courier New', monospace;
+    font-family: var(--font-mono);
     font-size: 12px;
     font-weight: 600;
     color: var(--admin-red);

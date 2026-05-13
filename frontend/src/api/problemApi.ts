@@ -4,8 +4,13 @@ export interface Problem {
     problemId: number;
     title: string;
     difficulty: string;
-    tags: string[];
+    tags: Array<string | ProblemTag>;
     isPublic: boolean;
+}
+
+export interface ProblemTag {
+    tagId: number;
+    tagName: string;
 }
 
 export interface TestCase {

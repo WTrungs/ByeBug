@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import UserSidebar from "../components/UserSidebar";
 import Navbar from "../components/Navbar";
+import DifficultyBadge from "../components/DifficultyBadge";
 import { getUser } from "../utils/auth";
 import { getAllProblems, type Problem } from "../api/problemApi";
 import styles from "../styles/modules/Home.module.css";
@@ -44,28 +45,6 @@ const TOTAL_PROBLEMS = 248;
 const USER_SCORE = 1450;
 const TOTAL_SUBMIT = 512;
 
-// ── Helper ──────────────────────────────────────────────────────────────────
-
-function diffClass(d: string) {
-  const k = d?.toLowerCase();
-  if (k === "easy") return styles.diffEasy;
-  if (k === "medium") return styles.diffMedium;
-  if (k === "hard") return styles.diffHard;
-  return styles.diffEasy;
-}
-
-function diffLabel(d: string) {
-  const map: Record<string, string> = {
-    easy: "Dễ",
-    medium: "Vừa",
-    hard: "Khó",
-    EASY: "Dễ",
-    MEDIUM: "Vừa",
-    HARD: "Khó",
-  };
-  return map[d] ?? d;
-}
-
 // ── Component ────────────────────────────────────────────────────────────────
 
 const Home: React.FC = () => {
@@ -91,8 +70,9 @@ const Home: React.FC = () => {
           title="TRANG CHỦ"
           subtitle={
             <>
-              Chào mừng trở lại, <strong>{user?.username ?? "Người dùng"}</strong>.
-              Sẵn sàng luyện tập hôm nay!
+              Chào mừng trở lại,{" "}
+              <strong>{user?.username ?? "Người dùng"}</strong>. Sẵn sàng luyện
+              tập hôm nay!
             </>
           }
         />
@@ -110,8 +90,7 @@ const Home: React.FC = () => {
                   to <span className={styles.heroTitleAccent}>bugs.</span>
                 </h1>
                 <p className={styles.heroSub}>
-                  {TOTAL_PROBLEMS} bài toán · C++, Python, Pascal · Kết quả tức
-                  thì
+                  {TOTAL_PROBLEMS} bài toán · C++, Python,... · Kết quả tức thì
                 </p>
               </div>
               <div className={styles.progressSection}>
@@ -222,11 +201,7 @@ const Home: React.FC = () => {
                         <span>· by Admin</span>
                       </div>
                     </div>
-                    <span
-                      className={`${styles.diffBadge} ${diffClass(p.difficulty)}`}
-                    >
-                      {diffLabel(p.difficulty)}
-                    </span>
+                    <DifficultyBadge level={p.difficulty} />
                   </div>
                 ))}
               {!loadingProblems && problems.length === 0 && (
@@ -253,11 +228,7 @@ const Home: React.FC = () => {
                       <span>· {p.submissions} nộp</span>
                     </div>
                   </div>
-                  <span
-                    className={`${styles.diffBadge} ${diffClass(p.difficulty)}`}
-                  >
-                    {diffLabel(p.difficulty)}
-                  </span>
+                  <DifficultyBadge level={p.difficulty} />
                 </div>
               ))}
             </div>

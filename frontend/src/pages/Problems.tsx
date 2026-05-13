@@ -19,6 +19,14 @@ const Problems = () => {
 
   const problemsPerPage = 4;
 
+  const normalizeDifficulty = (difficulty: string) => {
+    const key = difficulty.toLowerCase();
+    if (key === "easy" || key === "dễ") return "easy";
+    if (key === "medium" || key === "vừa" || key === "trung bình") return "medium";
+    if (key === "hard" || key === "khó") return "hard";
+    return key;
+  };
+
   const fetchProblems = async () => {
     try {
       setLoading(true);
@@ -40,7 +48,7 @@ const Problems = () => {
   const filtered: Problem[] = allProblems.filter(
     (p) =>
       p.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (filterLevel === "All" || p.difficulty === filterLevel),
+      (filterLevel === "All" || normalizeDifficulty(p.difficulty) === filterLevel),
   );
 
   const currentProblems = filtered.slice(

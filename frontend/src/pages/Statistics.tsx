@@ -13,6 +13,7 @@ import {
 import UserSidebar from "../components/UserSidebar";
 import UserStatCard from "../components/UserStatCard";
 import Navbar from "../components/Navbar";
+import DifficultyBadge from "../components/DifficultyBadge";
 
 import { getUser } from "../utils/auth";
 import { getAllProblems, type Problem } from "../api/problemApi";
@@ -100,12 +101,6 @@ const verdictClass: Record<Verdict, string> = {
   CE: styles.verdictCE,
   SE: styles.verdictSE,
   PENDING: styles.verdictPending,
-};
-
-const difficultyClass: Record<string, string> = {
-  EASY: styles.diffEasy,
-  MEDIUM: styles.diffMedium,
-  HARD: styles.diffHard,
 };
 
 // ── Main ───────────────────────────────────────────────────────────────────
@@ -272,11 +267,7 @@ const Statistics: React.FC = () => {
                         <span className={styles.problemTitle}>
                           #{p.problemId} {p.title}
                         </span>
-                        <span
-                          className={`${styles.difficultyBadge} ${difficultyClass[p.difficulty] ?? styles.diffDefault}`}
-                        >
-                          {p.difficulty}
-                        </span>
+                        <DifficultyBadge level={p.difficulty} />
                       </div>
                       <button
                         className={styles.doNowBtn}
