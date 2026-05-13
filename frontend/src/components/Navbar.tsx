@@ -1,33 +1,44 @@
-import { Link } from 'react-router-dom';
+import type { ReactNode } from "react";
+import { getUser } from "../utils/auth";
 
-const Navbar = () => {
+interface NavbarProps {
+  title: string;
+  subtitle?: ReactNode;
+  statusLabel?: string;
+  showStatus?: boolean;
+}
+
+const Navbar = ({
+  title,
+  subtitle,
+  statusLabel = "LIVE STATUS",
+  showStatus = true,
+}: NavbarProps) => {
+  const user = getUser();
+  const displayName = user?.username ?? "Người dùng";
+
   return (
-    <nav style={{
-      display: 'flex',
-      gap: '20px',
-      padding: '15px 20px',
-      backgroundColor: '#fff',
-      borderBottom: '1px solid #e5e4e7',
-      alignItems: 'center'
-    }}>
-      <div style={{ fontWeight: 'bold', fontSize: '20px', color: '#aa3bff', marginRight: 'auto' }}>
-        ByeBug
+    <div className="topbar user-navbar">
+      <div>
+        <p className="topbar-title">{title}</p>
+        <p className="topbar-welcome">
+          {subtitle ?? (
+            <>
+              Chào mừng trở lại, <strong>{displayName}</strong>.
+            </>
+          )}
+        </p>
       </div>
 
-      {/*chuyển trang bằng link */}
-      <Link to="/problems" style={{ textDecoration: 'none', color: '#6b6375' }}>Problems</Link>
-      <Link to="/ranking" style={{ textDecoration: 'none', color: '#6b6375' }}>Ranking</Link>
-      <Link to="/profile/me" style={{ textDecoration: 'none', color: '#6b6375' }}>Profile</Link>
-      <Link to="/settings" style={{ textDecoration: 'none', color: '#6b6375' }}>Settings</Link>
-
-      <Link to="/login" style={{
-        padding: '8px 16px',
-        borderRadius: '6px',
-        backgroundColor: 'purple',
-        color: '#fff',
-        textDecoration: 'none'
-      }}>Logout</Link>
-    </nav>
+      {showStatus && (
+        <div className="topbar-right">
+          <div className="status-live">
+            <span className="pulse-dot" />
+            {statusLabel}
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

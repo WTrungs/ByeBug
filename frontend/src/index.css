@@ -424,6 +424,11 @@ body {
   z-index: 10;
 }
 
+.user-navbar {
+  height: 100px;
+  box-shadow: 0 2px 0 var(--black);
+}
+
 .topbar-title {
   font-size: 24px;
   font-weight: 900;
