@@ -7,12 +7,13 @@ import "../index.css";
 
 const menuItems = [
   { key: "home", label: "Home", icon: "", path: "/home" },
-  { key: "statistics", label: "Statistics", icon: "", path: "/statistics" },
   { key: "problems", label: "Problems", icon: "", path: "/problems" },
+  { key: "submission", label: "Submission", icon: "", path: "/submissions" },
+  { key: "leaderboard", label: "Leaderboard", icon: "", path: "/leaderboard" },
+
+  { key: "statistics", label: "Statistics", icon: "", path: "/statistics" },
   { key: "profile", label: "Profile", icon: "", path: "/profile/me" },
   { key: "settings", label: "Settings", icon: "", path: "/settings" },
-  { key: "leaderboard", label: "Leaderboard", icon: "", path: "/leaderboard" },
-  { key: "submission", label: "Submission", icon: "", path: "/submissions" },
 ];
 
 const UserSidebar: React.FC = () => {
@@ -41,7 +42,7 @@ const UserSidebar: React.FC = () => {
                 ? "leaderboard"
                 : location.pathname.startsWith("/submissions")
                   ? "submission"
-                : "";
+                  : "";
 
   const handleLogout = () => {
     localStorage.removeItem("USER");

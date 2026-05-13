@@ -197,8 +197,7 @@ const Home: React.FC = () => {
                     <div className={styles.problemRowLeft}>
                       <span className={styles.problemRowTitle}>{p.title}</span>
                       <div className={styles.problemRowMeta}>
-                        <span>⏱ vừa đăng</span>
-                        <span>· by Admin</span>
+                        <span>Vừa đăng bởi admin</span>
                       </div>
                     </div>
                     <DifficultyBadge level={p.difficulty} />
