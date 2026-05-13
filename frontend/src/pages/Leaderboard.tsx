@@ -226,7 +226,7 @@ const Leaderboard: React.FC = () => {
               }
               disabled={!canShowMore}
             >
-              {canShowMore ? "XEM THÊM 3 NGƯỜI KHÁC" : "ĐÃ HIỂN THỊ TẤT CẢ"}
+              {canShowMore ? "XEM THÊM" : "ĐÃ HIỂN THỊ TẤT CẢ"}
               <span>v</span>
             </button>
           </div>

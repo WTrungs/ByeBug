@@ -1,57 +1,48 @@
-import { Link, NavLink } from 'react-router-dom';
-import BrandLogo from './BrandLogo';
-import { getUser } from '../utils/auth';
-import styles from '../styles/modules/ProblemDetail.module.css';
+import { Link } from 'react-router-dom';
+import Navbar from './Navbar';
 
 interface ProblemDetailHeaderProps {
     onLogoClick: () => void;
+    problemTitle?: string;
 }
 
-export function ProblemDetailHeader({ onLogoClick }: ProblemDetailHeaderProps) {
-    const user = getUser();
-    const displayName = user?.username ?? 'Guest';
-    const avatarSeed = encodeURIComponent(displayName);
-
+export function ProblemDetailHeader({ onLogoClick, problemTitle }: ProblemDetailHeaderProps) {
     return (
-        <header className={styles.navbar}>
-            <div className={styles.navLogoWrap}>
-                <BrandLogo onClick={onLogoClick} />
-            </div>
-            <nav className={styles.topNav} aria-label="Primary navigation">
-                <NavLink to="/problems" className={({ isActive }) => `${styles.topNavLink} ${isActive ? styles.topNavLinkActive : ''}`}>
-                    Problems
-                </NavLink>
-                <Link to="/contests" className={styles.topNavLink}>Contests</Link>
-                <Link to="/leaderboard" className={styles.topNavLink}>Leaderboard</Link>
-                <Link to="/discuss" className={styles.topNavLink}>Discuss</Link>
-            </nav>
-            <div className={styles.headerActions}>
-                <button className={styles.iconButton} type="button" aria-label="Thông báo">
-                    <span aria-hidden="true">●</span>
-                </button>
-                <Link to="/profile/me" className={styles.avatarButton} aria-label={`Mở hồ sơ của ${displayName}`}>
-                    <img
-                        src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${avatarSeed}`}
-                        alt=""
-                        className={styles.avatarImage}
-                    />
-                </Link>
-            </div>
-        </header>
-    );
-}
-
-export function ProblemDetailFooter() {
-    return (
-        <footer className={styles.footer}>
-            <div className={styles.footerLinks}>
-                <span>© 2024 ByeBug Online Judge</span>
-                <Link to="/privacy">Privacy Policy</Link>
-                <Link to="/terms">Terms of Service</Link>
-                <Link to="/api-docs" className={styles.footerActiveLink}>API Docs</Link>
-                <Link to="/status">Status</Link>
-            </div>
-            <strong className={styles.versionLabel}>v2.4.0-stable</strong>
-        </footer>
+        <Navbar
+            title={problemTitle ?? 'Problem Detail'}
+            subtitle={
+                <span style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: '#888' }}>
+                    <span
+                        onClick={onLogoClick}
+                        style={{ cursor: 'pointer', fontWeight: 700, color: 'var(--primary)', transition: 'all 0.15s ease' }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.color = 'var(--black)';
+                            e.currentTarget.style.textShadow = '1.5px 1.5px 0px var(--primary)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.color = 'var(--primary)';
+                            e.currentTarget.style.textShadow = 'none';
+                        }}
+                    >
+                        ByeBug
+                    </span>
+                    <span style={{ color: '#ccc' }}>›</span>
+                    <Link
+                        to="/problems"
+                        style={{ color: '#888', textDecoration: 'none' }}
+                        onMouseEnter={(e) => e.currentTarget.style.color = 'var(--black)'}
+                        onMouseLeave={(e) => e.currentTarget.style.color = '#888'}
+                    >
+                        Problems
+                    </Link>
+                    {problemTitle && (
+                        <>
+                            <span style={{ color: '#ccc' }}>›</span>
+                            <strong style={{ color: 'var(--black)', fontWeight: 800 }}>{problemTitle}</strong>
+                        </>
+                    )}
+                </span>
+            }
+        />
     );
 }
