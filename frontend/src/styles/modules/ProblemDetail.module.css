@@ -1,0 +1,497 @@
+/* ── Full-page wrapper ───────────────────────────── */
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+}
+
+/* ── Top navbar ──────────────────────────────────── */
+.navbar {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  background: var(--white);
+  border-bottom: 2px solid var(--black);
+}
+
+.navLogoWrap {
+  padding: 12px 20px;
+  border-bottom: 2px solid var(--black);
+  cursor: pointer;
+}
+
+/* ── Breadcrumb bar ──────────────────────────────── */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 20px;
+  background: var(--white);
+  font-size: 17px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.breadcrumbLink {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.breadcrumbLink:hover {
+  text-decoration: underline;
+}
+
+.breadcrumbSep {
+  color: #999;
+}
+
+.breadcrumbCurrent {
+  color: var(--black);
+}
+
+/* ── Body split layout ───────────────────────────── */
+.body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ── LEFT panel: problem description ────────────── */
+.leftPanel {
+  width: 42%;
+  display: flex;
+  flex-direction: column;
+  border-right: 2px solid var(--black);
+  overflow-y: auto;
+  background: var(--white);
+}
+
+.problemHeader {
+  padding: 20px 24px 16px;
+  border-bottom: 2px solid var(--black);
+  flex-shrink: 0;
+}
+
+.problemId {
+  font-size: 14px;
+  font-weight: 700;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 6px;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.problemTitle {
+  margin: 0 0 12px;
+  font-size: 21px;
+  font-weight: 800;
+  line-height: 1.25;
+  font-family: 'Bricolage Grotesque', 'Plus Jakarta Sans', sans-serif;
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Difficulty badge — override colors via data attr or extra classes */
+.difficultyBadge {
+  padding: 3px 10px;
+  border: 2px solid var(--black);
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: var(--shadow-sm);
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.diffEasy {
+  background: #DCFCE7;
+  color: #166534;
+}
+
+.diffMedium {
+  background: #FEF9C3;
+  color: #854D0E;
+}
+
+.diffHard {
+  background: #FFE4E6;
+  color: #9F1239;
+}
+
+/* Tag pill */
+.tagBadge {
+  padding: 3px 10px;
+  border: 1.5px solid var(--black);
+  background: #FDFDFD;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* ── Limits bar ──────────────────────────────────── */
+.limitsBar {
+  display: flex;
+  gap: 20px;
+  padding: 9px 24px;
+  border-bottom: 2px solid var(--black);
+  background: #FAFAFA;
+  flex-shrink: 0;
+}
+
+.limitItem {
+  font-size: 12px;
+  font-weight: 600;
+  color: #555;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.limitValue {
+  color: var(--black);
+}
+
+/* ── Problem content scroll area ─────────────────── */
+.problemContent {
+  padding: 20px 24px;
+  flex: 1;
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: #222;
+}
+
+.descriptionText {
+  margin-bottom: 20px;
+  white-space: pre-wrap;
+}
+
+/* ── Section title ───────────────────────────────── */
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--black);
+  margin: 22px 0 10px;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.sectionTitleBar {
+  display: inline-block;
+  width: 3px;
+  height: 14px;
+  background: var(--primary);
+  border: 1px solid var(--black);
+}
+
+/* ── Constraints box ─────────────────────────────── */
+.constraintsBox {
+  border: 2px solid var(--black);
+  box-shadow: var(--shadow-sm);
+  padding: 12px 14px;
+  background: #FAFAFA;
+}
+
+.constraintsList {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.constraintItem {
+  font-size: 13.5px;
+  line-height: 1.8;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── Example block ───────────────────────────────── */
+.exampleBlock {
+  border: 2px solid var(--black);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 14px;
+  background: var(--white);
+}
+
+.exampleHeader {
+  background: var(--black);
+  color: var(--white);
+  padding: 5px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.exampleBody {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.exampleLabel {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #666;
+  letter-spacing: 0.4px;
+  margin-bottom: 3px;
+}
+
+.examplePre {
+  background: #F8F8F8;
+  border: 1px solid #E5E7EB;
+  padding: 7px 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  white-space: pre-wrap;
+  margin: 0;
+}
+
+/* ── RIGHT panel: editor ─────────────────────────── */
+.rightPanel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #1A1A1A;
+  overflow: hidden;
+}
+
+/* Editor top bar */
+.editorHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  border-bottom: 2px solid #2A2A2A;
+  background: #111;
+  flex-shrink: 0;
+}
+
+.langSelect {
+  background: #222;
+  color: #E0E0E0;
+  border: 1.5px solid #444;
+  padding: 4px 10px;
+  font-size: 13px;
+  outline: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.filenameLabel {
+  font-size: 12px;
+  color: #555;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Code textarea */
+.codeEditor {
+  flex: 1;
+  resize: none;
+  background: #1A1A1A;
+  color: #D4D4D4;
+  border: none;
+  outline: none;
+  padding: 16px 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  tab-size: 4;
+  overflow-y: auto;
+}
+
+/* ── Test / result panel ─────────────────────────── */
+.testPanel {
+  flex-shrink: 0;
+  border-top: 2px solid #2A2A2A;
+  background: #111;
+}
+
+.testPanelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  border-bottom: 1px solid #1E1E1E;
+}
+
+.testPanelTitle {
+  font-size: 11px;
+  font-weight: 700;
+  color: #AAA;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+/* Verdict badge inside test panel */
+.verdictBadge {
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+/* Test-case dots row */
+.tcDotsRow {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 10px 16px;
+  min-height: 48px;
+  align-items: center;
+}
+
+.tcMessage {
+  font-size: 12px;
+  color: #666;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Single TC dot */
+.tcDot {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  border-width: 1.5px;
+  border-style: solid;
+}
+
+.tcDotPass {
+  background: #14532D;
+  color: #86EFAC;
+  border-color: #22C55E;
+}
+
+.tcDotFail {
+  background: #7F1D1D;
+  color: #FCA5A5;
+  border-color: #EF4444;
+}
+
+.tcDotPending {
+  background: #1A1A1A;
+  color: #555;
+  border-color: #333;
+}
+
+/* ── Action bar ──────────────────────────────────── */
+.actionBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-top: 1px solid #1E1E1E;
+  background: #0D0D0D;
+  flex-shrink: 0;
+}
+
+.statsHint {
+  font-size: 12px;
+  color: #555;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 10px;
+}
+
+.btnRun {
+  padding: 7px 20px;
+  background: transparent;
+  color: #555;
+  border: 1.5px solid #333;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: not-allowed;
+  font-family: 'Space Grotesk', sans-serif;
+  opacity: 0.4;
+}
+
+.btnSubmit {
+  padding: 7px 24px;
+  background: var(--primary);
+  color: var(--black);
+  border: 2px solid var(--black);
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 3px 3px 0px var(--black);
+  font-family: 'Space Grotesk', sans-serif;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.btnSubmit:hover:not(:disabled) {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0px var(--black);
+}
+
+.btnSubmit:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  box-shadow: none;
+}
+
+/* ── Loading / Error full-page states ────────────── */
+.fullPageCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 46px);
+}
+
+.loadingWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #666;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid #EEE;
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.errorBox {
+  border: 2px solid var(--black);
+  box-shadow: var(--shadow-md);
+  background: #FFE4E6;
+  padding: 24px 40px;
+  font-weight: 700;
+  color: #9F1239;
+  text-align: center;
+}
+
+/* ── Verdict color variants (reuse from UserHome) ── */
+.verdictAC  { background: #DCFCE7; color: #166534; border: 1.5px solid #22C55E; }
+.verdictWA  { background: #FFE4E6; color: #9F1239; border: 1.5px solid #EF4444; }
+.verdictTLE { background: #FEF3C7; color: #92400E; border: 1.5px solid #F59E0B; }
+.verdictMLE { background: #EFF6FF; color: #1E40AF; border: 1.5px solid #3B82F6; }
+.verdictRE  { background: #F5F3FF; color: #4C1D95; border: 1.5px solid #8B5CF6; }
+.verdictCE  { background: #F3F4F6; color: #374151; border: 1.5px solid #9CA3AF; }
+.verdictSE  { background: #F3F4F6; color: #374151; border: 1.5px solid #9CA3AF; }
+.verdictPending { background: #FAFAFA; color: #6B7280; border: 1.5px solid #D1D5DB; }
