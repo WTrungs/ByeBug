@@ -1,5 +1,6 @@
 package com.group5.byebug.service;
 
+import com.group5.byebug.entity.Admin;
 import com.group5.byebug.entity.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -33,22 +34,27 @@ public class JwtService {
     }
 
     public String generateToken(User user) {
-        long now = Instant.now().toEpochMilli();
+        return buildToken(user.getUsername(), user.getUserId(), user.getRole());
+    }
 
+    public String generateToken(Admin admin) {
+        return buildToken(admin.getUsername(), admin.getAdminId(), "ADMIN");
+    }
+
+    private String buildToken(String username, Long id, String role) {
+        long now = Instant.now().toEpochMilli();
         String header = "{\"alg\":\"HS256\",\"typ\":\"JWT\"}";
         String payload = String.format(
                 "{\"sub\":\"%s\",\"userId\":%d,\"role\":\"%s\",\"iat\":%d,\"exp\":%d}",
-                escapeJson(user.getUsername()),
-                user.getUserId(),
-                escapeJson(user.getRole()),
+                escapeJson(username),
+                id,
+                escapeJson(role),
                 now / 1000,
                 (now + jwtExpirationMs) / 1000
         );
-
         String encodedHeader = encode(header);
         String encodedPayload = encode(payload);
         String signingInput = encodedHeader + "." + encodedPayload;
-
         return signingInput + "." + sign(signingInput);
     }
 

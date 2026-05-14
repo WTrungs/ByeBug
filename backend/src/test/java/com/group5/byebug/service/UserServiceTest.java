@@ -3,6 +3,7 @@ package com.group5.byebug.service;
 import com.group5.byebug.dto.LoginRequest;
 import com.group5.byebug.dto.UserResponse;
 import com.group5.byebug.entity.User;
+import com.group5.byebug.repository.AdminRepository;
 import com.group5.byebug.repository.SubmissionRepository;
 import com.group5.byebug.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -19,11 +20,13 @@ import static org.mockito.Mockito.when;
 
 class UserServiceTest {
     private final UserRepository userRepository = mock(UserRepository.class);
+    private final AdminRepository adminRepository = mock(AdminRepository.class);
     private final SubmissionRepository submissionRepository = mock(SubmissionRepository.class);
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private final JwtService jwtService = new JwtService("test-secret-for-user-service", 86_400_000);
     private final UserService userService = new UserService(
             userRepository,
+            adminRepository,
             submissionRepository,
             passwordEncoder,
             jwtService
@@ -61,6 +64,19 @@ class UserServiceTest {
     void loginRejectsInactiveUser() {
         User user = activeUser("coder_01", "USER", "password");
         user.setIsActive(false);
+        when(userRepository.findByUsername("coder_01")).thenReturn(Optional.of(user));
+
+        LoginRequest request = new LoginRequest();
+        request.setUsername("coder_01");
+        request.setPassword("password");
+
+        assertThrows(RuntimeException.class, () -> userService.login(request));
+    }
+
+    @Test
+    void loginRejectsDeletedUser() {
+        User user = activeUser("coder_01", "USER", "password");
+        user.setDeletedAt(java.time.LocalDateTime.now());
         when(userRepository.findByUsername("coder_01")).thenReturn(Optional.of(user));
 
         LoginRequest request = new LoginRequest();

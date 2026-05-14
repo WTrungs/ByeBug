@@ -1,6 +1,6 @@
 package com.group5.byebug.config;
 
-import com.group5.byebug.entity.User;
+import com.group5.byebug.repository.AdminRepository;
 import com.group5.byebug.repository.UserRepository;
 import com.group5.byebug.service.JwtService;
 import jakarta.servlet.FilterChain;
@@ -23,10 +23,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserRepository userRepository;
+    private final AdminRepository adminRepository;
 
-    public JwtAuthenticationFilter(JwtService jwtService, UserRepository userRepository) {
+    public JwtAuthenticationFilter(JwtService jwtService, UserRepository userRepository, AdminRepository adminRepository) {
         this.jwtService = jwtService;
         this.userRepository = userRepository;
+        this.adminRepository = adminRepository;
     }
 
     @Override
@@ -48,22 +50,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         String username = jwtService.extractUsername(token);
-        if (username == null) {
+        String role = jwtService.extractRole(token);
+        if (username == null || role == null) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        userRepository.findByUsername(username)
-                .filter(user -> Boolean.TRUE.equals(user.getIsActive()))
-                .ifPresent(user -> authenticate(request, user));
+        if ("ADMIN".equals(role)) {
+            adminRepository.findByUsername(username)
+                    .filter(admin -> Boolean.TRUE.equals(admin.getIsActive()))
+                    .ifPresent(admin -> authenticate(request, admin.getUsername(), "ADMIN"));
+        } else {
+            userRepository.findByUsername(username)
+                    .filter(user -> Boolean.TRUE.equals(user.getIsActive()))
+                    .filter(user -> user.getDeletedAt() == null)
+                    .ifPresent(user -> authenticate(request, user.getUsername(), "USER"));
+        }
 
         filterChain.doFilter(request, response);
     }
 
-    private void authenticate(HttpServletRequest request, User user) {
-        String role = user.getRole() == null ? "USER" : user.getRole();
+    private void authenticate(HttpServletRequest request, String username, String role) {
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                user.getUsername(),
+                username,
                 null,
                 List.of(new SimpleGrantedAuthority("ROLE_" + role))
         );

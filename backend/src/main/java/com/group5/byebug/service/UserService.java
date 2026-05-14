@@ -1,7 +1,9 @@
 package com.group5.byebug.service;
 
 import com.group5.byebug.dto.*;
+import com.group5.byebug.entity.Admin;
 import com.group5.byebug.entity.User;
+import com.group5.byebug.repository.AdminRepository;
 import com.group5.byebug.repository.UserRepository;
 import com.group5.byebug.repository.SubmissionRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,17 +21,20 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final AdminRepository adminRepository;
     private final SubmissionRepository submissionRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
     public UserService(
             UserRepository userRepository,
+            AdminRepository adminRepository,
             SubmissionRepository submissionRepository,
             PasswordEncoder passwordEncoder,
             JwtService jwtService
     ) {
         this.userRepository = userRepository;
+        this.adminRepository = adminRepository;
         this.submissionRepository = submissionRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
@@ -59,7 +64,7 @@ public class UserService {
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("Sai tên đăng nhập hoặc mật khẩu"));
 
-        if (!Boolean.TRUE.equals(user.getIsActive())) {
+        if (!Boolean.TRUE.equals(user.getIsActive()) || user.getDeletedAt() != null) {
             throw new RuntimeException("Tài khoản đã bị vô hiệu hóa");
         }
 
@@ -78,6 +83,30 @@ public class UserService {
                 savedUser.getEmail(),
                 "Đăng nhập thành công",
                 savedUser.getRole(),
+                token
+        );
+    }
+
+    public UserResponse adminLogin(LoginRequest request) {
+        Admin admin = adminRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new RuntimeException("Sai tên đăng nhập hoặc mật khẩu"));
+
+        if (!Boolean.TRUE.equals(admin.getIsActive())) {
+            throw new RuntimeException("Tài khoản đã bị vô hiệu hóa");
+        }
+
+        if (!passwordEncoder.matches(request.getPassword(), admin.getPasswordHash())) {
+            throw new RuntimeException("Sai tên đăng nhập hoặc mật khẩu");
+        }
+
+        String token = jwtService.generateToken(admin);
+        return new UserResponse(
+                admin.getAdminId(),
+                admin.getUsername(),
+                admin.getFullName(),
+                admin.getEmail(),
+                "Đăng nhập thành công",
+                "ADMIN",
                 token
         );
     }
