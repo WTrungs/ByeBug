@@ -28,7 +28,7 @@ const App: React.FC = () => {
           
           {/* 1. Trang chủ */}
           <Route path="/home" element={
-            <ProtectedRoute userOnly><Home /></ProtectedRoute>
+            <ProtectedRoute><Home /></ProtectedRoute>
           } />
 
           {/* 2. Bài tập & Chi tiết bài tập */}

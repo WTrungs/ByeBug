@@ -2,6 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../styles/modules/Problems.css'
 import api from '../api/axios';
 import ProblemCard from '../components/ProblemCard';
 import type { Problem } from '../components/ProblemCard';
@@ -15,33 +16,21 @@ interface ProblemDTO {
     problemId: number;
     title: string;
     description: string;
-
     difficulty: 'EASY' | 'MEDIUM' | 'HARD';
-
     tags: TagDTO[];
-
     timeLimitMs: number;
-
     isPublic: boolean;
-
     solvedCount?: number;
 }
 
 const toCardProblem = (dto: ProblemDTO): Problem => ({
     problem_id: dto.problemId,
-
     title: dto.title,
-
     description: dto.description,
-
     difficulty: dto.difficulty,
-
     tags: dto.tags?.map(tag => tag.tagName) ?? [],
-
     solved_count: dto.solvedCount ?? 0,
-
     time_limit_ms: dto.timeLimitMs,
-
     is_public: dto.isPublic,
 });
 
@@ -72,6 +61,8 @@ const DIFFICULTIES = [
     { label: 'Khó', value: 'HARD' },
 ];
 
+const PAGE_SIZE = 12;
+
 const Problems: React.FC = () => {
     const navigate = useNavigate();
 
@@ -82,15 +73,13 @@ const Problems: React.FC = () => {
     const [search, setSearch] = useState('');
     const [topic, setTopic] = useState('');
     const [diffs, setDiffs] = useState<string[]>([]);
-    
+    const [page, setPage] = useState(1);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 setLoading(true);
-
                 const res = await api.get<ProblemDTO[]>('/problems');
-
                 setProblems(res.data.map(toCardProblem));
             } catch (err) {
                 console.error(err);
@@ -99,9 +88,13 @@ const Problems: React.FC = () => {
                 setLoading(false);
             }
         };
-
         fetchData();
     }, []);
+
+    // Reset về trang 1 khi filter thay đổi
+    useEffect(() => {
+        setPage(1);
+    }, [search, topic, diffs]);
 
     const filtered = useMemo(() => {
         return problems.filter(p => {
@@ -113,178 +106,144 @@ const Problems: React.FC = () => {
                 !topic ||
                 (() => {
                     const mapped = TOPIC_MAP[topic] ?? [topic];
-
-                    return p.tags.some((tag:string) =>
-                        mapped.includes(tag)
-                    );
+                    return p.tags.some((tag: string) => mapped.includes(tag));
                 })();
 
             const matchDiff =
-                diffs.length === 0 ||
-                diffs.includes(p.difficulty);
+                diffs.length === 0 || diffs.includes(p.difficulty);
 
-            return (
-                matchSearch &&
-                matchTopic &&
-                matchDiff
-            );
+            return matchSearch && matchTopic && matchDiff;
         });
     }, [problems, search, topic, diffs]);
 
+    const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+    const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
     const topicCount = (value: string) => {
         if (!value) return problems.length;
-
         const mapped = TOPIC_MAP[value] ?? [value];
-
         return problems.filter(p =>
-            p.tags.some((tag:string) =>
-                mapped.includes(tag)
-            )
+            p.tags.some((tag: string) => mapped.includes(tag))
         ).length;
     };
 
     const toggleDiff = (v: string) => {
         setDiffs(prev =>
-            prev.includes(v)
-                ? prev.filter(d => d !== v)
-                : [...prev, v]
+            prev.includes(v) ? prev.filter(d => d !== v) : [...prev, v]
         );
     };
 
-    if (loading) {
-        return (
-            <div className="prob-state">
-                Đang tải dữ liệu...
-            </div>
-        );
-    }
-
-    if (error) {
-        return (
-            <div className="prob-state prob-state--error">
-                ⚠️ {error}
-            </div>
-        );
-    }
+    if (loading) return <div className="prob-state">Đang tải dữ liệu...</div>;
+    if (error) return <div className="prob-state prob-state--error">⚠️ {error}</div>;
 
     return (
         <div className="problems-page">
-            <section className="prob-hero">
-                <h1 className="prob-hero__title">
-                    DANH SÁCH BÀI TẬP
-                </h1>
-            </section>
-
             <main className="prob-body">
-                <aside className="prob-sidebar">
-                    <div className="prob-sidebar__section">
-                        <div className="prob-sidebar__section-header">
-                            <span>🏷</span>
-                            BỘ LỌC
-                        </div>
 
-                        <ul className="prob-sidebar__list">
-                            {SIDEBAR_TOPICS.map(t => (
-                                <li
-                                    key={t.value}
-                                    className={`prob-sidebar__item ${
-                                        topic === t.value
-                                            ? 'prob-sidebar__item--active'
-                                            : ''
-                                    }`}
-                                    onClick={() =>
-                                        setTopic(t.value)
-                                    }
-                                >
-                                    <span>{t.label}</span>
+                {/* ── FILTER BAR ── */}
+                <div className="prob-filterbar">
 
-                                    <span className="prob-sidebar__count">
+                    <ul className="prob-filterbar__topics" style={{ listStyle: 'none', margin: 0, padding: 0 }}>
+                        {SIDEBAR_TOPICS.map(t => (
+                            <li
+                                key={t.value}
+                                className={`prob-filterbar__pill ${topic === t.value ? 'prob-filterbar__pill--active' : ''}`}
+                                onClick={() => setTopic(t.value)}
+                            >
+                                {t.label}
+                                {t.value !== '' && (
+                                    <span style={{ marginLeft: 6, opacity: 0.6 }}>
                                         {topicCount(t.value)}
                                     </span>
-                                </li>
-                            ))}
-                        </ul>
+                                )}
+                            </li>
+                        ))}
+                    </ul>
+
+                    <div className="prob-filterbar__divider" />
+
+                    <div className="prob-filterbar__diffs">
+                        {DIFFICULTIES.map(d => (
+                            <label key={d.value} className="prob-filterbar__check-label">
+                                <input
+                                    type="checkbox"
+                                    checked={diffs.includes(d.value)}
+                                    onChange={() => toggleDiff(d.value)}
+                                    className="prob-filterbar__checkbox"
+                                />
+                                <span className={`diff-text--${d.value.toLowerCase()}`}>
+                                    {d.label}
+                                </span>
+                            </label>
+                        ))}
                     </div>
 
-                    <div className="prob-sidebar__section">
-                        <div className="prob-sidebar__section-header">
-                            <span>📊</span>
-                            ĐỘ KHÓ
-                        </div>
-
-                        <ul className="prob-sidebar__checklist">
-                            {DIFFICULTIES.map(d => (
-                                <li
-                                    key={d.value}
-                                    className="prob-sidebar__check-item"
-                                >
-                                    <label className="prob-sidebar__check-label">
-                                        <input
-                                            type="checkbox"
-                                            checked={diffs.includes(
-                                                d.value
-                                            )}
-                                            onChange={() =>
-                                                toggleDiff(d.value)
-                                            }
-                                            className="prob-sidebar__checkbox"
-                                        />
-
-                                        <span
-                                            className={`prob-sidebar__check-text diff-text--${d.value.toLowerCase()}`}
-                                        >
-                                            {d.label}
-                                        </span>
-                                    </label>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+                    <div className="prob-filterbar__divider" />
 
                     <button
-                        className="btn-neo-submit prob-sidebar__filter-btn"
-                        onClick={() => {
-                            setTopic('');
-                            setDiffs([]);
-                            setSearch('');
-                        }}
+                        className="prob-filterbar__clear"
+                        onClick={() => { setTopic(''); setDiffs([]); setSearch(''); }}
                     >
                         Xóa lọc
                     </button>
-                </aside>
+                </div>
 
+                {/* ── SEARCH ── */}
+                <div className="prob-search">
+                    <input
+                        className="prob-search__input"
+                        placeholder="Tìm kiếm bài tập..."
+                        value={search}
+                        onChange={e => setSearch(e.target.value)}
+                    />
+                </div>
+
+                {/* ── RESULT META ── */}
+                <p className="prob-meta">
+                    Hiển thị {paginated.length} / {filtered.length} bài tập
+                    &nbsp;·&nbsp; Trang {page} / {totalPages}
+                </p>
+
+                {/* ── CARD GRID ── */}
                 <div className="prob-list">
-                    <div className="prob-search">
-                        <span className="prob-search__icon">
-                            🔍
-                        </span>
-
-                        <input
-                            className="prob-search__input"
-                            placeholder="Tìm kiếm bài tập..."
-                            value={search}
-                            onChange={e =>
-                                setSearch(e.target.value)
-                            }
-                        />
-                    </div>
-
-                    {filtered.length === 0 ? (
-                        <div className="prob-empty">
-                            Không tìm thấy bài tập 😢
-                        </div>
+                    {paginated.length === 0 ? (
+                        <div className="prob-empty">Không tìm thấy bài tập 😢</div>
                     ) : (
-                        filtered.map(problem => (
+                        paginated.map(problem => (
                             <ProblemCard
                                 key={problem.problem_id}
                                 problem={problem}
-                                onSolve={(id: number) =>
-                                    navigate(`/problems/${id}`)
-                                }
+                                onSolve={(id: number) => navigate(`/problems/${id}`)}
                             />
                         ))
                     )}
                 </div>
+
+                {/* ── PAGINATION ── */}
+                {totalPages > 1 && (
+                    <div className="prob-pagination">
+                        <button
+                            className="prob-pagination__btn"
+                            onClick={() => setPage(p => Math.max(1, p - 1))}
+                            disabled={page === 1}
+                            aria-label="Trang trước"
+                        >
+                            ▲
+                        </button>
+                        <span className="prob-pagination__info">
+                            {page} / {totalPages}
+                        </span>
+                        <button
+                            className="prob-pagination__btn"
+                            onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                            disabled={page === totalPages}
+                            aria-label="Trang sau"
+                        >
+                            ▼
+                        </button>
+                    </div>
+                )}
+
             </main>
         </div>
     );
