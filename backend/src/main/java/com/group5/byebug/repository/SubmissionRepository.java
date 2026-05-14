@@ -56,6 +56,10 @@ public interface SubmissionRepository extends JpaRepository<Submission, Long> {
     @Query("DELETE FROM Submission s WHERE s.user = :user")
     void deleteByUser(@Param("user") User user);
 
+    Long countByProblemProblemId(Long problemId);
+
+    Long countByProblemProblemIdAndVerdict(Long problemId, Verdict verdict);
+
     interface RecentSubmissionActivity {
         Long getId();
         LocalDateTime getTime();
