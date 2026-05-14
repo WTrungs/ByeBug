@@ -13,12 +13,12 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "admins")
+public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "admin_id")
+    private Long adminId;
 
     @Column(nullable = false, length = 50, unique = true)
     private String username;
@@ -35,26 +35,11 @@ public class User {
     @Column(name = "avatar_url", columnDefinition = "TEXT")
     private String avatarUrl;
 
-    @Column(length = 10)
-    private String gender;
-
-    @Column(name = "role", length = 10, nullable = false)
-    private String role = "USER";
-    
-    @Column(name = "total_score")
-    private Integer totalScore = 0;
-
     @Column(name = "is_active")
     private Boolean isActive = true;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
-
-    @Column(name = "last_login_at")
-    private LocalDateTime lastLoginAt;
-
-    @Column(name = "deleted_at")
-    private LocalDateTime deletedAt;
 
     @PrePersist
     protected void onCreate() {
