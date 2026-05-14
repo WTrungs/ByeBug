@@ -1,252 +1,338 @@
 // src/pages/Problems.tsx
 
-import React, { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../styles/modules/Problems.css'
-import api from '../api/axios';
-import ProblemCard from '../components/ProblemCard';
-import type { Problem } from '../components/ProblemCard'
+import React, { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "../api/axios";
+import Navbar from "../components/Navbar";
+import Pagination from "../components/Pagination";
+import ProblemCard from "../components/ProblemCard";
+import type { Problem } from "../components/ProblemCard";
+import UserSidebar from "../components/UserSidebar";
+import leaderboardStyles from "../styles/modules/Leaderboard.module.css";
 
 interface TagDTO {
-    tagId: number;
-    tagName: string;
+  tagId: number;
+  tagName: string;
 }
 
 interface ProblemDTO {
-    problemId: number;
-    title: string;
-    description: string;
-    difficulty: 'EASY' | 'MEDIUM' | 'HARD';
-    tags: TagDTO[];
-    timeLimitMs: number;
-    isPublic: boolean;
-    solvedCount?: number;
+  problemId: number;
+  title: string;
+  description: string;
+  difficulty: "EASY" | "MEDIUM" | "HARD";
+  tags: TagDTO[];
+  timeLimitMs: number;
+  isPublic: boolean;
+  solvedCount?: number;
 }
 
+interface ProblemQueryState {
+  search: string;
+  topic: string;
+  diffs: string[];
+  currentPage: number;
+  pageSize: number;
+}
+
+const PAGE_SIZE = 5;
+
 const toCardProblem = (dto: ProblemDTO): Problem => ({
-    problem_id: dto.problemId,
-    title: dto.title,
-    description: dto.description,
-    difficulty: dto.difficulty,
-    tags: dto.tags?.map(tag => tag.tagName) ?? [],
-    solved_count: dto.solvedCount ?? 0,
-    time_limit_ms: dto.timeLimitMs,
-    is_public: dto.isPublic,
+  problem_id: dto.problemId,
+  title: dto.title,
+  description: dto.description,
+  difficulty: dto.difficulty,
+  tags: dto.tags?.map((tag) => tag.tagName) ?? [],
+  solved_count: dto.solvedCount ?? 0,
+  time_limit_ms: dto.timeLimitMs,
+  is_public: dto.isPublic,
 });
 
 const TOPIC_MAP: Record<string, string[]> = {
-    'array-string': ['String'],
-    'sorting': ['Sorting'],
-    'data-structure': ['Data Structure'],
-    'dynamic-programming': ['Dynamic Programming'],
-    'graph': ['Graph'],
-    'math': ['Math'],
-    'bitmask': ['Bitmask'],
-    'geometry': ['Geometry'],
+  "array-string": ["String"],
+  sorting: ["Sorting"],
+  "data-structure": ["Data Structure"],
+  "dynamic-programming": ["Dynamic Programming"],
+  graph: ["Graph"],
+  math: ["Math"],
+  bitmask: ["Bitmask"],
+  geometry: ["Geometry"],
 };
 
-const SIDEBAR_TOPICS = [
-    { label: 'Tất cả bài tập', value: '' },
-    { label: 'Mảng & Chuỗi', value: 'array-string' },
-    { label: 'Sắp xếp', value: 'sorting' },
-    { label: 'Cấu trúc dữ liệu', value: 'data-structure' },
-    { label: 'Quy hoạch động', value: 'dynamic-programming' },
-    { label: 'Đồ thị', value: 'graph' },
-    { label: 'Toán học', value: 'math' },
+const FILTER_TOPICS = [
+  { label: "Tất cả bài tập", value: "" },
+  { label: "Mảng & Chuỗi", value: "array-string" },
+  { label: "Sắp xếp", value: "sorting" },
+  { label: "Cấu trúc dữ liệu", value: "data-structure" },
+  { label: "Quy hoạch động", value: "dynamic-programming" },
+  { label: "Đồ thị", value: "graph" },
+  { label: "Toán học", value: "math" },
 ];
 
 const DIFFICULTIES = [
-    { label: 'Dễ', value: 'EASY' },
-    { label: 'Trung bình', value: 'MEDIUM' },
-    { label: 'Khó', value: 'HARD' },
+  { label: "Dễ", value: "EASY" },
+  { label: "Trung bình", value: "MEDIUM" },
+  { label: "Khó", value: "HARD" },
 ];
 
-const PAGE_SIZE = 12;
+const initialQuery: ProblemQueryState = {
+  search: "",
+  topic: "",
+  diffs: [],
+  currentPage: 1,
+  pageSize: PAGE_SIZE,
+};
 
 const Problems: React.FC = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const [problems, setProblems] = useState<Problem[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
+  const [problems, setProblems] = useState<Problem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [query, setQuery] = useState<ProblemQueryState>(initialQuery);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-    const [search, setSearch] = useState('');
-    const [topic, setTopic] = useState('');
-    const [diffs, setDiffs] = useState<string[]>([]);
-    const [page, setPage] = useState(1);
+  useEffect(() => {
+    const fetchProblems = async () => {
+      try {
+        setLoading(true);
+        setError("");
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                setLoading(true);
-                const res = await api.get<ProblemDTO[]>('/problems');
-                setProblems(res.data.map(toCardProblem));
-            } catch (err) {
-                console.error(err);
-                setError('Không thể tải dữ liệu.');
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchData();
-    }, []);
+        // Backend-ready: query holds keyword/topic/difficulty/page/size for future API params.
+        const res = await api.get<ProblemDTO[]>("/problems");
 
-    // Reset về trang 1 khi filter thay đổi
-    useEffect(() => {
-        setPage(1);
-    }, [search, topic, diffs]);
-
-    const filtered = useMemo(() => {
-        return problems.filter(p => {
-            const matchSearch =
-                p.title.toLowerCase().includes(search.toLowerCase()) ||
-                String(p.problem_id).includes(search.trim());
-
-            const matchTopic =
-                !topic ||
-                (() => {
-                    const mapped = TOPIC_MAP[topic] ?? [topic];
-                    return p.tags.some((tag: string) => mapped.includes(tag));
-                })();
-
-            const matchDiff =
-                diffs.length === 0 || diffs.includes(p.difficulty);
-
-            return matchSearch && matchTopic && matchDiff;
-        });
-    }, [problems, search, topic, diffs]);
-
-    const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-    const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-
-    const topicCount = (value: string) => {
-        if (!value) return problems.length;
-        const mapped = TOPIC_MAP[value] ?? [value];
-        return problems.filter(p =>
-            p.tags.some((tag: string) => mapped.includes(tag))
-        ).length;
+        setProblems(res.data.map(toCardProblem));
+      } catch (err) {
+        console.error(err);
+        setError("Không thể tải dữ liệu.");
+      } finally {
+        setLoading(false);
+      }
     };
 
-    const toggleDiff = (v: string) => {
-        setDiffs(prev =>
-            prev.includes(v) ? prev.filter(d => d !== v) : [...prev, v]
-        );
-    };
+    fetchProblems();
+  }, []);
 
-    if (loading) return <div className="prob-state">Đang tải dữ liệu...</div>;
-    if (error) return <div className="prob-state prob-state--error">⚠️ {error}</div>;
+  const setQueryAndResetPage = (
+    updater: (current: ProblemQueryState) => ProblemQueryState,
+  ) => {
+    setQuery((current) => ({ ...updater(current), currentPage: 1 }));
+  };
+
+  const filtered = useMemo(() => {
+    const keyword = query.search.trim().toLowerCase();
+
+    return problems.filter((problem) => {
+      const matchSearch =
+        !keyword ||
+        problem.title.toLowerCase().includes(keyword) ||
+        String(problem.problem_id).includes(keyword);
+
+      const matchTopic =
+        !query.topic ||
+        (() => {
+          const mapped = TOPIC_MAP[query.topic] ?? [query.topic];
+
+          return problem.tags.some((tag) => mapped.includes(tag));
+        })();
+
+      const matchDiff =
+        query.diffs.length === 0 || query.diffs.includes(problem.difficulty);
+
+      return matchSearch && matchTopic && matchDiff;
+    });
+  }, [problems, query.diffs, query.search, query.topic]);
+
+  const paginatedProblems = useMemo(() => {
+    const start = (query.currentPage - 1) * query.pageSize;
+
+    return filtered.slice(start, start + query.pageSize);
+  }, [filtered, query.currentPage, query.pageSize]);
+
+  const topicCount = (value: string) => {
+    if (!value) return problems.length;
+
+    const mapped = TOPIC_MAP[value] ?? [value];
+
+    return problems.filter((problem) =>
+      problem.tags.some((tag) => mapped.includes(tag)),
+    ).length;
+  };
+
+  const toggleDiff = (value: string) => {
+    setQueryAndResetPage((current) => ({
+      ...current,
+      diffs: current.diffs.includes(value)
+        ? current.diffs.filter((diff) => diff !== value)
+        : [...current.diffs, value],
+    }));
+  };
+
+  const activeFilterCount = (query.topic ? 1 : 0) + query.diffs.length;
+
+  const content = (() => {
+    if (loading) {
+      return <div className="prob-state">Đang tải dữ liệu...</div>;
+    }
+
+    if (error) {
+      return <div className="prob-state prob-state--error">{error}</div>;
+    }
 
     return (
-        <div className="problems-page">
-            <main className="prob-body">
+      <>
+        <section className="prob-hero">
+          <h1 className="prob-hero__title">DANH SÁCH BÀI TẬP</h1>
+          <p className="prob-hero__subtitle">
+            Chọn bài phù hợp, lọc nhanh theo chủ đề và độ khó.
+          </p>
+        </section>
 
-                {/* ── FILTER BAR ── */}
-                <div className="prob-filterbar">
+        <main className="prob-body">
+          <div className="prob-list">
+            <div className="prob-search-wrap">
+              <div className="prob-search">
+                <input
+                  className="prob-search__input"
+                  placeholder="Tìm kiếm bài tập..."
+                  value={query.search}
+                  onChange={(event) =>
+                    setQueryAndResetPage((current) => ({
+                      ...current,
+                      search: event.target.value,
+                    }))
+                  }
+                />
 
-                    <ul className="prob-filterbar__topics" style={{ listStyle: 'none', margin: 0, padding: 0 }}>
-                        {SIDEBAR_TOPICS.map(t => (
-                            <li
-                                key={t.value}
-                                className={`prob-filterbar__pill ${topic === t.value ? 'prob-filterbar__pill--active' : ''}`}
-                                onClick={() => setTopic(t.value)}
-                            >
-                                {t.label}
-                                {t.value !== '' && (
-                                    <span style={{ marginLeft: 6, opacity: 0.6 }}>
-                                        {topicCount(t.value)}
-                                    </span>
-                                )}
-                            </li>
-                        ))}
-                    </ul>
+                <button
+                  type="button"
+                  className={`prob-filter-toggle ${
+                    isFilterOpen ? "prob-filter-toggle--active" : ""
+                  }`}
+                  aria-label="Mở bộ lọc"
+                  aria-expanded={isFilterOpen}
+                  onClick={() => setIsFilterOpen((open) => !open)}
+                >
+                  <span aria-hidden="true">☰</span>
+                  {activeFilterCount > 0 && (
+                    <strong>{activeFilterCount}</strong>
+                  )}
+                </button>
+              </div>
 
-                    <div className="prob-filterbar__divider" />
-
-                    <div className="prob-filterbar__diffs">
-                        {DIFFICULTIES.map(d => (
-                            <label key={d.value} className="prob-filterbar__check-label">
-                                <input
-                                    type="checkbox"
-                                    checked={diffs.includes(d.value)}
-                                    onChange={() => toggleDiff(d.value)}
-                                    className="prob-filterbar__checkbox"
-                                />
-                                <span className={`diff-text--${d.value.toLowerCase()}`}>
-                                    {d.label}
-                                </span>
-                            </label>
-                        ))}
-                    </div>
-
-                    <div className="prob-filterbar__divider" />
-
-                    <button
-                        className="prob-filterbar__clear"
-                        onClick={() => { setTopic(''); setDiffs([]); setSearch(''); }}
-                    >
-                        Xóa lọc
-                    </button>
-                </div>
-
-                {/* ── SEARCH ── */}
-                <div className="prob-search">
-                    <input
-                        className="prob-search__input"
-                        placeholder="Tìm kiếm bài tập..."
-                        value={search}
-                        onChange={e => setSearch(e.target.value)}
-                    />
-                </div>
-
-                {/* ── RESULT META ── */}
-                <p className="prob-meta">
-                    Hiển thị {paginated.length} / {filtered.length} bài tập
-                    &nbsp;·&nbsp; Trang {page} / {totalPages}
-                </p>
-
-                {/* ── CARD GRID ── */}
-                <div className="prob-list">
-                    {paginated.length === 0 ? (
-                        <div className="prob-empty">Không tìm thấy bài tập 😢</div>
-                    ) : (
-                        paginated.map(problem => (
-                            <ProblemCard
-                                key={problem.problem_id}
-                                problem={problem}
-                                onSolve={(id: number) => navigate(`/problems/${id}`)}
-                            />
-                        ))
-                    )}
-                </div>
-
-                {/* ── PAGINATION ── */}
-                {totalPages > 1 && (
-                    <div className="prob-pagination">
+              {isFilterOpen && (
+                <div className="prob-filter-panel">
+                  <div className="prob-filter-section">
+                    <div className="prob-filter-title">Chủ đề</div>
+                    <div className="prob-topic-grid">
+                      {FILTER_TOPICS.map((item) => (
                         <button
-                            className="prob-pagination__btn"
-                            onClick={() => setPage(p => Math.max(1, p - 1))}
-                            disabled={page === 1}
-                            aria-label="Trang trước"
+                          key={item.value}
+                          type="button"
+                          className={`prob-topic-btn ${
+                            query.topic === item.value
+                              ? "prob-topic-btn--active"
+                              : ""
+                          }`}
+                          onClick={() =>
+                            setQueryAndResetPage((current) => ({
+                              ...current,
+                              topic: item.value,
+                            }))
+                          }
                         >
-                            ▲
+                          <span>{item.label}</span>
+                          <strong>{topicCount(item.value)}</strong>
                         </button>
-                        <span className="prob-pagination__info">
-                            {page} / {totalPages}
-                        </span>
-                        <button
-                            className="prob-pagination__btn"
-                            onClick={() => setPage(p => Math.min(totalPages, p + 1))}
-                            disabled={page === totalPages}
-                            aria-label="Trang sau"
-                        >
-                            ▼
-                        </button>
+                      ))}
                     </div>
-                )}
+                  </div>
 
-            </main>
-        </div>
+                  <div className="prob-filter-section">
+                    <div className="prob-filter-title">Độ khó</div>
+                    <div className="prob-difficulty-row">
+                      {DIFFICULTIES.map((difficulty) => (
+                        <label
+                          key={difficulty.value}
+                          className="prob-difficulty-check"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={query.diffs.includes(difficulty.value)}
+                            onChange={() => toggleDiff(difficulty.value)}
+                          />
+                          <span
+                            className={`diff-text--${difficulty.value.toLowerCase()}`}
+                          >
+                            {difficulty.label}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    className="prob-clear-btn"
+                    onClick={() => setQuery(initialQuery)}
+                  >
+                    Xóa lọc
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {filtered.length === 0 ? (
+              <div className="prob-empty">Không tìm thấy bài tập.</div>
+            ) : (
+              <>
+                <div className="prob-result-meta">
+                  Hiển thị {paginatedProblems.length} / {filtered.length} bài
+                  tập
+                </div>
+
+                {paginatedProblems.map((problem) => (
+                  <ProblemCard
+                    key={problem.problem_id}
+                    problem={problem}
+                    onSolve={(id: number) => navigate(`/problems/${id}`)}
+                  />
+                ))}
+
+                <Pagination
+                  currentPage={query.currentPage}
+                  totalProblems={filtered.length}
+                  problemsPerPage={query.pageSize}
+                  onPageChange={(page) =>
+                    setQuery((current) => ({
+                      ...current,
+                      currentPage: page,
+                    }))
+                  }
+                />
+              </>
+            )}
+          </div>
+        </main>
+      </>
     );
+  })();
+
+  return (
+    <div className={leaderboardStyles.pageLayout}>
+      <UserSidebar />
+
+      <div className={leaderboardStyles.mainArea}>
+        <Navbar
+          title="DANH SÁCH BÀI TẬP"
+          subtitle="Luyện tập thuật toán với bộ đề ByeBug."
+        />
+
+        <div className={`${leaderboardStyles.content} problems-page`}>
+          {content}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Problems;

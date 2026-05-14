@@ -10,9 +10,12 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
+import UserSidebar from "../components/UserSidebar";
 import UserStatCard from "../components/UserStatCard";
 import Navbar from "../components/Navbar";
 import DifficultyBadge from "../components/DifficultyBadge";
+import VerdictBadge from "../components/VerdictBadge";
+
 import { getUser } from "../utils/auth";
 import { getAllProblems, type Problem } from "../api/problemApi";
 import type { Verdict } from "../api/submissionApi";
@@ -46,35 +49,59 @@ interface SubmissionRow {
   submittedAt: string;
 }
 
+// TODO: replace with GET /submissions?userId=... when endpoint ready
 const recentSubmissions: SubmissionRow[] = [
-  { id: 1, problem: "Two Sum",           language: "C++17",    verdict: "AC",  timeMs: 12,   submittedAt: "2026-05-12 14:30" },
-  { id: 2, problem: "Fibonacci",         language: "Python 3", verdict: "WA",  timeMs: 45,   submittedAt: "2026-05-12 13:15" },
-  { id: 3, problem: "Longest Substring", language: "C++17",    verdict: "TLE", timeMs: 2001, submittedAt: "2026-05-12 11:42" },
-  { id: 4, problem: "Binary Search",     language: "C++17",    verdict: "AC",  timeMs: 8,    submittedAt: "2026-05-11 22:07" },
-  { id: 5, problem: "Merge Sort",         language: "Python 3", verdict: "RE",  timeMs: null, submittedAt: "2026-05-11 18:55" },
+  {
+    id: 1,
+    problem: "Two Sum",
+    language: "C++17",
+    verdict: "AC",
+    timeMs: 12,
+    submittedAt: "2026-05-12 14:30",
+  },
+  {
+    id: 2,
+    problem: "Fibonacci",
+    language: "Python 3",
+    verdict: "WA",
+    timeMs: 45,
+    submittedAt: "2026-05-12 13:15",
+  },
+  {
+    id: 3,
+    problem: "Longest Substring",
+    language: "C++17",
+    verdict: "TLE",
+    timeMs: 2001,
+    submittedAt: "2026-05-12 11:42",
+  },
+  {
+    id: 4,
+    problem: "Binary Search",
+    language: "C++17",
+    verdict: "AC",
+    timeMs: 8,
+    submittedAt: "2026-05-11 22:07",
+  },
+  {
+    id: 5,
+    problem: "Merge Sort",
+    language: "Python 3",
+    verdict: "RE",
+    timeMs: null,
+    submittedAt: "2026-05-11 18:55",
+  },
 ];
 
-const verdictClass: Record<Verdict, string> = {
-  AC:      styles.verdictAC,
-  WA:      styles.verdictWA,
-  TLE:     styles.verdictTLE,
-  MLE:     styles.verdictMLE,
-  RE:      styles.verdictRE,
-  CE:      styles.verdictCE,
-  SE:      styles.verdictSE,
-  PENDING: styles.verdictPending,
-};
-
-// ── Component ──────────────────────────────────────────────────────────────
+// ── Main ───────────────────────────────────────────────────────────────────
 const Statistics: React.FC = () => {
   const navigate = useNavigate();
   const user = getUser();
-
   const [problems, setProblems] = useState<Problem[]>([]);
   const [loadingProblems, setLoadingProblems] = useState(true);
   const [problemsError, setProblemsError] = useState(false);
-  const [chartFilter, setChartFilter] = useState<"both" | "AC" | "WA">("both");
   const [searchQuery, setSearchQuery] = useState("");
+  const [chartFilter, setChartFilter] = useState<"both" | "AC" | "WA">("both");
 
   useEffect(() => {
     getAllProblems()
@@ -88,156 +115,213 @@ const Statistics: React.FC = () => {
   );
 
   return (
-    <div className={styles.fullPageWrapper}>
-      {/* TOPBAR - Giữ nguyên Navbar nhưng nội dung sẽ trải dài */}
-      <Navbar
-        title="THỐNG KÊ CÁ NHÂN"
-        subtitle={
-          <>
-            Chào mừng trở lại, <strong>{user?.username ?? "Người dùng"}</strong>.
-            Tiếp tục luyện tập nào!
-          </>
-        }
-      />
+    <div className={styles.pageLayout}>
+      <UserSidebar />
 
-      {/* CONTENT AREA - Bỏ bọc Sidebar layout, trực tiếp dùng content container */}
-      <div className={styles.content}>
-
-        {/* STATS ROW */}
-        <div className={styles.statsRow}>
-          <UserStatCard icon="✅" value="24"  label="Bài đã giải"   accent="green"  />
-          <UserStatCard icon="🏅" value="#42" label="Xếp hạng"      accent="yellow" />
-          <UserStatCard icon="📤" value="87"  label="Tổng nộp bài"  accent="blue"   />
-          <UserStatCard icon="🔥" value="7"   label="Streak (ngày)" accent="red"    />
-        </div>
-
-        {/* CHART + FEATURED */}
-        <div className={styles.twoColRow}>
-
-          {/* Bar chart */}
-          <div className={`${styles.card} ${styles.chartCard}`}>
-            <div className={styles.chartHeader}>
-              <span className={styles.sectionTitle}>Thống kê nộp bài</span>
-              <div className={styles.filterGroup}>
-                {(["both", "AC", "WA"] as const).map((f) => (
-                  <button
-                    key={f}
-                    className={`filter-btn${chartFilter === f ? " active" : ""}`}
-                    onClick={() => setChartFilter(f)}
-                  >
-                    {f === "both" ? "ALL" : f}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <ResponsiveContainer width="100%" height={240}>
-              <BarChart data={chartData} barSize={barSize} barGap={4}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#eee" vertical={false} />
-                <XAxis
-                  dataKey="day"
-                  tick={xAxisTick}
-                  axisLine={{ stroke: "#111", strokeWidth: 2 }}
-                  tickLine={false}
-                />
-                <YAxis
-                  tick={yAxisTick}
-                  axisLine={{ stroke: "#111", strokeWidth: 2 }}
-                  tickLine={false}
-                />
-                <Tooltip contentStyle={tooltipContentStyle} cursor={tooltipCursor} />
-                <Legend wrapperStyle={legendWrapperStyle} />
-                {(chartFilter === "both" || chartFilter === "AC") && (
-                  <Bar dataKey="AC" fill="#22C55E" radius={[2, 2, 0, 0] as [number, number, number, number]} />
-                )}
-                {(chartFilter === "both" || chartFilter === "WA") && (
-                  <Bar dataKey="WA" fill="#EF4444" radius={[2, 2, 0, 0] as [number, number, number, number]} />
-                )}
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-
-          {/* Featured problems */}
-          <div className={`${styles.card} ${styles.featuredCard}`}>
-            <span className={`${styles.sectionTitle} ${styles.sectionTitleBlock}`}>
-              Bài tập đề xuất
-            </span>
-            <div className={styles.problemList}>
-              {loadingProblems && (
-                <p className={styles.muted}>Đang tải...</p>
-              )}
-              {!loadingProblems && problemsError && (
-                <p className={styles.errorText}>Không thể tải bài tập. Vui lòng thử lại.</p>
-              )}
-              {!loadingProblems && !problemsError && problems.length === 0 && (
-                <p className={styles.muted}>Chưa có bài tập nào.</p>
-              )}
-              {!loadingProblems && !problemsError && problems.map((p) => (
-                <div key={p.problemId} className={styles.problemRow}>
-                  <div className={styles.problemRowHeader}>
-                    <span className={styles.problemTitle}>#{p.problemId} {p.title}</span>
-                    <DifficultyBadge level={p.difficulty} />
-                  </div>
-                  <button
-                    className={styles.doNowBtn}
-                    onClick={() => navigate(`/problems/${p.problemId}`)}
-                  >
-                    LÀM NGAY →
-                  </button>
-                </div>
-              ))}
-            </div>
-            <span className={styles.seeAllLink} onClick={() => navigate("/problems")}>
-              XEM TẤT CẢ →
-            </span>
-          </div>
-        </div>
-
-        {/* SUBMISSION HISTORY */}
-        <div className={styles.card}>
-          <div className={styles.tableHeader}>
-            <span className={styles.sectionTitle}>Lịch sử nộp bài</span>
-            <input
-              className={styles.tableSearchInput}
-              placeholder="Tìm kiếm bài toán..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+      <div className={styles.mainArea}>
+        {/* TOPBAR */}
+        <Navbar
+          title="THỐNG KÊ CÁ NHÂN"
+          subtitle={
+            <>
+              Chào mừng trở lại, <strong>{user?.username ?? "Người dùng"}</strong>.
+              Tiếp tục luyện tập nào!
+            </>
+          }
+        />
+        {/* CONTENT */}
+        <div className={styles.content}>
+          {/* STATS ROW */}
+          {/* TODO: replace mock values with user stats API */}
+          <div className={styles.statsRow}>
+            <UserStatCard
+              icon=""
+              value="24"
+              label="Bài đã giải"
+              accent="green"
+            />
+            <UserStatCard
+              icon=""
+              value="#42"
+              label="Xếp hạng"
+              accent="yellow"
+            />
+            <UserStatCard
+              icon=""
+              value="87"
+              label="Tổng nộp bài"
+              accent="blue"
+            />
+            <UserStatCard
+              icon=""
+              value="7"
+              label="Streak (ngày)"
+              accent="red"
             />
           </div>
-          <table className={styles.submissionTable}>
-            <thead>
-              <tr>
-                <th>Thời gian</th>
-                <th>Bài toán</th>
-                <th>Ngôn ngữ</th>
-                <th>Kết quả</th>
-                <th>Thời gian chạy</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredSubmissions.map((s) => (
-                <tr key={s.id}>
-                  <td className={styles.cellMono}>{s.submittedAt}</td>
-                  <td className={styles.cellProblem}>{s.problem}</td>
-                  <td className={styles.cellMonoMid}>{s.language}</td>
-                  <td>
-                    <span className={`${styles.verdictBadge} ${verdictClass[s.verdict] ?? styles.verdictPending}`}>
-                      {s.verdict}
-                    </span>
-                  </td>
-                  <td className={styles.cellMonoMid}>
-                    {s.timeMs != null ? `${s.timeMs} ms` : "—"}
-                  </td>
-                </tr>
-              ))}
-              {filteredSubmissions.length === 0 && (
+
+          {/* CHART + FEATURED */}
+          <div className={styles.twoColRow}>
+            {/* Bar Chart */}
+            <div className={`${styles.card} ${styles.chartCard}`}>
+              <div className={styles.chartHeader}>
+                <span className={styles.sectionTitle}>Thống kê nộp bài</span>
+                <div className={styles.filterGroup}>
+                  <button
+                    className={`filter-btn${chartFilter === "both" ? " active" : ""}`}
+                    onClick={() => setChartFilter("both")}
+                  >
+                    ALL
+                  </button>
+                  <button
+                    className={`filter-btn${chartFilter === "AC" ? " active" : ""}`}
+                    onClick={() => setChartFilter("AC")}
+                  >
+                    AC
+                  </button>
+                  <button
+                    className={`filter-btn${chartFilter === "WA" ? " active" : ""}`}
+                    onClick={() => setChartFilter("WA")}
+                  >
+                    WA
+                  </button>
+                </div>
+              </div>
+              <ResponsiveContainer width="100%" height={240}>
+                <BarChart data={chartData} barSize={barSize} barGap={4}>
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    stroke="#eee"
+                    vertical={false}
+                  />
+                  <XAxis
+                    dataKey="day"
+                    tick={xAxisTick}
+                    axisLine={{ stroke: "#111", strokeWidth: 2 }}
+                    tickLine={false}
+                  />
+                  <YAxis
+                    tick={yAxisTick}
+                    axisLine={{ stroke: "#111", strokeWidth: 2 }}
+                    tickLine={false}
+                  />
+                  <Tooltip
+                    contentStyle={tooltipContentStyle}
+                    cursor={tooltipCursor}
+                  />
+                  <Legend wrapperStyle={legendWrapperStyle} />
+                  {(chartFilter === "both" || chartFilter === "AC") && (
+                    <Bar
+                      dataKey="AC"
+                      fill="#22C55E"
+                      radius={[2, 2, 0, 0] as [number, number, number, number]}
+                    />
+                  )}
+                  {(chartFilter === "both" || chartFilter === "WA") && (
+                    <Bar
+                      dataKey="WA"
+                      fill="#EF4444"
+                      radius={[2, 2, 0, 0] as [number, number, number, number]}
+                    />
+                  )}
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+
+            {/* Featured Problems */}
+            <div className={`${styles.card} ${styles.featuredCard}`}>
+              <span
+                className={`${styles.sectionTitle} ${styles.sectionTitleBlock}`}
+              >
+                Bài tập đề xuất
+              </span>
+              <div className={styles.problemList}>
+                {loadingProblems && (
+                  <div className={styles.muted}>Đang tải...</div>
+                )}
+                {!loadingProblems && problemsError && (
+                  <div className={styles.errorText}>
+                    Không thể tải bài tập. Vui lòng thử lại.
+                  </div>
+                )}
+                {!loadingProblems &&
+                  !problemsError &&
+                  problems.length === 0 && (
+                    <div className={styles.muted}>Chưa có bài tập nào.</div>
+                  )}
+                {!loadingProblems &&
+                  !problemsError &&
+                  problems.map((p) => (
+                    <div key={p.problemId} className={styles.problemRow}>
+                      <div className={styles.problemRowHeader}>
+                        <span className={styles.problemTitle}>
+                          #{p.problemId} {p.title}
+                        </span>
+                        <DifficultyBadge level={p.difficulty} />
+                      </div>
+                      <button
+                        className={styles.doNowBtn}
+                        onClick={() => navigate(`/problems/${p.problemId}`)}
+                      >
+                        LÀM NGAY →
+                      </button>
+                    </div>
+                  ))}
+              </div>
+              <span
+                className={styles.seeAllLink}
+                onClick={() => navigate("/problems")}
+              >
+                XEM TẤT CẢ →
+              </span>
+            </div>
+          </div>
+
+          {/* SUBMISSION HISTORY */}
+          <div className={styles.card}>
+            <div className={styles.tableHeader}>
+              <span className={styles.sectionTitle}>Lịch sử nộp bài</span>
+              <input
+                className={styles.tableSearchInput}
+                placeholder="Tìm kiếm bài toán..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+            <table className={styles.submissionTable}>
+              <thead>
                 <tr>
-                  <td colSpan={5} className={styles.emptyRow}>
-                    Không tìm thấy kết quả.
-                  </td>
+                  <th>Thời gian</th>
+                  <th>Bài toán</th>
+                  <th>Ngôn ngữ</th>
+                  <th>Kết quả</th>
+                  <th>Thời gian chạy</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filteredSubmissions.map((s) => (
+                  <tr key={s.id}>
+                    <td className={styles.cellMono}>{s.submittedAt}</td>
+                    <td className={styles.cellProblem}>{s.problem}</td>
+                    <td className={styles.cellMonoMid}>{s.language}</td>
+                    <td>
+                      <VerdictBadge verdict={s.verdict} />
+                    </td>
+                    <td className={styles.cellMonoMid}>
+                      {s.timeMs != null ? `${s.timeMs} ms` : "—"}
+                    </td>
+                  </tr>
+                ))}
+                {filteredSubmissions.length === 0 && (
+                  <tr>
+                    <td colSpan={5} className={styles.emptyRow}>
+                      Không tìm thấy kết quả.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

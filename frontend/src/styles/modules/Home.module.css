@@ -119,9 +119,9 @@
 
 /* ── Row 1: Hero + Leaderboard ──────────────────────── */
 .topRow {
-  display: grid;
-  grid-template-columns: 1.5fr 1fr; 
-  gap: 2rem;
+  display: flex;
+  gap: 24px;
+  align-items: stretch;
 }
 
 /* ── Hero card (dark) ───────────────────────────────── */
@@ -141,25 +141,24 @@
 
 .heroLabel {
   font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 10px;
+  font-weight: 800;
+  font-size: 12px;
   letter-spacing: 3px;
   color: var(--primary);
   text-transform: uppercase;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .heroTitle {
   font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 45px;
+  font-weight: 800;
+  font-size: 52px;
   line-height: 1.15;
   color: #ffffff;
-  margin: 0 0 22px;
+  margin: 0 0 8px;
 }
 
 .heroTitleAccent {
-  font-family: var(--font-heading);
   color: var(--primary);
 }
 
@@ -184,24 +183,24 @@
 }
 
 .progressLabel {
-  font-family: var(--font-heading);
-  font-weight: 500;
-  font-size: 13px;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 14px;
   color: #A1A1AA;
 }
 
 .progressPct {
-  font-family: var(--font-heading);
-  font-weight: 500;
+  font-family: var(--font-sans);
+  font-weight: 400;
   font-size: 22px;
-  color: var(--white);
+  color: var(--primary);
 }
 
 .progressTrack {
   width: 100%;
   height: 24px;
-  background: #444444;
-  border: 1.5px solid var(--white);
+  background: #27272A;
+  border: 1.5px solid var(--black);
   padding: 3px;
   box-sizing: border-box;
 }
@@ -223,92 +222,77 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  align-items: center;
 }
 
 .leaderTitle {
   font-family: var(--font-heading);
   font-weight: 700;
-  
-  font-size:25px;
+  font-size: 20px;
   color: #1C1B1B;
   margin: 0;
 }
 
 .podium {
   display: flex;
-  align-items: flex-end; 
   justify-content: center;
-  gap: 20px;
-  
+  align-items: flex-end;
+  gap: 12px;
+  flex: 1;
+  padding: 8px 0;
 }
 
 .podiumItem {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 6px;
   flex: 1;
-  gap: 7px;
 }
 
 .podiumMedal {
-  font-size: 22px;
-  line-height: 2;
+  font-size: 18px;
+  line-height: 1;
 }
 
 .podiumAvatar {
-  width: 40px;
-  height: 40px;
-  border: 3px solid #000;
+  width: 52px;
+  height: 52px;
+  border: 2px solid var(--black);
+  box-shadow: 3px 3px 0px var(--black);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 900;
-  margin-bottom: 8px;
-  background: #fff;
-  box-shadow: 3px 3px 0px #000;
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--black);
 }
 
-.podiumAvatarGold   { background: #FFC93C; }
-.podiumAvatarSilver { background: #E5E5E5; }
-.podiumAvatarBronze { background: #ff6b30; }
+.podiumAvatarGold   { background: var(--primary); }
+.podiumAvatarSilver { background: #CBCBCB; }
+.podiumAvatarBronze { background: #CD7F32; }
 
 .podiumBar {
   width: 100%;
-  border: 3px solid #000;
-  
-  position: relative;
+  border: 2px solid var(--black);
+  background: var(--primary);
 }
 
-.podiumBarFirst  { 
-  height: 100px;
-  background-color: #FFC93C; 
-  box-shadow: 6px 0px 0px #000; 
-}
+.podiumBarFirst  { height: 70px; }
+.podiumBarSecond { height: 50px; background: #CBCBCB; }
+.podiumBarThird  { height: 35px; background: #CD7F32; }
 
-
-.podiumBarSecond {
-  height: 70px;
-  background-color: #E5E5E5;
-  box-shadow: 6px 0px 0px #000;
-}
-
-.podiumBarThird {
-  height: 40px;
-  background-color: #ff6b30;
-  box-shadow: 6px 0px 0px #000;
-}
 .podiumName {
-  font-family: var(--font-heading);
+  font-family: var(--font-sans);
   font-weight: 700;
-  font-size: 13px;
+  font-size: 10px;
   color: #1C1B1B;
   text-align: center;
 }
 
 .podiumScore {
-  font-family: var(--font-heading);
-  font-size: 13px;
+  font-family: var(--font-sans);
+  font-size: 10px;
   font-weight: 600;
   color: #666;
   text-align: center;
@@ -316,36 +300,34 @@
 
 .viewAllBtn {
   width: 100%;
-  padding: 12px;
-  background: var(--black);
-  color: var(--white);
+  padding: 10px;
+  background: var(--white);
   border: 2px solid var(--black);
-  font-family: var(--font-heading);
-  font-weight: 500;
+  box-shadow: var(--shadow-sm);
+  font-family: var(--font-sans);
+  font-weight: 700;
   font-size: 13px;
   cursor: pointer;
-  box-shadow: var(--shadow-sm);
   transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
   text-align: center;
 }
 
 .viewAllBtn:hover {
   background: var(--primary);
-  color: var(--black);
   transform: translate(-2px, -2px);
   box-shadow: var(--shadow-md);
 }
 
 /* ── Row 2: 3-column grid ───────────────────────────── */
 .bottomRow {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  display: flex;
+  gap: 24px;
+  align-items: stretch;
 }
 
 /* ── Shared card base ────────────────────────────────── */
 .card {
-  border: 4px solid var(--black);
+  border: 2px solid var(--black);
   box-shadow: var(--shadow-md);
   background: var(--white);
 }
@@ -357,19 +339,18 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
- 
 }
 
 .cardTitle {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 20px;
+  font-size: 17px;
   color: var(--black);
   margin: 0 0 4px;
 }
 
 .problemRow {
-  border: 3px solid var(--black);
+  border: 2px solid var(--black);
   padding: 12px 14px;
   background: #FDFDFD;
   display: flex;
@@ -377,7 +358,7 @@
   align-items: center;
   gap: 12px;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s, background 0.22s;
+  transition: transform 0.12s, box-shadow 0.12s, background 0.12s;
 }
 
 .problemRow:hover {
@@ -394,9 +375,9 @@
 }
 
 .problemRowTitle {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 17px;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 14px;
   color: var(--black);
   white-space: nowrap;
   overflow: hidden;
@@ -404,7 +385,7 @@
 }
 
 .problemRowMeta {
-  font-family: var(--font-heading);
+  font-family: var(--font-sans);
   font-size: 11px;
   color: #888;
   display: flex;
@@ -416,8 +397,8 @@
 .diffBadge {
   padding: 2px 8px;
   font-size: 10px;
-  font-weight: 500;
-  font-family: var(--font-heading);
+  font-weight: 700;
+  font-family: var(--font-sans);
   border: 1.5px solid var(--black);
   flex-shrink: 0;
 }
@@ -432,18 +413,18 @@
   padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
 .popularItem {
-  border: 3px solid var(--black);
+  border: 2px solid var(--black);
   padding: 12px 14px;
   background: #FDFDFD;
   display: flex;
   align-items: center;
   gap: 12px;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  transition: transform 0.12s, box-shadow 0.12s, background 0.12s;
 }
 
 .popularItem:hover {
@@ -467,9 +448,9 @@
 }
 
 .popularTitle {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 17px;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 13px;
   color: var(--black);
   white-space: nowrap;
   overflow: hidden;
@@ -482,13 +463,12 @@
   align-items: center;
   margin-top: 4px;
   font-size: 11px;
-  font-family: var(--font-heading);
+  font-family: var(--font-sans);
   color: #888;
 }
 
 .acRate {
-  font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   color: #22C55E;
 }
 
@@ -503,11 +483,10 @@
 }
 
 .statsMotivation {
-  font-family: var(--font-heading);
-  font-size: 13px;
-  font-weight: 500;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
   color: #855500;
-  margin-bottom: 4px;
 }
 
 .statsProgressRow {
@@ -519,14 +498,14 @@
 .statsProgressLabel {
   display: flex;
   justify-content: space-between;
-  font-family: var(--font-heading);
+  font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 600;
   color: var(--black);
 }
 
 .statsProgressLabelRight {
-  font-weight: 600;
+  font-weight: 800;
 }
 
 .statsProgressTrack {
@@ -538,7 +517,6 @@
 
 .statsProgressFill {
   height: 100%;
-  
   background: var(--black);
   transition: width 0.6s ease;
 }
@@ -560,7 +538,7 @@
 }
 
 .statsGridLabel {
-  font-family: var(--font-heading);
+  font-family: var(--font-sans);
   font-size: 10px;
   font-weight: 700;
   color: #888;
@@ -569,9 +547,9 @@
 }
 
 .statsGridValue {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 20px;
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: 24px;
   color: var(--black);
 }
 
@@ -581,8 +559,8 @@
   background: var(--black);
   color: var(--white);
   border: 2px solid var(--black);
-  font-family: var(--font-heading);
-  font-weight: 500;
+  font-family: var(--font-sans);
+  font-weight: 800;
   font-size: 13px;
   cursor: pointer;
   box-shadow: var(--shadow-sm);

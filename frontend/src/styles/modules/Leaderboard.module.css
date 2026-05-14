@@ -1,4 +1,112 @@
-/* ── Content area ────────────────────────────────── */
+.pageLayout {
+  display: flex;
+}
+
+.mainArea {
+  margin-left: 220px;
+  min-height: 100vh;
+  flex: 1;
+  background: #f7f3f0;
+  color: var(--black);
+  font-family: var(--font-sans);
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+.mainArea :global(.topbar-title),
+.mainArea :global(.topbar-welcome) {
+  font-family: var(--font-sans);
+  letter-spacing: 0;
+}
+
+.topbar {
+  height: 72px;
+  border-bottom: 3px solid var(--black);
+  background: #fbf8f5;
+  display: grid;
+  grid-template-columns: minmax(100px, 1fr) auto minmax(100px, 1fr);
+  align-items: center;
+  padding: 0 28px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.brandButton,
+.topbarNav button,
+.iconButton {
+  border: 0;
+  background: transparent;
+  color: var(--black);
+  cursor: pointer;
+}
+
+.brandButton {
+  justify-self: start;
+  padding: 0;
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: -0.4px;
+}
+
+.topbarNav {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+
+.topbarNav button {
+  position: relative;
+  padding: 26px 0 23px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.topbarNav button:hover,
+.topbarNav .activeNav {
+  color: #9a6400;
+}
+
+.topbarNav .disabledNav,
+.topbarNav .disabledNav:hover {
+  color: #aaa19b;
+  cursor: not-allowed;
+}
+
+.activeNav::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 4px;
+  background: var(--primary);
+  border: 1px solid var(--black);
+}
+
+.topbarRight {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.iconButton {
+  width: 30px;
+  height: 30px;
+  border: 2px solid transparent;
+  font-weight: 900;
+  font-size: 14px;
+}
+
+.iconButton:hover {
+  border-color: var(--black);
+  background: var(--white);
+}
+
 .content {
   width: min(1120px, calc(100% - 48px));
   margin: 0 auto;
@@ -6,7 +114,6 @@
   flex: 1;
 }
 
-/* ── Hero ────────────────────────────────────────── */
 .hero {
   position: relative;
   min-height: 190px;
@@ -57,7 +164,6 @@
   transform: rotate(225deg);
 }
 
-/* ── Board ───────────────────────────────────────── */
 .board {
   border: 3px solid var(--black);
   background: var(--white);
@@ -96,14 +202,26 @@
   vertical-align: middle;
 }
 
-.leaderTable tbody tr             { background: #fbf8f5; }
-.leaderTable tbody tr:nth-child(even) { background: #f5efea; }
-.leaderTable tbody tr:hover       { background: #fff7df; }
-.leaderTable tbody tr:last-child td { border-bottom: 0; }
+.leaderTable tbody tr {
+  background: #fbf8f5;
+}
 
-.topRankRow { background: #efe7de !important; }
+.leaderTable tbody tr:nth-child(even) {
+  background: #f5efea;
+}
 
-/* ── Rank cell ───────────────────────────────────── */
+.leaderTable tbody tr:hover {
+  background: #fff7df;
+}
+
+.leaderTable tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.topRankRow {
+  background: #efe7de !important;
+}
+
 .rankCell {
   display: flex;
   align-items: center;
@@ -123,9 +241,17 @@
   border-radius: 50%;
 }
 
-.rank1 { color: #b7791f; }
-.rank2 { color: #737373; }
-.rank3 { color: #be123c; }
+.rank1 {
+  color: #b7791f;
+}
+
+.rank2 {
+  color: #737373;
+}
+
+.rank3 {
+  color: #be123c;
+}
 
 .rankNumber {
   min-width: 34px;
@@ -135,7 +261,6 @@
   color: #1c1b1b;
 }
 
-/* ── Member cell ─────────────────────────────────── */
 .memberCell {
   display: flex;
   align-items: center;
@@ -168,11 +293,30 @@
   display: block;
 }
 
-.gold  { background: linear-gradient(135deg, #7c2d12 0%, #f59e0b 100%); color: #fff7ed; }
-.green { background: linear-gradient(135deg, #14532d 0%, #86efac 100%); color: #f0fdf4; }
-.red   { background: linear-gradient(135deg, #7f1d1d 0%, #fca5a5 100%); color: #fff1f2; }
-.blue  { background: linear-gradient(135deg, #172554 0%, #7dd3fc 100%); color: #eff6ff; }
-.cyan  { background: linear-gradient(135deg, #164e63 0%, #67e8f9 100%); color: #ecfeff; }
+.gold {
+  background: linear-gradient(135deg, #7c2d12 0%, #f59e0b 100%);
+  color: #fff7ed;
+}
+
+.green {
+  background: linear-gradient(135deg, #14532d 0%, #86efac 100%);
+  color: #f0fdf4;
+}
+
+.red {
+  background: linear-gradient(135deg, #7f1d1d 0%, #fca5a5 100%);
+  color: #fff1f2;
+}
+
+.blue {
+  background: linear-gradient(135deg, #172554 0%, #7dd3fc 100%);
+  color: #eff6ff;
+}
+
+.cyan {
+  background: linear-gradient(135deg, #164e63 0%, #67e8f9 100%);
+  color: #ecfeff;
+}
 
 .memberName {
   max-width: 260px;
@@ -192,7 +336,6 @@
   text-transform: uppercase;
 }
 
-/* ── Solved / Score cells ────────────────────────── */
 .solvedCell {
   display: flex;
   justify-content: flex-end;
@@ -216,7 +359,6 @@
   font-weight: 900;
 }
 
-/* ── Show more ───────────────────────────────────── */
 .actionRow {
   display: flex;
   justify-content: center;
@@ -238,7 +380,10 @@
   font-weight: 900;
   letter-spacing: 0.5px;
   cursor: pointer;
-  transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s,
+    background 0.15s;
 }
 
 .showMoreButton:hover:not(:disabled) {
@@ -257,7 +402,6 @@
   line-height: 1;
 }
 
-/* ── Footer ──────────────────────────────────────── */
 .footer {
   min-height: 88px;
   border-top: 2px solid #c9c0ba;
@@ -292,8 +436,16 @@
   font-weight: 700;
 }
 
-/* ── Responsive ──────────────────────────────────── */
 @media (max-width: 920px) {
+  .topbar {
+    grid-template-columns: 1fr auto;
+    gap: 18px;
+  }
+
+  .topbarNav {
+    display: none;
+  }
+
   .content {
     width: min(100% - 32px, 1120px);
   }
