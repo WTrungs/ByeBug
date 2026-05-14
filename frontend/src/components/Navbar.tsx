@@ -61,7 +61,7 @@ const Navbar = ({ title, subtitle, hideActions = false }: NavbarProps) => {
           </div>
 
           <Link
-            to="/profile/me"
+            to={`/profile/${displayName}`}
             className="navbar-avatar-link"
             aria-label={`Mở hồ sơ của ${displayName}`}
             title={displayName}
