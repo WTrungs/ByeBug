@@ -13,6 +13,19 @@ const Login: React.FC = () => {
     const [password, setPassword] = useState('');
     const [focusedInput, setFocusedInput] = useState('');
 
+    const getErrorMessage = (error: unknown) => {
+        if (
+            typeof error === 'object' &&
+            error !== null &&
+            'response' in error
+        ) {
+            const response = (error as { response?: { data?: { message?: string } } }).response;
+            return response?.data?.message;
+        }
+
+        return undefined;
+    };
+
     const handleLogin = async () => {
         if (!username || !password) {
             alert("Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu");
@@ -28,8 +41,8 @@ const Login: React.FC = () => {
             } else {
                 navigate('/home');
             }
-        } catch (error: any) {
-            alert(error.response?.data?.message || "Sai tên đăng nhập hoặc mật khẩu");
+        } catch (error: unknown) {
+            alert(getErrorMessage(error) || "Sai tên đăng nhập hoặc mật khẩu");
         }
     };
 
@@ -101,7 +114,7 @@ const Login: React.FC = () => {
                         </div>
 
                         <div className="forgot-password-container">
-                            <button className="forgot-btn" onClick={() => navigate('/forgot-password')}>
+                            <button className="forgot-btn login-link-hover" onClick={() => navigate('/forgot-password')}>
                                 Quên mật khẩu?
                             </button>
                         </div>
@@ -112,7 +125,7 @@ const Login: React.FC = () => {
 
                         <div className="footer-link">
                             <span>Chưa có tài khoản?</span>
-                            <button className="ghost-btn" onClick={() => navigate('/register')}>Đăng Ký</button>
+                            <button className="ghost-btn login-link-hover" onClick={() => navigate('/register')}>Đăng Ký</button>
                         </div>
                     </div>
                 </div>
