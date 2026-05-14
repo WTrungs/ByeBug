@@ -9,20 +9,20 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "notifications")
-public class Notification {
+@Table(name = "admin_notifications")
+public class AdminNotification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "notification_id")
-    private Long notificationId;
+    @Column(name = "admin_notification_id")
+    private Long adminNotificationId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "broadcast_id", nullable = false)
     private NotificationBroadcast broadcast;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "admin_id", nullable = false)
+    private Admin admin;
 
     @Column(name = "is_read")
     private Boolean isRead = false;
@@ -30,8 +30,8 @@ public class Notification {
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    public Notification(NotificationBroadcast broadcast, User user) {
+    public AdminNotification(NotificationBroadcast broadcast, Admin admin) {
         this.broadcast = broadcast;
-        this.user = user;
+        this.admin = admin;
     }
 }
