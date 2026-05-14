@@ -6,7 +6,7 @@ import ProblemStatementPanel from "../components/ProblemStatementPanel";
 import ResizableProblemLayout from "../components/ResizableProblemLayout";
 import { getProblemById } from "../api/problemApi";
 import type { ProblemDetail as ProblemDetailType } from "../api/problemApi";
-import { submitSolution } from "../api/submissionApi";
+import { getSubmissionResult, submitSolution } from "../api/submissionApi";
 import type { TestcaseResult, Verdict } from "../api/submissionApi";
 import { getUser } from "../utils/auth";
 import { LANG_TEMPLATES, type Language } from "../constants/languages";
@@ -96,12 +96,22 @@ export default function ProblemDetail() {
     setSubmitStats(null);
 
     try {
-      const result = await submitSolution({
+      const initialResult = await submitSolution({
         problemId: problem.problemId,
         userId: user.userId,
         language: lang,
         sourceCode: code,
       });
+      setVerdict(initialResult.verdict);
+
+      let result = initialResult;
+      for (let attempt = 0; attempt < 90 && !isFinalVerdict(result.verdict); attempt += 1) {
+        await wait(1500);
+        result = await getSubmissionResult(initialResult.submissionId);
+        setVerdict(result.verdict);
+        setTcResults(result.testcaseResults ?? []);
+      }
+
       setVerdict(result.verdict);
       setTcResults(result.testcaseResults ?? []);
       if (result.totalTimeMs != null && result.maxMemoryKb != null) {
@@ -164,4 +174,12 @@ export default function ProblemDetail() {
       />
     </div>
   );
+}
+
+function wait(ms: number) {
+  return new Promise((resolve) => window.setTimeout(resolve, ms));
+}
+
+function isFinalVerdict(verdict: Verdict) {
+  return verdict !== "PENDING" && verdict !== "JUDGING";
 }

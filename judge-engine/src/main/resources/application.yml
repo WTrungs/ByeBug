@@ -2,10 +2,24 @@ server:
   port: ${JUDGE_PORT}
 
 spring:
+  config:
+    import: optional:file:../.env[.properties]
   data:
     redis:
-      port: 6379
-      host: redis
+      port: ${REDIS_PORT:6379}
+      host: ${REDIS_HOST:redis}
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:${DB_URL}}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
   application:
     name: judge
   output:
@@ -13,12 +27,23 @@ spring:
       enabled: always
 
 judge:
+  compile:
+    cpp:
+      memory-limit-kb: ${JUDGE_CPP_COMPILE_MEMORY_LIMIT_KB:1048576}
+      timeout-ms: ${JUDGE_CPP_COMPILE_TIMEOUT_MS:10000}
   docker:
     host: unix:///var/run/docker.sock
     images:
       cpp: "oj-cpp:latest"
     dockerfiles:
       cpp: "${JUDGE_CPP_DOCKERFILE_PATH:./docker-env/cpp/}"
+  storage:
+    endpoint: ${STORAGE_ENDPOINT}
+    bucket: ${STORAGE_BUCKET}
+    access-key: ${STORAGE_ACCESS_KEY}
+    secret-key: ${STORAGE_SECRET_KEY}
+    region: ${STORAGE_REGION:us-east-005}
+    tests-object-pattern: "problems/%d/tests.zip"
 
 logging:
   level:

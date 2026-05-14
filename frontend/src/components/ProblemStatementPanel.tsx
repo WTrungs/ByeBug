@@ -33,7 +33,7 @@ export default function ProblemStatementPanel({ problem }: { problem: ProblemDet
                         Time <strong className={styles.limitValue}>{problem.timeLimitMs ?? 1000} ms</strong>
                     </span>
                     <span className={styles.limitItem}>
-                        Memory <strong className={styles.limitValue}>{problem.memoryLimitMb ?? 256} MB</strong>
+                        Memory <strong className={styles.limitValue}>{problem.memoryLimitKb ?? 262144} KB</strong>
                     </span>
                 </div>
 

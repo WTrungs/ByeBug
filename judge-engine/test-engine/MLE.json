@@ -5,6 +5,6 @@
     "language": "cpp",
     "input": "5 10",
     "expectedOutput": "15",
-    "timeLimit": 1,
-    "memoryLimit": 256
+    "timeLimitMs": 1000,
+    "memoryLimitKb": 262144
 }

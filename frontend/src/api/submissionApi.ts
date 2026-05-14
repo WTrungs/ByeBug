@@ -1,6 +1,6 @@
 import api from './axios';
 
-export type Verdict = 'AC' | 'WA' | 'TLE' | 'MLE' | 'RE' | 'CE' | 'SE' | 'PENDING';
+export type Verdict = 'AC' | 'WA' | 'TLE' | 'MLE' | 'RTE' | 'OLE' | 'CE' | 'SE' | 'PENDING' | 'JUDGING';
 
 export interface SubmissionRequest {
     problemId: number;
@@ -94,7 +94,7 @@ const mockSubmissionHistory: SubmissionHistoryItem[] = [
         problemId: 5,
         problemTitle: 'Merge Sort',
         language: 'Python 3',
-        verdict: 'RE',
+        verdict: 'RTE',
         score: 20,
         totalTimeMs: null,
         maxMemoryKb: null,
@@ -115,6 +115,11 @@ const mockSubmissionHistory: SubmissionHistoryItem[] = [
 
 export const submitSolution = async (req: SubmissionRequest): Promise<SubmissionResult> => {
     const response = await api.post('/submissions', req);
+    return response.data;
+};
+
+export const getSubmissionResult = async (submissionId: number): Promise<SubmissionResult> => {
+    const response = await api.get(`/submissions/${submissionId}`);
     return response.data;
 };
 

@@ -28,9 +28,9 @@ public class JudgeRequest implements Serializable {
 
     @NotNull(message = "Giới hạn thời gian không được để trống")
     @Positive(message = "Giới hạn thời gian phải là số dương")
-    private Long timeLimit;    // second
+    private Long timeLimitMs;
 
     @NotNull(message = "Giới hạn bộ nhớ không được để trống")
     @Positive(message = "Giới hạn bộ nhớ phải là số dương")
-    private Long memoryLimit;  // MB
+    private Long memoryLimitKb;
 }

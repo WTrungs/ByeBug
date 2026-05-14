@@ -7,7 +7,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
-import com.byebug.judge.model.JudgeRequest;
+import com.byebug.judge.model.JudgeJob;
 import com.byebug.judge.model.JudgeResult;
 import com.byebug.judge.service.JudgeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,24 +42,35 @@ public class JudgeWorker implements CommandLineRunner {
         while (!Thread.currentThread().isInterrupted()) {
             try {
                 String message = stringRedisTemplate.opsForList().rightPop(QUEUE_NAME, 30, TimeUnit.SECONDS); //Lay request ra tu redis
-                
+
                 if (message != null) {
-                    //Convert message sang JudgeRequest
-                    JudgeRequest request = objectMapper.readValue(message, JudgeRequest.class);
-                    log.info("Received submission: {}", request.getSubmissionId());
-                    //Cham bai
-                    JudgeResult result = judgeService.judge(request);
-                    log.info("Judge result for {}: {}", request.getSubmissionId(), result.getStatus());
+                    processMessage(message);
                 }
             } catch (Exception e) {
                 log.error("Worker encountered an error. Retrying in 3s...", e);
-                
+
                 try {
                     Thread.sleep(3000);
                 } catch (InterruptedException ie) {
                     Thread.currentThread().interrupt();
                 }
             }
+        }
+    }
+
+    private void processMessage(String message) throws Exception {
+        JudgeJob request = objectMapper.readValue(message, JudgeJob.class);
+        Long submissionId = request.getSubmissionId();
+        log.info("Received submission: {}", submissionId);
+
+        try {
+            //Cham bai
+            JudgeResult result = judgeService.judge(submissionId);
+            log.info("Judge result for {}: {}", submissionId, result.getStatus());
+        } catch (Exception e) {
+            stringRedisTemplate.opsForList().rightPush(QUEUE_NAME, message);
+            log.error("Judge failed for submission {}. Requeued message on {}", submissionId, QUEUE_NAME, e);
+            throw e;
         }
     }
 }

@@ -46,7 +46,7 @@ public class Problem {
     private Difficulty difficulty;
 
     private Integer timeLimitMs = 2000;
-    private Integer memoryLimitMb = 256;
+    private Integer memoryLimitKb = 262144;
     private Boolean allowFileSubmit = false;
     private Boolean isPublic = false;
 

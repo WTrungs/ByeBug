@@ -1,8 +1,9 @@
 package com.byebug.judge.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -20,21 +21,25 @@ public class JudgeResult implements Serializable {
     private String submissionId;
 
     @NotBlank(message = "Trạng thái (status) không được để trống")
-    @Pattern(regexp = "^(AC|WA|TLE|MLE|RE|CE|SE)$", 
-             message = "Trạng thái phải thuộc các giá trị: AC, WA, TLE, MLE, RE, CE, SE")
-    private String status;       // AC, WA, TLE, MLE, RE, CE, SE
+    @Pattern(regexp = "^(AC|WA|TLE|MLE|RTE|OLE|CE|SE|JUDGING|PENDING)$",
+             message = "Trạng thái không hợp lệ")
+    private String status;
 
     @NotNull(message = "Thời gian sử dụng không được để trống")
-    @DecimalMin(value = "0.0", message = "Thời gian sử dụng không được âm")
-    private Double timeUsed;     // seconds
+    @Min(value = 0, message = "Thời gian sử dụng không được âm")
+    private Integer timeUsedMs;
 
     @NotNull(message = "Bộ nhớ sử dụng không được để trống")
     @Min(value = 0, message = "Bộ nhớ sử dụng không được âm")
-    private Integer memoryUsed;  // MB
+    private Integer memoryUsedKb;
     
     private String stdout;
 
     private String stderr;
 
     private String message;
+
+    private Integer score;
+
+    private List<TestcaseJudgeResult> testcaseResults = new ArrayList<>();
 }

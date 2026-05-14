@@ -204,7 +204,7 @@ function getStatsText(
   totalCount: number,
 ) {
   if (submitStats) {
-    return `${passedCount}/${totalCount} passed - ${submitStats.timeMs} ms - ${(submitStats.memKb / 1024).toFixed(1)} MB`;
+    return `${passedCount}/${totalCount} passed - ${submitStats.timeMs} ms - ${submitStats.memKb} KB`;
   }
   if (verdict === "SE") return "Connection error - please try again.";
   if (verdict && verdict !== "PENDING" && totalCount > 0) {

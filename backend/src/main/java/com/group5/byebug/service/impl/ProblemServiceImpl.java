@@ -61,7 +61,7 @@ public class ProblemServiceImpl implements ProblemService {
         dto.setConstraints(problem.getConstraints());
         dto.setDifficulty(problem.getDifficulty());
         dto.setTimeLimitMs(problem.getTimeLimitMs());
-        dto.setMemoryLimitMb(problem.getMemoryLimitMb());
+        dto.setMemoryLimitKb(problem.getMemoryLimitKb());
         dto.setCreatedBy(problem.getCreator() != null ? problem.getCreator().getFullName() : "Unknown");
 
         Set<TagDTO> tagDTOs = problem.getTags().stream().map(tag -> {

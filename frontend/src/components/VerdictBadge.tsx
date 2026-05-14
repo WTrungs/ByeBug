@@ -14,10 +14,12 @@ const VERDICT_CLASS: Record<Verdict, string> = {
   WA: styles.wa,
   TLE: styles.tle,
   MLE: styles.mle,
-  RE: styles.re,
+  RTE: styles.re,
+  OLE: styles.wa,
   CE: styles.ce,
   SE: styles.se,
   PENDING: styles.pending,
+  JUDGING: styles.pending,
 };
 
 const normalizeVerdict = (verdict: VerdictBadgeValue) => {
@@ -28,10 +30,12 @@ const normalizeVerdict = (verdict: VerdictBadgeValue) => {
     value === "WA" ||
     value === "TLE" ||
     value === "MLE" ||
-    value === "RE" ||
+    value === "RTE" ||
+    value === "OLE" ||
     value === "CE" ||
     value === "SE" ||
-    value === "PENDING"
+    value === "PENDING" ||
+    value === "JUDGING"
   ) {
     return value;
   }

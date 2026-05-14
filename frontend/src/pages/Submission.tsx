@@ -17,17 +17,18 @@ const verdictOptions: Array<Verdict | "ALL"> = [
   "WA",
   "TLE",
   "MLE",
-  "RE",
+  "RTE",
   "CE",
   "SE",
   "PENDING",
+  "JUDGING",
 ];
 
 const formatRuntime = (timeMs: number | null) =>
   timeMs == null ? "-" : `${timeMs} ms`;
 
 const formatMemory = (memoryKb: number | null) =>
-  memoryKb == null ? "-" : `${(memoryKb / 1024).toFixed(1)} MB`;
+  memoryKb == null ? "-" : `${memoryKb} KB`;
 
 const verdictLabel = (verdict: Verdict | "ALL") =>
   verdict === "ALL" ? "Tất cả kết quả" : verdict;

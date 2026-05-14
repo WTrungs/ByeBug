@@ -1,103 +1,117 @@
 package com.byebug.judge.strategy;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.UUID;
+import java.nio.file.attribute.PosixFilePermission;
+import java.util.List;
+import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.byebug.judge.entity.Problem;
+import com.byebug.judge.entity.Submission;
 import com.byebug.judge.model.CommandResult;
-import com.byebug.judge.model.JudgeRequest;
 import com.byebug.judge.model.JudgeResult;
+import com.byebug.judge.model.TestcaseExecution;
+import com.byebug.judge.model.TestcaseJudgeResult;
 import com.byebug.judge.service.DockerService;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
-@RequiredArgsConstructor
 @Slf4j
 public class CppJudgeStrategy implements JudgeStrategy {
-
     private final DockerService dockerService;
-    private static final String BASE_TEMP_PATH = "/tmp/byebug/sandbox/"; //Thu muc temp de chua cac file cham bai
+    private final long compileMemoryLimitKb;
+    private final long compileTimeoutMs;
+
+    public CppJudgeStrategy(
+            DockerService dockerService,
+            @Value("${judge.compile.cpp.memory-limit-kb:1048576}") long compileMemoryLimitKb,
+            @Value("${judge.compile.cpp.timeout-ms:10000}") long compileTimeoutMs) {
+        this.dockerService = dockerService;
+        this.compileMemoryLimitKb = compileMemoryLimitKb;
+        this.compileTimeoutMs = compileTimeoutMs;
+    }
 
     @Override
-    public JudgeResult execute(JudgeRequest request) { //Cham bai
+    public JudgeResult execute(Submission submission, Problem problem, List<TestcaseExecution> testcases) {
         JudgeResult result = new JudgeResult();
-        result.setSubmissionId(request.getSubmissionId());
+        result.setSubmissionId(String.valueOf(submission.getSubmissionId()));
 
-        // Tao workDir
-        String submissionId = UUID.randomUUID().toString();
-        Path workDir = Paths.get(BASE_TEMP_PATH + submissionId);
-        String containerId = null;
+        Path workDir = testcases.get(0).files().inputPath().getParent().getParent();
+        String compileContainerId = null;
+        String runContainerId = null;
 
         try {
             Files.createDirectories(workDir);
-            
-            //Chep code ra file trong thu muc temp
-            Path sourcePath = workDir.resolve("solution.cpp");
-            Files.writeString(sourcePath, request.getCode());
-            
-            // Chep file input vao thu muc temp
-            Path inputPath = workDir.resolve("input.txt");
-            Files.writeString(inputPath, request.getInput() != null ? request.getInput() : "");
+            makeWorkDirWritable(workDir);
+            Files.writeString(workDir.resolve("solution.cpp"), submission.getSourceCode());
 
-            // Tao container co bind mount thu muc workDir
-            containerId = dockerService.createContainer("cpp", workDir.toString(), request.getMemoryLimit());
+            compileContainerId = dockerService.createContainer("cpp", workDir.toString(), compileMemoryLimitKb);
+            CommandResult compileRes = dockerService.execCommand(
+                    compileContainerId,
+                    compileTimeoutMs,
+                    "g++",
+                    "-std=c++17",
+                    "-O2",
+                    "solution.cpp",
+                    "-o",
+                    "solution");
 
-            //Bien dich code
-            CommandResult compileRes = dockerService.execCommand(containerId, 10L, "g++", "solution.cpp", "-o", "solution");
-            
             if (!compileRes.isSuccess()) {
                 result.setStatus("CE");
-                result.setMessage(compileRes.getStderr());
+                result.setMessage(buildCompileErrorMessage(compileRes));
+                result.setStderr(result.getMessage());
+                result.setScore(0);
                 return result;
             }
 
-            long startTime = System.currentTimeMillis();
-            // Chay code, truyen vao file input
-            CommandResult runRes = dockerService.execCommand(containerId, request.getTimeLimit(), "sh", "-c", "./solution < input.txt");
-            // Tinh thoi gian chay
-            long timeUsed = System.currentTimeMillis() - startTime;
+            dockerService.stopAndRemoveContainer(compileContainerId);
+            compileContainerId = null;
 
-            // Phan tich ket qua
-            if (runRes.isTimeOut()) {
-                result.setStatus("TLE");
-            } else if (runRes.getExitCode() == 137) { 
-                // Docker tra ve 137 do tien trinh bi giet vi thieu RAM
-                result.setStatus("MLE");
-                result.setMessage("Memory Limit Exceeded");
-            } else if (runRes.getExitCode() != 0) {
-                result.setStatus("RE");
-                result.setMessage("Runtime Error (Exit code: " + runRes.getExitCode() + ")");
-                result.setStderr(runRes.getStderr());
-            } else {
-                //So sanh dap an
-                String userOutput = runRes.getStdout().trim();
-                String expectedOutput = request.getExpectedOutput().trim();
+            runContainerId = dockerService.createContainer(
+                    "cpp",
+                    workDir.toString(),
+                    problem.getMemoryLimitKb().longValue());
 
-                if (userOutput.equals(expectedOutput)) {
-                    result.setStatus("AC");
-                    result.setMessage("Accepted");
-                } else {
-                    result.setStatus("WA");
-                    result.setMessage("Wrong Answer");
+            int accepted = 0;
+            int totalTimeMs = 0;
+            String finalStatus = "AC";
+
+            for (TestcaseExecution testcase : testcases) {
+                TestcaseJudgeResult caseResult = runTestcase(runContainerId, workDir, problem, testcase);
+                result.getTestcaseResults().add(caseResult);
+                totalTimeMs += caseResult.getTimeMs() == null ? 0 : caseResult.getTimeMs();
+
+                if ("AC".equals(caseResult.getVerdict())) {
+                    accepted++;
+                } else if ("AC".equals(finalStatus)) {
+                    finalStatus = caseResult.getVerdict();
+                    result.setMessage(caseResult.getMessage());
+                    result.setStderr(caseResult.getStderr());
+                    break;
                 }
-
-                result.setStdout(runRes.getStdout()); // Tra ve output goc de user doi chieu
-                result.setTimeUsed(timeUsed / 1000.0);
             }
+
+            result.setStatus(finalStatus);
+            result.setScore(testcases.isEmpty() ? 0 : (accepted * 100) / testcases.size());
+            result.setTimeUsedMs(totalTimeMs);
+            result.setMemoryUsedKb(0);
         } catch (IOException e) {
-            log.error("File system error for submission {}", request.getSubmissionId(), e);
-            result.setStatus("SE"); // System Error
+            log.error("File system error for submission {}", submission.getSubmissionId(), e);
+            result.setStatus("SE");
             result.setMessage("Internal system error: " + e.getMessage());
+            result.setScore(0);
         } finally {
-            //Don dep container va workDir
-            if (containerId != null) {
-                dockerService.stopAndRemoveContainer(containerId);
+            if (compileContainerId != null) {
+                dockerService.stopAndRemoveContainer(compileContainerId);
+            }
+            if (runContainerId != null) {
+                dockerService.stopAndRemoveContainer(runContainerId);
             }
             cleanupFiles(workDir);
         }
@@ -105,14 +119,113 @@ public class CppJudgeStrategy implements JudgeStrategy {
         return result;
     }
 
+    private TestcaseJudgeResult runTestcase(
+            String containerId,
+            Path workDir,
+            Problem problem,
+            TestcaseExecution testcase) throws IOException {
+        Path relativeInput = workDir.relativize(testcase.files().inputPath());
+        long startTime = System.currentTimeMillis();
+        CommandResult runRes = dockerService.execCommand(
+                containerId,
+                Math.max(1L, problem.getTimeLimitMs().longValue()),
+                "sh",
+                "-c",
+                "./solution < " + shellQuote(relativeInput.toString()));
+        int timeMs = Math.toIntExact(Math.max(0L, System.currentTimeMillis() - startTime));
+
+        String verdict;
+        String message = null;
+        if (runRes.isTimeOut()) {
+            verdict = "TLE";
+            message = "Time Limit Exceeded";
+        } else if (runRes.getExitCode() == 137) {
+            verdict = "MLE";
+            message = "Memory Limit Exceeded";
+        } else if (runRes.getExitCode() != 0) {
+            verdict = "RTE";
+            message = "Runtime Error (Exit code: " + runRes.getExitCode() + ")";
+        } else {
+            String expectedOutput = Files.readString(testcase.files().outputPath());
+            verdict = normalize(runRes.getStdout()).equals(normalize(expectedOutput)) ? "AC" : "WA";
+            message = "AC".equals(verdict) ? "Accepted" : "Wrong Answer";
+        }
+
+        return TestcaseJudgeResult.builder()
+                .testcase(testcase.testcase())
+                .verdict(verdict)
+                .stdout(truncate(runRes.getStdout(), 4000))
+                .stderr(truncate(runRes.getStderr(), 4000))
+                .message(message)
+                .timeMs(timeMs)
+                .memoryKb(0)
+                .build();
+    }
+
+    private String buildCompileErrorMessage(CommandResult compileRes) {
+        if (compileRes.isTimeOut()) {
+            return "Compilation timed out after " + (compileTimeoutMs / 1000) + " seconds";
+        }
+        if (compileRes.getExitCode() == 137) {
+            return "Compilation killed with exit code 137, likely exceeded compile memory limit of "
+                    + (compileMemoryLimitKb / 1024) + " MB";
+        }
+
+        String stderr = truncate(compileRes.getStderr(), 8000);
+        if (stderr == null || stderr.isBlank()) {
+            return "Compilation failed (Exit code: " + compileRes.getExitCode() + ")";
+        }
+        return stderr;
+    }
+
+    private String normalize(String value) {
+        return value == null ? "" : value.replace("\r\n", "\n").replace("\r", "\n").trim();
+    }
+
+    private String shellQuote(String value) {
+        return "'" + value.replace("'", "'\\''") + "'";
+    }
+
+    private String truncate(String value, int maxLength) {
+        if (value == null || value.length() <= maxLength) {
+            return value;
+        }
+        return value.substring(0, maxLength);
+    }
+
+    private void makeWorkDirWritable(Path workDir) throws IOException {
+        try {
+            Files.setPosixFilePermissions(workDir, Set.of(
+                    PosixFilePermission.OWNER_READ,
+                    PosixFilePermission.OWNER_WRITE,
+                    PosixFilePermission.OWNER_EXECUTE,
+                    PosixFilePermission.GROUP_READ,
+                    PosixFilePermission.GROUP_WRITE,
+                    PosixFilePermission.GROUP_EXECUTE,
+                    PosixFilePermission.OTHERS_READ,
+                    PosixFilePermission.OTHERS_WRITE,
+                    PosixFilePermission.OTHERS_EXECUTE));
+        } catch (UnsupportedOperationException e) {
+            File file = workDir.toFile();
+            if (!file.setWritable(true, false) || !file.setExecutable(true, false)) {
+                throw new IOException("Could not make sandbox writable: " + workDir);
+            }
+        }
+    }
+
     private void cleanupFiles(Path path) {
         try {
-            //Xoa de quy thu muc temp
+            if (!Files.exists(path)) {
+                return;
+            }
             Files.walk(path)
-                 .sorted((p1, p2) -> p2.compareTo(p1))
-                 .forEach(p -> {
-                     try { Files.delete(p); } catch (IOException ignored) {}
-                 });
+                    .sorted((p1, p2) -> p2.compareTo(p1))
+                    .forEach(p -> {
+                        try {
+                            Files.delete(p);
+                        } catch (IOException ignored) {
+                        }
+                    });
         } catch (IOException e) {
             log.warn("Could not clean up work directory: {}", path);
         }

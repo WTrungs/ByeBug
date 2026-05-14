@@ -33,7 +33,7 @@ export interface ProblemDetail extends Problem {
     description: string;
     constraints?: string | null;
     timeLimitMs: number;
-    memoryLimitMb: number;
+    memoryLimitKb: number;
     testcases: TestCase[];
     examples?: ProblemExample[];
 }

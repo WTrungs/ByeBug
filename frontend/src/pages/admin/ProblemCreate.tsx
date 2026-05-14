@@ -5,7 +5,7 @@ type ProblemFormState = {
     title: string;
     difficulty: 'EASY' | 'MEDIUM' | 'HARD';
     timeLimitMs: string;
-    memoryLimitMb: string;
+    memoryLimitKb: string;
     tags: string;
     description: string;
     constraints: string;
@@ -19,7 +19,7 @@ const initialForm: ProblemFormState = {
     title: '',
     difficulty: 'EASY',
     timeLimitMs: '1000',
-    memoryLimitMb: '256',
+    memoryLimitKb: '262144',
     tags: '',
     description: '',
     constraints: '',
@@ -47,7 +47,7 @@ const ProblemCreate: React.FC = () => {
         title: form.title.trim(),
         difficulty: form.difficulty,
         timeLimitMs: Number(form.timeLimitMs) || 0,
-        memoryLimitMb: Number(form.memoryLimitMb) || 0,
+        memoryLimitKb: Number(form.memoryLimitKb) || 0,
         tags: form.tags
             .split(',')
             .map((tag) => tag.trim())
@@ -160,6 +160,7 @@ const ProblemCreate: React.FC = () => {
                                 className="neo-input"
                                 type="number"
                                 min="1"
+                                step="1"
                                 value={form.timeLimitMs}
                                 onChange={(event) => updateField('timeLimitMs', event.target.value)}
                                 required
@@ -167,13 +168,13 @@ const ProblemCreate: React.FC = () => {
                         </label>
 
                         <label className="pc-field">
-                            <span>Memory limit (MB)</span>
+                            <span>Memory limit (KB)</span>
                             <input
                                 className="neo-input"
                                 type="number"
                                 min="1"
-                                value={form.memoryLimitMb}
-                                onChange={(event) => updateField('memoryLimitMb', event.target.value)}
+                                value={form.memoryLimitKb}
+                                onChange={(event) => updateField('memoryLimitKb', event.target.value)}
                                 required
                             />
                         </label>

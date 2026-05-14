@@ -1,8 +1,12 @@
 package com.byebug.judge.strategy;
 
-import com.byebug.judge.model.JudgeRequest;
+import java.util.List;
+
+import com.byebug.judge.entity.Problem;
+import com.byebug.judge.entity.Submission;
 import com.byebug.judge.model.JudgeResult;
+import com.byebug.judge.model.TestcaseExecution;
 
 public interface JudgeStrategy {
-    JudgeResult execute(JudgeRequest request);
+    JudgeResult execute(Submission submission, Problem problem, List<TestcaseExecution> testcases);
 }

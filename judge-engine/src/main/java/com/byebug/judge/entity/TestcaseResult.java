@@ -1,11 +1,8 @@
-package com.group5.byebug.entity;
-
-import com.group5.byebug.enums.Verdict;
+package com.byebug.judge.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,17 +20,16 @@ public class TestcaseResult {
     @Column(name = "result_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "submission_id", nullable = false)
     private Submission submission;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "testcase_id", nullable = false)
     private Testcase testcase;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private Verdict verdict;
+    private String verdict;
 
     @Column(name = "user_output", columnDefinition = "TEXT")
     private String userOutput;

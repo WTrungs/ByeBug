@@ -64,7 +64,7 @@ public class DockerService {
         }
     }
 
-    public String createContainer(String language, String hostPath, Long memoryLimit) { //Tao container
+    public String createContainer(String language, String hostPath, Long memoryLimitKb) { //Tao container
         String image = switch (language.toLowerCase()) {
             case "cpp" -> cppImage;
             default -> throw new IllegalArgumentException("Unsupported language: " + language);
@@ -72,8 +72,8 @@ public class DockerService {
 
         HostConfig hostConfig = HostConfig.newHostConfig()
                 .withBinds(new Bind(hostPath, new Volume("/sandbox")))
-                .withMemory(memoryLimit * 1024 * 1024) // 256MB RAM
-                .withMemorySwap(memoryLimit * 1024 * 1024) // Khong cho dung swap
+                .withMemory(memoryLimitKb * 1024)
+                .withMemorySwap(memoryLimitKb * 1024) // Khong cho dung swap
                 .withPidsLimit(100L) // Tranh Fork Bomb bang cach gioi han tien trinh
                 .withNetworkMode("none") // Ngat mang tranh gian lan
                 .withAutoRemove(false); // Xoa thu cong container sau khi cham
@@ -89,7 +89,7 @@ public class DockerService {
         return containerId;
     }
 
-    public CommandResult execCommand(String containerId, Long timeoutSeconds, String... cmd) { //Chay code gi do o trong container
+    public CommandResult execCommand(String containerId, Long timeoutMillis, String... cmd) { //Chay code gi do o trong container
         ExecCreateCmdResponse exec = dockerClient.execCreateCmd(containerId)
                 .withCmd(cmd)
                 .withAttachStdout(true)
@@ -113,7 +113,7 @@ public class DockerService {
                             super.onNext(frame);
                         }
                     })
-                    .awaitCompletion(timeoutSeconds, TimeUnit.SECONDS);
+                    .awaitCompletion(timeoutMillis, TimeUnit.MILLISECONDS);
 
             if (!completed) {
                 return new CommandResult(-1L, "", "", true);
