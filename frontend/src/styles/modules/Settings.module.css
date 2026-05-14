@@ -157,3 +157,37 @@
 .dangerBtn:hover {
   background: var(--danger-bg);
 }
+
+.statusBanner {
+  padding: 16px;
+  border: 2px solid var(--black);
+  margin-bottom: 24px;
+  font-weight: 700;
+  font-size: 14px;
+  animation: slideIn 0.3s ease-out;
+}
+
+.success {
+  background: #DCFCE7;
+  color: #166534;
+  border-color: #22C55E;
+}
+
+.error {
+  background: #FEE2E2;
+  color: #991B1B;
+  border-color: #EF4444;
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  font-weight: 800;
+}
