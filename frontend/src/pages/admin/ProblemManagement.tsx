@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import DifficultyBadge from "../../components/DifficultyBadge";
+import { useNavigate } from "react-router-dom";
+import '../../components/ConfirmModal.css'
 
 const ProblemManagement: React.FC = () => {
+  const navigate=useNavigate();
   const [search, setSearch] = useState("");
   const [diffFilter, setDiffFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedProb, setSelectedProb] = useState<{id: number, title: string} | null>(null);
 
   const problems = [
     {
@@ -32,13 +37,32 @@ const ProblemManagement: React.FC = () => {
       lastUpdate: "2024-05-08",
     },
   ];
+  const handleEdit = (id: number) => {
+    navigate(`/admin/problems/edit/${id}`);
+  };
 
+  const openDeleteModal = (id: number, title: string) => {
+    setSelectedProb({ id, title });
+    setIsModalOpen(true);
+  };
+  
   const filtered = problems.filter((p) => {
     const matchSearch = p.title.toLowerCase().includes(search.toLowerCase());
     const matchDiff = diffFilter ? p.difficulty === diffFilter : true;
     const matchStatus = statusFilter ? p.status === statusFilter : true;
     return matchSearch && matchDiff && matchStatus;
   });
+  const confirmDelete = (id: number, title: string) => {
+    setSelectedProb({ id, title });
+    setIsModalOpen(true);
+  };
+  const handleFinalDelete = () => {
+    if (selectedProb) {
+      console.log("Đã cho cút bài tập ID:", selectedProb.id);
+      // Gọi API xóa ở đây
+      setIsModalOpen(false);
+    }
+  };
 
   const newest = [
     { title: "Tìm số đảo ngược", time: "12 phút trước", level: "Dễ" },
@@ -185,10 +209,10 @@ const ProblemManagement: React.FC = () => {
                 <td className="pm-date-cell">{prob.lastUpdate}</td>
                 <td>
                   <div className="pm-actions">
-                    <button className="pm-btn-edit" title="Chỉnh sửa">
+                    <button className="pm-btn-edit" onClick={() => handleEdit(prob.id)}>
                       ✏️
                     </button>
-                    <button className="pm-btn-delete" title="Xóa">
+                    <button className="pm-btn-delete" onClick={() => openDeleteModal(prob.id, prob.title)}>
                       🗑️
                     </button>
                   </div>
@@ -212,6 +236,18 @@ const ProblemManagement: React.FC = () => {
           </tbody>
         </table>
       </div>
+      {isModalOpen && (
+                      <div className="modal-overlay">
+                        <div className="modal-content">
+                          <h3 className="modal-title">Sếp chắc chưa?</h3>
+                          <p>Bài tập <strong>{selectedProb?.title}</strong> sẽ cút khỏi hệ thống vĩnh viễn đấy!</p>
+                          <div className="modal-actions">
+                            <button className="btn-confirm" onClick={handleFinalDelete}>CHO CÚT!</button>
+                            <button className="btn-cancel" onClick={() => setIsModalOpen(false)}>THÔI THA</button>
+                            </div>
+                            </div>
+                            </div>
+      )}
     </div>
   );
 };
