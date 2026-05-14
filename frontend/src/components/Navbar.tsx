@@ -21,6 +21,8 @@ const Navbar = ({ title, subtitle, hideActions = false }: NavbarProps) => {
   const [unreadCount, setUnreadCount] = useState(0);
 
   const user = getUser();
+  const username = user?.username;
+  const role = user?.role;
   const displayName = user?.username ?? "Người dùng";
   const avatarFallback = displayName.charAt(0).toUpperCase();
   const avatarSeed = encodeURIComponent(user?.username ?? "guest");
@@ -36,7 +38,7 @@ const Navbar = ({ title, subtitle, hideActions = false }: NavbarProps) => {
     getMyNotifications({ size: 5 })
       .then((page) => setNotifications(page.content))
       .catch(() => {});
-  }, [hideActions, user]);
+  }, [hideActions, username, role]);
 
   const handleMarkRead = async (notification: UserNotification) => {
     if (notification.isRead) return;
