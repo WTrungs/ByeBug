@@ -3,9 +3,12 @@ package com.group5.byebug.controller;
 import com.group5.byebug.dto.*;
 import com.group5.byebug.repository.AdminRepository;
 import com.group5.byebug.service.NotificationService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/admin/notifications")
@@ -62,5 +65,10 @@ public class AdminNotificationController {
         return adminRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Admin not found"))
                 .getAdminId();
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<Map<String, String>> handleRuntimeException(RuntimeException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", ex.getMessage()));
     }
 }
