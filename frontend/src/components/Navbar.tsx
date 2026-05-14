@@ -24,12 +24,13 @@ const Navbar = ({ title, subtitle, hideActions = false }: NavbarProps) => {
   const user = getUser();
   const displayName = user?.username ?? "Người dùng";
   const username = user?.username;
+  const role = user?.role;
   const avatarFallback = displayName.charAt(0).toUpperCase();
   const avatarSeed = encodeURIComponent(user?.username ?? "guest");
   const avatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${avatarSeed}`;
 
   const loadNotifications = () => {
-    if (hideActions || isAdmin() || !username) return;
+    if (hideActions || role === "ADMIN" || isAdmin() || !username) return;
 
     getUnreadCount()
       .then(setUnreadCount)
@@ -42,7 +43,7 @@ const Navbar = ({ title, subtitle, hideActions = false }: NavbarProps) => {
 
   useEffect(() => {
     loadNotifications();
-  }, [hideActions, username]);
+  }, [hideActions, username, role]);
 
   const handleOpenNotification = async (notification: UserNotification) => {
     setSelectedNotification(notification);
