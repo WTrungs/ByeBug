@@ -30,4 +30,10 @@ public interface ProblemRepository extends JpaRepository<Problem, Long> {
     java.util.List<Problem> findByTitleContainingIgnoreCase(String title);
     long countByIsPublicTrue();
     long countByIsPublicFalse();
+
+    @Query("SELECT p FROM Problem p WHERE p.isPublic = true ORDER BY p.createdAt DESC")
+    List<com.group5.byebug.entity.Problem> findLatestProblems(org.springframework.data.domain.Pageable pageable);
+
+    @Query("SELECT p FROM Problem p LEFT JOIN Submission s ON p = s.problem WHERE p.isPublic = true GROUP BY p ORDER BY COUNT(s) DESC")
+    List<com.group5.byebug.entity.Problem> findPopularProblems(org.springframework.data.domain.Pageable pageable);
 }
