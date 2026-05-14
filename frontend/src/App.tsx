@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Problems from './pages/Problems';
@@ -13,7 +13,7 @@ import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Submission from './pages/Submission';
 import ForgotPassword from './pages/ForgotPassword';
-import MainLayout from './components/MainLayout';
+
 
 
 const App: React.FC = () => {
