@@ -1,28 +1,23 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import AdminSidebar from '../../components/AdminSidebar';
+import Navbar from '../../components/Navbar';
 import Overview from '../admin/Overview';
 import UserManagement from './UserManagement';
 import ProblemManagement from './ProblemManagement';
+import ProblemCreate from './ProblemCreate';
+import NotificationManagement from './NotificationManagement';
 
 const Admin: React.FC = () => {
     return (
         <div className="admin-wrapper">
             <AdminSidebar />
             <main className="admin-main">
-
-                <header className="topbar">
-                    <div className="topbar-left">
-                        <h1 className="topbar-title">HỆ THỐNG QUẢN TRỊ</h1>
-                        <p className="topbar-welcome">Em chào <span className="admin-name">Sếp!</span></p>
-                    </div>
-                    <div className="topbar-right">
-                        <div className="status-live">
-                            <span className="pulse-dot"></span>
-                            LIVE STATUS
-                        </div>
-                    </div>
-                </header>
+                <Navbar
+                    title="HỆ THỐNG QUẢN TRỊ"
+                    subtitle={<>Em chào <span className="admin-name">Sếp!</span></>}
+                    hideActions
+                />
 
                 <div className="admin-content">
                     <Routes>
@@ -30,6 +25,9 @@ const Admin: React.FC = () => {
                         <Route path="overview" element={<Overview />} />
                         <Route path="users" element={<UserManagement />} />
                         <Route path="problems" element={<ProblemManagement />} />
+                        <Route path="problems/new" element={<ProblemCreate />} />
+                        <Route path="notifications" element={<NotificationManagement />} />
+                        <Route path="reports" element={<Navigate to="notifications" replace />} />
                     </Routes>
                 </div>
 
