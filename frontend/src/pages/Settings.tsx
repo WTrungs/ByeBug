@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import UserSidebar from "../components/UserSidebar";
 import Navbar from "../components/Navbar";
 import { getUserProfile, updateProfile, changePassword, deleteAccount } from "../api/userApi";
 import { getUser } from "../utils/auth";
@@ -104,7 +103,6 @@ const Settings: React.FC = () => {
 
   return (
     <div className={styles.pageLayout}>
-      <UserSidebar />
 
       <div className={styles.mainArea}>
         <Navbar

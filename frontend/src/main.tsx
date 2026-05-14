@@ -8,6 +8,7 @@ import './styles/UserManagement.css'
 import './styles/modules/Problems.css'
 
 import './styles/ActivityLog.css'
+
 import App from './App'
 
 const rootElement = document.getElementById('root');

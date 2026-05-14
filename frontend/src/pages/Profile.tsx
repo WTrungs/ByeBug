@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import UserSidebar from "../components/UserSidebar";
-import Navbar from "../components/Navbar";
 import UserStatCard from "../components/UserStatCard";
 import VerdictBadge from "../components/VerdictBadge";
 import { getUserProfile, type UserProfile } from "../api/userApi";
@@ -67,9 +65,8 @@ const Profile: React.FC = () => {
   if (loading) return <div className={styles.loading}>Loading profile...</div>;
   if (!profile) return (
     <div className={styles.pageLayout}>
-      <UserSidebar />
+      
       <div className={styles.mainArea}>
-        <Navbar title="HỒ SƠ CÁ NHÂN" />
         <div className={styles.content}>
            <div className={styles.error}>Không tìm thấy thông tin người dùng <strong>{username}</strong></div>
         </div>
@@ -79,19 +76,8 @@ const Profile: React.FC = () => {
 
   return (
     <div className={styles.pageLayout}>
-      <UserSidebar />
 
       <div className={styles.mainArea}>
-        <Navbar
-          title="HỒ SƠ CÁ NHÂN"
-          subtitle={
-            <>
-              Theo dõi thành tích và hoạt động của{" "}
-              <strong>{profile.username}</strong>.
-            </>
-          }
-        />
-
         {/* CONTENT */}
         <div className={styles.content}>
           <div className={styles.profileGrid}>

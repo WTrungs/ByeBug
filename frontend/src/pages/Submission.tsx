@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import UserSidebar from "../components/UserSidebar";
+
 import Navbar from "../components/Navbar";
 import VerdictBadge from "../components/VerdictBadge";
 import {
@@ -104,7 +104,7 @@ const Submission = () => {
 
   return (
     <div className={submissionStyles.pageLayout}>
-      <UserSidebar />
+     
 
       <div className={submissionStyles.mainArea}>
         <Navbar

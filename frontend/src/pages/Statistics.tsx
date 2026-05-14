@@ -11,7 +11,6 @@ import {
   Legend,
 } from "recharts";
 import UserStatCard from "../components/UserStatCard";
-import Navbar from "../components/Navbar";
 import DifficultyBadge from "../components/DifficultyBadge";
 import { getUser } from "../utils/auth";
 import { getAllProblems, type Problem } from "../api/problemApi";
@@ -90,15 +89,6 @@ const Statistics: React.FC = () => {
   return (
     <div className={styles.fullPageWrapper}>
       {/* TOPBAR - Giữ nguyên Navbar nhưng nội dung sẽ trải dài */}
-      <Navbar
-        title="THỐNG KÊ CÁ NHÂN"
-        subtitle={
-          <>
-            Chào mừng trở lại, <strong>{user?.username ?? "Người dùng"}</strong>.
-            Tiếp tục luyện tập nào!
-          </>
-        }
-      />
 
       {/* CONTENT AREA - Bỏ bọc Sidebar layout, trực tiếp dùng content container */}
       <div className={styles.content}>
