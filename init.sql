@@ -92,7 +92,14 @@ VALUES (
     'ADMIN',
     0, 
     true
-);
+)
+ON CONFLICT (username) DO UPDATE SET
+    full_name = EXCLUDED.full_name,
+    email = EXCLUDED.email,
+    password_hash = EXCLUDED.password_hash,
+    gender = EXCLUDED.gender,
+    role = 'ADMIN',
+    is_active = true;
 
 -- tkhoan user
 INSERT INTO users (username, full_name, email, password_hash, gender, role, total_score, is_active) 

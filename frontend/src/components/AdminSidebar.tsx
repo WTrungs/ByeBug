@@ -19,6 +19,7 @@ const AdminSidebar: React.FC = () => {
     const handleLogout = () => {
         localStorage.removeItem('USER');
         localStorage.removeItem('user');
+        localStorage.removeItem('TOKEN');
         navigate('/login');
     };
 

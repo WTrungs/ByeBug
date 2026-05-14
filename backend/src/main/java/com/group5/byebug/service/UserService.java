@@ -21,11 +21,18 @@ public class UserService {
     private final UserRepository userRepository;
     private final SubmissionRepository submissionRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public UserService(UserRepository userRepository, SubmissionRepository submissionRepository, PasswordEncoder passwordEncoder) {
+    public UserService(
+            UserRepository userRepository,
+            SubmissionRepository submissionRepository,
+            PasswordEncoder passwordEncoder,
+            JwtService jwtService
+    ) {
         this.userRepository = userRepository;
         this.submissionRepository = submissionRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     public UserResponse register(RegisterRequest request) {
@@ -49,27 +56,31 @@ public class UserService {
     }
 
     public UserResponse login(LoginRequest request) {
-    System.out.println("--- Login Debug ---");
-    Optional<User> userOpt = userRepository.findByUsername(request.getUsername());
-    
-    if (userOpt.isPresent()) {
-        User user = userOpt.get();
-        System.out.println("Found user: " + user.getUsername());
-        System.out.println("Comparing: " + request.getPassword() + " vs " + user.getPasswordHash());
+        User user = userRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new RuntimeException("Sai tên đăng nhập hoặc mật khẩu"));
 
-       if (passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
-            System.out.println("Login Success!");
-            user.setLastLoginAt(LocalDateTime.now());
-            userRepository.save(user);
-            return new UserResponse(user.getUserId(), user.getUsername(), user.getFullName(), user.getEmail(), "Đăng nhập thành công", user.getRole());
-        } else {
-            System.out.println("Password mismatch!");
+        if (!Boolean.TRUE.equals(user.getIsActive())) {
+            throw new RuntimeException("Tài khoản đã bị vô hiệu hóa");
         }
-    } else {
-        System.out.println("Username not found!");
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
+            throw new RuntimeException("Sai tên đăng nhập hoặc mật khẩu");
+        }
+
+        user.setLastLoginAt(LocalDateTime.now());
+        User savedUser = userRepository.save(user);
+        String token = jwtService.generateToken(savedUser);
+
+        return new UserResponse(
+                savedUser.getUserId(),
+                savedUser.getUsername(),
+                savedUser.getFullName(),
+                savedUser.getEmail(),
+                "Đăng nhập thành công",
+                savedUser.getRole(),
+                token
+        );
     }
-    throw new RuntimeException("Sai tên đăng nhập hoặc mật khẩu");
-}
 
     public UserResponse forgotPassword(ForgotPasswordRequest request) {
         Optional<User> userOpt = userRepository.findByEmail(request.getEmail());
@@ -144,20 +155,16 @@ public class UserService {
     }
 
     public void changePassword(String username, ChangePasswordRequest request) {
-        System.out.println("--- Change Password Debug ---");
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found: " + username));
 
-        System.out.println("Verifying old password for user: " + username);
         if (!passwordEncoder.matches(request.getOldPassword(), user.getPasswordHash())) {
-            System.err.println("Old password mismatch for user: " + username);
             throw new RuntimeException("Mật khẩu cũ không chính xác");
         }
 
         String newHash = passwordEncoder.encode(request.getNewPassword());
         user.setPasswordHash(newHash);
         userRepository.save(user);
-        System.out.println("Password updated successfully for user: " + username);
     }
 
     public void deleteAccount(String username, DeleteAccountRequest request) {
