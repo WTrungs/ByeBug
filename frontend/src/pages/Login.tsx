@@ -35,6 +35,9 @@ const Login: React.FC = () => {
         try {
             const response = await api.post('/users/login', { username, password });
             localStorage.setItem('USER', JSON.stringify(response.data));
+            if (response.data.token) {
+                localStorage.setItem('TOKEN', response.data.token);
+            }
 
             if (response.data.role === 'ADMIN') {
                 navigate('/admin');

@@ -5,8 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserResponse {
     private Long userId;
     private String username;
@@ -14,4 +14,14 @@ public class UserResponse {
     private String email;
     private String message;
     private String role;
+    private String token;
+
+    public UserResponse(Long userId, String username, String fullName, String email, String message, String role) {
+        this.userId = userId;
+        this.username = username;
+        this.fullName = fullName;
+        this.email = email;
+        this.message = message;
+        this.role = role;
+    }
 }

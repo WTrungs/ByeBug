@@ -5,6 +5,7 @@ export interface AuthUser {
     email?: string;
     avatarUrl?: string;
     role: string;
+    token?: string;
 }
 
 export const getUser = (): AuthUser | null => {

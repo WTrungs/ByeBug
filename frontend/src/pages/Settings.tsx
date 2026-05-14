@@ -202,6 +202,7 @@ const Settings: React.FC = () => {
                         // Logout and redirect
                         localStorage.removeItem('USER');
                         localStorage.removeItem('user');
+                        localStorage.removeItem('TOKEN');
                         navigate("/login");
                       } catch (error: any) {
                         console.error("Delete account error:", error);
