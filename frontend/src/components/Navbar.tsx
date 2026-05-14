@@ -2,8 +2,12 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { getUser } from "../utils/auth";
 import BrandLogo from "./BrandLogo";
+interface NavbarProps {
+  title?: string;
+  subtitle?: React.ReactNode;
+}
 
-const Navbar = () => {
+const Navbar: React.FC<NavbarProps>=({title, subtitle}) => {
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [hasAvatarError, setHasAvatarError] = useState(false);
   const user = getUser();
@@ -12,7 +16,7 @@ const Navbar = () => {
   // Lấy dữ liệu user
   const displayName = user?.username || "Bảnh";
   const avatarFallback = displayName.charAt(0).toUpperCase();
-  const avatarUrl = user?.avatar; // Lấy từ object user
+  const avatarUrl = null; // Lấy từ object user
 
   // Helper check active link
   const isActive = (path: string) => location.pathname === path ? "nav-link-active" : "";
@@ -66,6 +70,7 @@ const Navbar = () => {
             <div className="panel-content">
                <p>Bạn chưa có thông báo mới.</p>
             </div>
+          </div>
           </div>
 
         {/* Profile Avatar & Fallback */}
