@@ -183,7 +183,7 @@ const NotificationManagement: React.FC = () => {
                                 onClick={() => setIsAudienceOpen((isOpen) => !isOpen)}
                             >
                                 <span>{audienceLabels[form.audience]}</span>
-                                <span className="nm-audience-chevron">⌄</span>
+                                <span className="nm-audience-chevron" aria-hidden="true" />
                             </button>
 
                             {isAudienceOpen && (

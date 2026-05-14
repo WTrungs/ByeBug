@@ -76,16 +76,22 @@
     transform: translateX(4px);
 }
 
+.admin-wrapper .sidebar-footer {
+    padding: 10px 14px;
+}
+
 .admin-logout-btn {
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 8px;
     width: 100%;
-    padding: 10px 14px;
+    min-height: 36px;
+    padding: 8px 10px;
     font-size: 14px;
     font-family: var(--font-sans);
-    font-weight: 600;
-    color: var(--admin-red);
+    font-weight: 700;
+    color: var(--admin-red-dark);
     background: transparent;
     border: 2px solid transparent;
     cursor: pointer;
@@ -401,16 +407,21 @@
 }
 
 .nm-audience-chevron {
-    width: 24px;
-    height: 24px;
+    width: 18px;
+    height: 18px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border: 1.5px solid var(--black);
-    background: var(--white);
-    font-size: 16px;
-    line-height: 1;
     transition: transform 0.15s;
+}
+
+.nm-audience-chevron::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-right: 2px solid var(--black);
+    border-bottom: 2px solid var(--black);
+    transform: rotate(45deg) translate(-1px, -1px);
 }
 
 .nm-audience-select.is-open .nm-audience-chevron {

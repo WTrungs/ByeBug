@@ -48,6 +48,32 @@ export interface AdminOverview {
   recentActivities: AdminActivity[];
 }
 
+export interface AdminProblemTag {
+  tagId: number;
+  tagName: string;
+}
+
+export interface AdminProblem {
+  problemId: number;
+  title: string;
+  difficulty: 'EASY' | 'MEDIUM' | 'HARD';
+  isPublic: boolean;
+  createdAt?: string | null;
+  createdBy?: string | null;
+  tags: AdminProblemTag[];
+  totalSubmissions: number;
+  acceptedSubmissions: number;
+  acceptanceRate: number;
+}
+
+export interface AdminProblemPage {
+  content: AdminProblem[];
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+}
+
 export const getAdminUsers = async (params?: {
   page?: number;
   size?: number;
@@ -82,6 +108,36 @@ export const restoreAdminUser = async (userId: number): Promise<AdminUser> => {
 
 export const getAdminOverview = async (): Promise<AdminOverview> => {
   const response = await api.get('/admin/overview');
+  return response.data;
+};
+
+export const getAdminProblems = async (params?: {
+  page?: number;
+  size?: number;
+  search?: string;
+  difficulty?: string;
+  visibility?: string;
+  sort?: string;
+}): Promise<AdminProblemPage> => {
+  const response = await api.get('/admin/problems', { params });
+  return response.data;
+};
+
+export const getLatestAdminProblems = async (limit = 3): Promise<AdminProblem[]> => {
+  const response = await api.get('/admin/problems/latest', { params: { limit } });
+  return response.data;
+};
+
+export const getPopularAdminProblems = async (limit = 3): Promise<AdminProblem[]> => {
+  const response = await api.get('/admin/problems/popular', { params: { limit } });
+  return response.data;
+};
+
+export const setAdminProblemVisibility = async (
+  problemId: number,
+  isPublic: boolean,
+): Promise<AdminProblem> => {
+  const response = await api.patch(`/admin/problems/${problemId}/visibility`, { isPublic });
   return response.data;
 };
 

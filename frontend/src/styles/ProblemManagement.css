@@ -13,6 +13,7 @@
     border: 3px solid var(--black);
     overflow: hidden;
     box-shadow: var(--shadow-lg);
+    font-family: var(--font-sans);
 }
 
 /* ---- TOP 2-COLUMN GRID ---- */
@@ -148,6 +149,10 @@
     gap: 8px;
 }
 
+.pm-bank-card {
+    overflow: visible;
+}
+
 /* Search box */
 .pm-search-box {
     display: flex;
@@ -180,24 +185,102 @@
     font-weight: 400;
 }
 
-/* Filter selects */
-.pm-select {
+.pm-filter-select {
+    position: relative;
+    min-width: 112px;
+}
+
+.pm-filter-trigger {
+    width: 100%;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
     border: 2px solid var(--black);
-    padding: 6px 12px;
+    padding: 7px 10px 7px 12px;
     font-size: 13px;
-    font-weight: 600;
+    font-family: var(--font-sans);
+    font-weight: 900;
     color: var(--black);
     background: var(--white);
     cursor: pointer;
     outline: none;
     box-shadow: var(--shadow-sm);
-    transition: box-shadow 0.15s;
-    appearance: none;
+    transition: background 0.15s, box-shadow 0.15s, transform 0.15s;
 }
 
-.pm-select:focus {
+.pm-filter-trigger:hover,
+.pm-filter-trigger:focus-visible,
+.pm-filter-select.is-open .pm-filter-trigger {
     background: var(--bg-soft);
     box-shadow: var(--shadow-md);
+    transform: translate(-1px, -1px);
+}
+
+.pm-filter-chevron {
+    width: 16px;
+    height: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.15s;
+}
+
+.pm-filter-chevron::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-right: 2px solid var(--black);
+    border-bottom: 2px solid var(--black);
+    transform: rotate(45deg) translate(-1px, -1px);
+}
+
+.pm-filter-select.is-open .pm-filter-chevron {
+    transform: rotate(180deg);
+}
+
+.pm-filter-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px;
+    border: 2px solid var(--black);
+    background: var(--white);
+    box-shadow: var(--shadow-md);
+}
+
+.pm-filter-option {
+    width: 100%;
+    min-height: 34px;
+    border: 2px solid transparent;
+    background: transparent;
+    color: var(--black);
+    padding: 7px 9px;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 800;
+    text-align: left;
+    transition: background 0.12s, border-color 0.12s, transform 0.12s;
+}
+
+.pm-filter-option:hover,
+.pm-filter-option:focus-visible {
+    border-color: var(--black);
+    background: var(--bg-soft);
+    outline: none;
+}
+
+.pm-filter-option.is-selected {
+    border-color: var(--black);
+    background: var(--admin-red-soft);
+    box-shadow: inset 4px 0 0 var(--admin-red);
 }
 
 /* ---- MAIN TABLE ---- */
@@ -259,6 +342,14 @@
     color: #374151;
 }
 
+.pm-subs-cell small {
+    display: block;
+    color: #9ca3af;
+    font-size: 11px;
+    font-weight: 800;
+    margin-top: 2px;
+}
+
 .pm-date-cell {
     text-align: center;
     font-size: 12px;
@@ -287,8 +378,27 @@
     font-weight: 700;
 }
 
-.pm-status-stable { background: #dbeafe; color: #1d4ed8; }
-.pm-status-bugged { background: #fef9c3; color: #a16207; }
+.pm-status-stable,
+.pm-status-public { background: #dcfce7; color: #166534; }
+.pm-status-bugged,
+.pm-status-hidden { background: #fef9c3; color: #a16207; }
+
+.pm-state,
+.pm-empty-list,
+.pm-empty-cell {
+    padding: 24px;
+    color: #6b7280;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.pm-state-error {
+    background: var(--admin-red-soft);
+    color: var(--admin-red-dark);
+    border-bottom: 2px solid var(--black);
+}
 
 /* Action buttons */
 .pm-actions {
@@ -298,7 +408,8 @@
 }
 
 .pm-btn-edit,
-.pm-btn-delete {
+.pm-btn-delete,
+.pm-btn-visibility {
     width: 32px;
     height: 32px;
     border: 2px solid var(--black);
@@ -310,6 +421,15 @@
     justify-content: center;
     box-shadow: var(--shadow-sm);
     transition: all 0.1s;
+}
+
+.pm-btn-visibility {
+    width: auto;
+    min-width: 48px;
+    padding: 0 10px;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 900;
 }
 
 .pm-btn-edit:hover {
@@ -324,10 +444,68 @@
     box-shadow: var(--shadow-md);
 }
 
+.pm-btn-hide:hover {
+    background: var(--admin-red-soft);
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-md);
+}
+
+.pm-btn-publish:hover {
+    background: #dcfce7;
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-md);
+}
+
 .pm-btn-edit:active,
-.pm-btn-delete:active {
+.pm-btn-delete:active,
+.pm-btn-visibility:active {
     transform: scale(0.95);
     box-shadow: none;
+}
+
+.pm-btn-visibility:disabled,
+.pm-page-actions button:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+    transform: none;
+}
+
+.pm-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 20px;
+    border-top: 2px solid var(--black);
+    color: #374151;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.pm-page-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pm-page-actions button {
+    border: 2px solid var(--black);
+    background: var(--white);
+    color: var(--black);
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 900;
+    padding: 7px 12px;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.15s;
+}
+
+.pm-page-actions button:not(:disabled):hover {
+    background: var(--bg-soft);
+    transform: translate(-1px, -1px);
+    box-shadow: var(--shadow-md);
 }
 
 /* ---- CREATE PROBLEM PAGE ---- */
@@ -585,6 +763,17 @@
 }
 
 @media (max-width: 760px) {
+    .pm-table-header,
+    .pm-filter-row {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .pm-search-box input,
+    .pm-filter-select {
+        width: 100%;
+    }
+
     .pc-hero,
     .pc-actions {
         align-items: stretch;
