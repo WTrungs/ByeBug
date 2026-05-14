@@ -39,3 +39,41 @@ export const deleteAccount = async (username: string, password: string) => {
     const response = await api.delete(`/users/${username}`, { data: { password } });
     return response.data;
 };
+
+export interface LeaderboardUser {
+    username: string;
+    fullName: string;
+    avatarUrl: string;
+    totalPoints: number;
+    solvedCount: number;
+    createdAt: string;
+}
+
+export const getLeaderboard = async (): Promise<LeaderboardUser[]> => {
+    const response = await api.get('/users/leaderboard');
+    return response.data;
+};
+
+export interface UserStatistics {
+    solvedCount: number;
+    rank: number;
+    attemptedCount: number;
+    streak: number;
+    chartData: {
+        day: string;
+        ac: number;
+        wa: number;
+    }[];
+    recentSubmissions: {
+        id: number;
+        problemId: number;
+        problemTitle: string;
+        result: string;
+        time: string;
+    }[];
+}
+
+export const getStatistics = async (username: string): Promise<UserStatistics> => {
+    const response = await api.get(`/users/statistics/${username}`);
+    return response.data;
+};

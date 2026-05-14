@@ -545,8 +545,8 @@ VALUES
 
 INSERT INTO submissions (problem_id, user_id, language, source_code, verdict, score, total_time_ms, max_memory_kb)
 VALUES 
-(1, 2, 'C++', '#include <iostream>...', 'AC', 100, 15, 1024),
-(4, 2, 'Python', 'def lcs(a, b):...', 'WA', 0, 450, 8192);
+(1, 2, 'CPP', '#include <iostream>...', 'AC', 100, 15, 1024),
+(4, 2, 'PYTHON', 'def lcs(a, b):...', 'WA', 0, 450, 8192);
 
 
 INSERT INTO testcase_results (submission_id, testcase_id, verdict, time_ms, memory_kb)

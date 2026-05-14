@@ -65,6 +65,24 @@ public class UserController {
         }
     }
 
+    @GetMapping("/leaderboard")
+    public ResponseEntity<?> getLeaderboard() {
+        try {
+            return ResponseEntity.ok(userService.getLeaderboard());
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/statistics/{username}")
+    public ResponseEntity<?> getStatistics(@PathVariable String username) {
+        try {
+            return ResponseEntity.ok(userService.getStatistics(username));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @PutMapping("/{username}")
     public ResponseEntity<?> updateProfile(@PathVariable String username, @RequestBody UpdateProfileRequest request) {
         try {
