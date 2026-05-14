@@ -126,14 +126,98 @@ public class UserService {
                 .username(user.getUsername())
                 .fullName(user.getFullName())
                 .email(user.getEmail())
-                .avatarUrl(user.getAvatarUrl() != null ? user.getAvatarUrl() : "https://api.dicebear.com/7.x/avataaars/svg?seed=" + user.getUsername())
+                .avatarUrl(getAvatarUrl(user))
                 .totalPoints(user.getTotalScore())
                 .rank(rank)
-                .solvedCount(solvedCount)
+                .solvedCount(getSolvedCount(user.getUserId()))
                 .attemptedCount(attemptedCount)
                 .verdictStats(verdictStats)
                 .recentSubmissions(submissionDTOs)
                 .build();
+    }
+
+    public List<LeaderboardResponse> getLeaderboard() {
+        List<User> topUsers = userRepository.findAllByOrderByTotalScoreDesc(org.springframework.data.domain.PageRequest.of(0, 20));
+        return topUsers.stream().map(u -> {
+            return LeaderboardResponse.builder()
+                    .username(u.getUsername())
+                    .fullName(u.getFullName())
+                    .avatarUrl(getAvatarUrl(u))
+                    .totalPoints(u.getTotalScore())
+                    .solvedCount(getSolvedCount(u.getUserId()))
+                    .createdAt(u.getCreatedAt())
+                    .build();
+        }).collect(Collectors.toList());
+    }
+
+    public UserStatisticsResponse getStatistics(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Integer totalScore = user.getTotalScore() != null ? user.getTotalScore() : 0;
+        int rank = (int) userRepository.countByTotalScoreGreaterThan(totalScore) + 1;
+        Long solvedCountLong = submissionRepository.countDistinctProblemByUserIdAndVerdict(user.getUserId(), com.group5.byebug.enums.Verdict.AC);
+        long solvedCount = solvedCountLong != null ? solvedCountLong : 0L;
+
+        Long attemptedCountLong = submissionRepository.countDistinctProblemByUserId(user.getUserId());
+        long attemptedCount = attemptedCountLong != null ? attemptedCountLong : 0L;
+
+        // Daily stats for last 7 days
+        LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(6).withHour(0).withMinute(0).withSecond(0).withNano(0);
+        List<com.group5.byebug.entity.Submission> recentSubmissionsForChart = submissionRepository.findByUserAndSubmittedAtAfter(user, sevenDaysAgo);
+
+        String[] dayLabels = {"CN", "T2", "T3", "T4", "T5", "T6", "T7"};
+        java.util.Map<String, UserStatisticsResponse.DailyStats> dailyMap = new java.util.LinkedHashMap<>();
+        
+        for (int i = 0; i < 7; i++) {
+            LocalDateTime day = sevenDaysAgo.plusDays(i);
+            int dayOfWeek = day.getDayOfWeek().getValue() % 7; // 0=Sunday, 1=Monday...
+            String label = dayLabels[dayOfWeek];
+            dailyMap.put(label, new UserStatisticsResponse.DailyStats(label, 0L, 0L));
+        }
+
+        recentSubmissionsForChart.forEach(s -> {
+            int dayOfWeek = s.getSubmittedAt().getDayOfWeek().getValue() % 7;
+            String label = dayLabels[dayOfWeek];
+            UserStatisticsResponse.DailyStats stats = dailyMap.get(label);
+            if (stats != null) {
+                if (s.getVerdict() == com.group5.byebug.enums.Verdict.AC) {
+                    stats.setAc(stats.getAc() + 1);
+                } else if (s.getVerdict() == com.group5.byebug.enums.Verdict.WA) {
+                    stats.setWa(stats.getWa() + 1);
+                }
+            }
+        });
+
+        // Recent submissions for history table (top 15)
+        List<com.group5.byebug.entity.Submission> history = submissionRepository.findByUserOrderBySubmittedAtDesc(user, org.springframework.data.domain.PageRequest.of(0, 15));
+        List<SubmissionDTO> historyDTOs = history.stream()
+                .map(s -> SubmissionDTO.builder()
+                        .id(s.getSubmissionId())
+                        .problemId(s.getProblem().getProblemId())
+                        .problemTitle(s.getProblem().getTitle())
+                        .result(s.getVerdict())
+                        .time(s.getSubmittedAt())
+                        .build())
+                .collect(Collectors.toList());
+
+        return UserStatisticsResponse.builder()
+                .solvedCount((int) solvedCount)
+                .rank(rank)
+                .attemptedCount(attemptedCount)
+                .streak(0) // Placeholder for now
+                .chartData(new java.util.ArrayList<>(dailyMap.values()))
+                .recentSubmissions(historyDTOs)
+                .build();
+    }
+
+    private long getSolvedCount(Long userId) {
+        Long count = submissionRepository.countDistinctProblemByUserIdAndVerdict(userId, com.group5.byebug.enums.Verdict.AC);
+        return count != null ? count : 0L;
+    }
+
+    private String getAvatarUrl(User user) {
+        return user.getAvatarUrl() != null ? user.getAvatarUrl() : "https://api.dicebear.com/7.x/avataaars/svg?seed=" + user.getUsername();
     }
 
     public UserResponse updateProfile(String username, UpdateProfileRequest request) {
