@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/modules/Problems.css'
 import api from '../api/axios';
 import ProblemCard from '../components/ProblemCard';
-import type { Problem } from '../components/ProblemCard';
+import type { Problem } from '../components/ProblemCard'
 
 interface TagDTO {
     tagId: number;
