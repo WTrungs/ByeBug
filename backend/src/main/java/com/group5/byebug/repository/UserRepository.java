@@ -17,6 +17,7 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     boolean existsByEmail(String email);
     long countByTotalScoreGreaterThan(Integer score);
     List<User> findAllByOrderByTotalScoreDesc(Pageable pageable);
+    List<User> findByIsActiveTrueAndDeletedAtIsNull();
     long countByIsActiveTrueAndDeletedAtIsNull();
     long countByIsActiveFalseAndDeletedAtIsNull();
     long countByDeletedAtIsNotNull();

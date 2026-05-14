@@ -92,7 +92,6 @@ export interface CreateBroadcastPayload {
   content: string;
   audienceType: 'ALL' | 'USER' | 'ADMIN';
   priority: 'NORMAL' | 'IMPORTANT' | 'URGENT';
-  scheduledAt?: string | null;
 }
 
 export interface BroadcastItem {

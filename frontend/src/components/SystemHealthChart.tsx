@@ -1,7 +1,13 @@
 import React from 'react';
 import {
-    AreaChart, Area, XAxis, YAxis,
-    CartesianGrid, Tooltip, ResponsiveContainer,
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    ResponsiveContainer,
+    Cell,
 } from 'recharts';
 import type { AdminOverview } from '../api/adminApi';
 
@@ -9,13 +15,13 @@ type Props = {
     overview?: AdminOverview | null;
 };
 
+const chartColors = ['#fa375e', '#ffb338', '#38a169'];
+
 const SystemHealthChart: React.FC<Props> = ({ overview }) => {
     const data = [
         { label: 'Người dùng', count: overview?.totalUsers ?? 0 },
         { label: 'Bài tập', count: overview?.totalProblems ?? 0 },
         { label: 'Lượt nộp', count: overview?.totalSubmissions ?? 0 },
-        { label: 'Bài đúng', count: overview?.acceptedSubmissions ?? 0 },
-        { label: 'Chưa đúng', count: overview?.failedSubmissions ?? 0 },
     ];
 
     return (
@@ -23,59 +29,55 @@ const SystemHealthChart: React.FC<Props> = ({ overview }) => {
             <div className="chart-header">
                 <div>
                     <h3 className="chart-title">THỐNG KÊ HỆ THỐNG</h3>
-                    <p className="chart-subtitle">Dữ liệu tổng hợp trực tiếp từ database hiện tại</p>
+                    <p className="chart-subtitle">Tổng quan người dùng, bài tập và lượt nộp từ database</p>
                 </div>
             </div>
 
-            <div className="chart-wrapper">
+            <div className="chart-wrapper system-chart-wrapper">
                 <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                        <defs>
-                            <linearGradient id="colorCount" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="#fa375e" stopOpacity={0.65} />
-                                <stop offset="95%" stopColor="#fa375e" stopOpacity={0.1} />
-                            </linearGradient>
-                        </defs>
-                        <CartesianGrid strokeDasharray="0" stroke="#f0f0f0" vertical={false} />
+                    <BarChart data={data} margin={{ top: 12, right: 12, left: -18, bottom: 0 }} barCategoryGap="32%">
+                        <CartesianGrid strokeDasharray="4 4" stroke="#ececec" vertical={false} />
                         <XAxis
                             dataKey="label"
-                            tick={{ fontSize: 10, fontWeight: 700, fill: '#111' }}
+                            tick={{ fontSize: 12, fontWeight: 900, fill: '#111' }}
                             axisLine={{ stroke: '#111', strokeWidth: 2 }}
+                            tickLine={false}
                         />
                         <YAxis
-                            tick={{ fontSize: 10, fontWeight: 700, fill: '#111' }}
-                            axisLine={{ stroke: '#111', strokeWidth: 2 }}
+                            tick={{ fontSize: 11, fontWeight: 800, fill: '#111' }}
+                            axisLine={false}
+                            tickLine={false}
                             allowDecimals={false}
                         />
                         <Tooltip
+                            cursor={{ fill: 'rgba(250, 55, 94, 0.06)' }}
+                            formatter={(value) => [Number(value).toLocaleString('vi-VN'), 'Số lượng']}
+                            labelStyle={{ color: '#111', fontWeight: 900, marginBottom: 4 }}
                             contentStyle={{
                                 border: '3px solid #111',
                                 borderRadius: 0,
                                 boxShadow: '6px 6px 0px #111',
-                                fontSize: '11px',
-                                fontWeight: 900,
+                                fontSize: '12px',
+                                fontWeight: 800,
                             }}
                         />
-                        <Area
-                            name="Count"
-                            type="monotone"
-                            dataKey="count"
-                            stroke="#fa375e"
-                            strokeWidth={4}
-                            fill="url(#colorCount)"
-                            activeDot={{ r: 6, stroke: '#111', strokeWidth: 2 }}
-                        />
-                    </AreaChart>
+                        <Bar dataKey="count" radius={[8, 8, 0, 0]} stroke="#111" strokeWidth={2}>
+                            {data.map((entry, index) => (
+                                <Cell key={entry.label} fill={chartColors[index]} />
+                            ))}
+                        </Bar>
+                    </BarChart>
                 </ResponsiveContainer>
             </div>
 
-            <div className="chart-legend">
-                <div className="legend-item">
-                    <span className="dot cpu-dot"></span> SỐ LIỆU DB
-                </div>
-                <div className="legend-item">
-                    <span className="dot ram-dot"></span> TỈ LỆ ĐÚNG {overview?.acceptanceRate ?? 0}%
-                </div>
+            <div className="chart-summary">
+                {data.map((item, index) => (
+                    <div className="chart-summary-chip" key={item.label}>
+                        <span className="chart-summary-dot" style={{ background: chartColors[index] }} />
+                        <span>{item.label}</span>
+                        <strong>{item.count.toLocaleString('vi-VN')}</strong>
+                    </div>
+                ))}
             </div>
         </div>
     );

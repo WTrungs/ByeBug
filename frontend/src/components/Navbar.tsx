@@ -18,16 +18,18 @@ const Navbar = ({ title, subtitle, hideActions = false }: NavbarProps) => {
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [hasAvatarError, setHasAvatarError] = useState(false);
   const [notifications, setNotifications] = useState<UserNotification[]>([]);
+  const [selectedNotification, setSelectedNotification] = useState<UserNotification | null>(null);
   const [unreadCount, setUnreadCount] = useState(0);
 
   const user = getUser();
   const displayName = user?.username ?? "Người dùng";
+  const username = user?.username;
   const avatarFallback = displayName.charAt(0).toUpperCase();
   const avatarSeed = encodeURIComponent(user?.username ?? "guest");
   const avatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${avatarSeed}`;
 
-  useEffect(() => {
-    if (hideActions || isAdmin() || !user) return;
+  const loadNotifications = () => {
+    if (hideActions || isAdmin() || !username) return;
 
     getUnreadCount()
       .then(setUnreadCount)
@@ -36,10 +38,18 @@ const Navbar = ({ title, subtitle, hideActions = false }: NavbarProps) => {
     getMyNotifications({ size: 5 })
       .then((page) => setNotifications(page.content))
       .catch(() => {});
-  }, [hideActions, user]);
+  };
 
-  const handleMarkRead = async (notification: UserNotification) => {
+  useEffect(() => {
+    loadNotifications();
+  }, [hideActions, username]);
+
+  const handleOpenNotification = async (notification: UserNotification) => {
+    setSelectedNotification(notification);
+    setIsNotificationOpen(false);
+
     if (notification.isRead) return;
+
     try {
       await markNotificationRead(notification.notificationId);
       setNotifications((prev) =>
@@ -47,9 +57,9 @@ const Navbar = ({ title, subtitle, hideActions = false }: NavbarProps) => {
           n.notificationId === notification.notificationId ? { ...n, isRead: true } : n
         )
       );
-      setUnreadCount((c) => Math.max(0, c - 1));
+      setUnreadCount((count) => Math.max(0, count - 1));
     } catch {
-      // ignore
+      // Keep the popup open even if the read-state update fails.
     }
   };
 
@@ -64,6 +74,12 @@ const Navbar = ({ title, subtitle, hideActions = false }: NavbarProps) => {
     } catch {
       return iso;
     }
+  };
+
+  const getPriorityLabel = (priority: UserNotification["priority"]) => {
+    if (priority === "URGENT") return "Khẩn cấp";
+    if (priority === "IMPORTANT") return "Quan trọng";
+    return "Thông báo";
   };
 
   return (
@@ -90,8 +106,14 @@ const Navbar = ({ title, subtitle, hideActions = false }: NavbarProps) => {
               className="navbar-bell-btn"
               aria-label="Thông báo"
               aria-expanded={isNotificationOpen}
-              onClick={() => setIsNotificationOpen((isOpen) => !isOpen)}
-              onMouseEnter={() => setIsNotificationOpen(true)}
+              onClick={() => {
+                setIsNotificationOpen((isOpen) => !isOpen);
+                loadNotifications();
+              }}
+              onMouseEnter={() => {
+                setIsNotificationOpen(true);
+                loadNotifications();
+              }}
               style={{ position: "relative" }}
             >
               <svg aria-hidden="true" viewBox="0 0 24 24" className="navbar-bell-icon">
@@ -109,14 +131,14 @@ const Navbar = ({ title, subtitle, hideActions = false }: NavbarProps) => {
                 <p>Bạn chưa có thông báo mới.</p>
               ) : (
                 <ul className="navbar-notif-list">
-                  {notifications.map((n) => (
+                  {notifications.map((notification) => (
                     <li
-                      key={n.notificationId}
-                      className={`navbar-notif-item ${n.isRead ? "is-read" : "is-unread"}`}
-                      onClick={() => handleMarkRead(n)}
+                      key={notification.notificationId}
+                      className={`navbar-notif-item ${notification.isRead ? "is-read" : "is-unread"}`}
+                      onClick={() => handleOpenNotification(notification)}
                     >
-                      <span className="navbar-notif-title">{n.title}</span>
-                      <span className="navbar-notif-time">{formatDate(n.createdAt)}</span>
+                      <span className="navbar-notif-title">{notification.title}</span>
+                      <span className="navbar-notif-time">{formatDate(notification.createdAt)}</span>
                     </li>
                   ))}
                 </ul>
@@ -141,6 +163,32 @@ const Navbar = ({ title, subtitle, hideActions = false }: NavbarProps) => {
               />
             )}
           </Link>
+        </div>
+      )}
+
+      {selectedNotification && (
+        <div className="navbar-modal-backdrop" role="presentation" onClick={() => setSelectedNotification(null)}>
+          <section
+            className="navbar-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="user-notification-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="navbar-modal-header">
+              <div>
+                <span className={`navbar-modal-priority navbar-modal-priority-${selectedNotification.priority.toLowerCase()}`}>
+                  {getPriorityLabel(selectedNotification.priority)}
+                </span>
+                <h3 id="user-notification-title">{selectedNotification.title}</h3>
+              </div>
+              <button type="button" className="navbar-modal-close" onClick={() => setSelectedNotification(null)} aria-label="Đóng">
+                ×
+              </button>
+            </div>
+            <p className="navbar-modal-time">{formatDate(selectedNotification.createdAt)}</p>
+            <p className="navbar-modal-content">{selectedNotification.content}</p>
+          </section>
         </div>
       )}
     </div>

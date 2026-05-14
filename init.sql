@@ -126,6 +126,20 @@ ON CONFLICT (username) DO UPDATE SET
     password_hash = EXCLUDED.password_hash,
     is_active     = true;
 
+INSERT INTO admins (username, full_name, email, password_hash, is_active)
+VALUES (
+    'admin_dev',
+    'Admin Dev',
+    'admin.dev@example.com',
+    '$2a$12$XrTpI8KgCw7Si5rwdXLYYe8zbH5AETiZUXahya9mzfKWSb2rxDYNW',
+    true
+)
+ON CONFLICT (username) DO UPDATE SET
+    full_name     = EXCLUDED.full_name,
+    email         = EXCLUDED.email,
+    password_hash = EXCLUDED.password_hash,
+    is_active     = true;
+
 -- tkhoan user
 INSERT INTO users (username, full_name, email, password_hash, gender, role, total_score, is_active) 
 VALUES (
