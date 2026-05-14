@@ -19,28 +19,54 @@ import ForgotPassword from './pages/ForgotPassword';
 const App: React.FC = () => {
   return (
     <div className="app-container">
-      <main>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Routes>
+        {/* --- NHÓM 1: TRANG TRẮNG (LOGIN/REGISTER) --- */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
+        {/* --- NHÓM 2: TRANG CÓ SIDEBAR + NAVBAR (MAIN LAYOUT) --- */}
+        <Route element={<MainLayout />}>
+          
+          {/* 1. Trang chủ */}
+          <Route path="/home" element={
+            <ProtectedRoute><Home /></ProtectedRoute>
+          } />
 
-          <Route path="/home" element={<ProtectedRoute userOnly><Home /></ProtectedRoute>} />
-          <Route path="/statistics" element={<ProtectedRoute userOnly><Statistics /></ProtectedRoute>} />
-          <Route path="/leaderboard" element={<ProtectedRoute userOnly><Leaderboard /></ProtectedRoute>} />
-          <Route path="/submissions" element={<ProtectedRoute userOnly><Submission /></ProtectedRoute>} />
-          <Route path="/problems" element={<ProtectedRoute><Problems /></ProtectedRoute>} />
-          <Route path="/problems/:id" element={<ProtectedRoute><ProblemDetail /></ProtectedRoute>} />
+          {/* 2. Bài tập & Chi tiết bài tập */}
+          <Route path="/problems" element={
+            <ProtectedRoute><Problems /></ProtectedRoute>
+          } />
+          <Route path="/problems/:id" element={
+            <ProtectedRoute><ProblemDetail /></ProtectedRoute>
+          } />
 
-          <Route path="/profile/:username" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-          <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+          {/* 3. Thống kê cá nhân & Bảng xếp hạng */}
+          <Route path="/statistics" element={
+            <ProtectedRoute userOnly><Statistics /></ProtectedRoute>
+          } />
+          <Route path="/leaderboard" element={
+            <ProtectedRoute userOnly><Leaderboard /></ProtectedRoute>
+          } />
 
-          <Route path="/admin/*" element={<ProtectedRoute adminOnly><Admin /></ProtectedRoute>} />
-          <Route path="*" element={<Login />} />
-        </Routes>
-      </main>
+          {/* 4. Hồ sơ & Cài đặt */}
+          <Route path="/profile/:username" element={
+            <ProtectedRoute><Profile /></ProtectedRoute>
+          } />
+          <Route path="/settings" element={
+            <ProtectedRoute><Settings /></ProtectedRoute>
+          } />
+
+          {/* 5. Quản trị viên */}
+          <Route path="/admin/*" element={
+            <ProtectedRoute adminOnly><Admin /></ProtectedRoute>
+          } />
+          
+        </Route>
+
+        {/* Mặc định nếu gõ bậy bạ thì về Login */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
     </div>
   );
 };
