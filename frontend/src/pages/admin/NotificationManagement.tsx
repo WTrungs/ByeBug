@@ -1,4 +1,10 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import {
+    createBroadcast,
+    getAdminBroadcasts,
+    type BroadcastItem,
+    type CreateBroadcastPayload,
+} from '../../api/adminApi';
 
 type NotificationAudience = 'ALL' | 'USER' | 'ADMIN';
 type NotificationPriority = 'NORMAL' | 'IMPORTANT' | 'URGENT';
@@ -8,7 +14,6 @@ type NotificationFormState = {
     content: string;
     audience: NotificationAudience;
     priority: NotificationPriority;
-    targetUsername: string;
     sendNow: boolean;
     scheduledAt: string;
 };
@@ -18,45 +23,17 @@ const initialForm: NotificationFormState = {
     content: '',
     audience: 'ALL',
     priority: 'NORMAL',
-    targetUsername: '',
     sendNow: true,
     scheduledAt: '',
 };
 
-const mockNotifications = [
-    {
-        id: 1,
-        title: 'Bảo trì hệ thống chấm bài',
-        audience: 'Tất cả',
-        priority: 'Quan trọng',
-        status: 'Đã gửi',
-        createdAt: '2026-05-12 22:00',
-    },
-    {
-        id: 2,
-        title: 'Cập nhật bộ test cho bài Two Sum',
-        audience: 'Admin',
-        priority: 'Thường',
-        status: 'Bản nháp',
-        createdAt: '2026-05-12 18:30',
-    },
-    {
-        id: 3,
-        title: 'Thông báo khóa tài khoản vi phạm',
-        audience: 'Người dùng',
-        priority: 'Khẩn cấp',
-        status: 'Đã lên lịch',
-        createdAt: '2026-05-13 09:15',
-    },
-];
-
-const audienceLabels: Record<NotificationAudience, string> = {
+const audienceLabels: Record<string, string> = {
     ALL: 'Tất cả',
     USER: 'Người dùng',
     ADMIN: 'Admin',
 };
 
-const priorityLabels: Record<NotificationPriority, string> = {
+const priorityLabels: Record<string, string> = {
     NORMAL: 'Thường',
     IMPORTANT: 'Quan trọng',
     URGENT: 'Khẩn cấp',
@@ -64,15 +41,33 @@ const priorityLabels: Record<NotificationPriority, string> = {
 
 const NotificationManagement: React.FC = () => {
     const [form, setForm] = useState<NotificationFormState>(initialForm);
+    const [broadcasts, setBroadcasts] = useState<BroadcastItem[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    const fetchBroadcasts = async () => {
+        setLoading(true);
+        try {
+            const data = await getAdminBroadcasts({ size: 20 });
+            setBroadcasts(data.content);
+        } catch {
+            // silently ignore list fetch errors
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchBroadcasts();
+    }, []);
 
     const payloadPreview = useMemo(() => ({
         title: form.title.trim(),
         content: form.content.trim(),
-        audience: form.audience,
+        audienceType: form.audience,
         priority: form.priority,
-        targetUsername: form.audience === 'USER' ? form.targetUsername.trim() : null,
         scheduledAt: form.sendNow ? null : form.scheduledAt || null,
-        sendNow: form.sendNow,
     }), [form]);
 
     const updateField = <K extends keyof NotificationFormState>(
@@ -82,9 +77,37 @@ const NotificationManagement: React.FC = () => {
         setForm((current) => ({ ...current, [field]: value }));
     };
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log('Create notification payload', payloadPreview);
+        setSubmitting(true);
+        setError(null);
+        try {
+            const payload: CreateBroadcastPayload = {
+                title: payloadPreview.title,
+                content: payloadPreview.content,
+                audienceType: payloadPreview.audienceType as NotificationAudience,
+                priority: payloadPreview.priority as NotificationPriority,
+                scheduledAt: payloadPreview.scheduledAt,
+            };
+            await createBroadcast(payload);
+            setForm(initialForm);
+            await fetchBroadcasts();
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : 'Gửi thông báo thất bại');
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    const formatDate = (iso: string) => {
+        try {
+            return new Date(iso).toLocaleString('vi-VN', {
+                year: 'numeric', month: '2-digit', day: '2-digit',
+                hour: '2-digit', minute: '2-digit',
+            });
+        } catch {
+            return iso;
+        }
     };
 
     return (
@@ -95,10 +118,12 @@ const NotificationManagement: React.FC = () => {
                         <p className="nm-eyebrow">Trung tâm thông báo</p>
                         <h2 className="pm-table-title">Tạo thông báo</h2>
                     </div>
-                    <button type="submit" className="btn-neo-sub nm-submit-btn">
-                        Tạo thông báo
+                    <button type="submit" className="btn-neo-sub nm-submit-btn" disabled={submitting}>
+                        {submitting ? 'Đang gửi...' : 'Tạo thông báo'}
                     </button>
                 </div>
+
+                {error && <p style={{ color: 'var(--color-danger)', padding: '0 1rem' }}>{error}</p>}
 
                 <div className="nm-form-grid">
                     <label className="nm-field nm-field-wide">
@@ -123,7 +148,7 @@ const NotificationManagement: React.FC = () => {
                             )}
                         >
                             <option value="ALL">Tất cả</option>
-                            <option value="USER">Một người dùng</option>
+                            <option value="USER">Người dùng</option>
                             <option value="ADMIN">Admin</option>
                         </select>
                     </label>
@@ -131,7 +156,7 @@ const NotificationManagement: React.FC = () => {
                     <label className="nm-field">
                         <span>Mức độ</span>
                         <div className="nm-priority-options" role="radiogroup" aria-label="Chọn mức độ thông báo">
-                            {(Object.keys(priorityLabels) as NotificationPriority[]).map((priority) => (
+                            {(['NORMAL', 'IMPORTANT', 'URGENT'] as NotificationPriority[]).map((priority) => (
                                 <button
                                     key={priority}
                                     type="button"
@@ -147,19 +172,6 @@ const NotificationManagement: React.FC = () => {
                             ))}
                         </div>
                     </label>
-
-                    {form.audience === 'USER' && (
-                        <label className="nm-field nm-field-wide">
-                            <span>Username người nhận</span>
-                            <input
-                                className="neo-input"
-                                value={form.targetUsername}
-                                onChange={(event) => updateField('targetUsername', event.target.value)}
-                                placeholder="VD: user_123"
-                                required
-                            />
-                        </label>
-                    )}
 
                     <label className="nm-field nm-field-wide">
                         <span>Nội dung</span>
@@ -222,20 +234,34 @@ const NotificationManagement: React.FC = () => {
                                 <th>Tiêu đề</th>
                                 <th>Người nhận</th>
                                 <th>Mức độ</th>
-                                <th>Trạng thái</th>
                                 <th>Tạo lúc</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {mockNotifications.map((notification) => (
-                                <tr key={notification.id}>
-                                    <td className="pm-name-cell">{notification.title}</td>
-                                    <td>{notification.audience}</td>
-                                    <td>
-                                        <span className="nm-table-badge">{notification.priority}</span>
+                            {loading && (
+                                <tr>
+                                    <td colSpan={4} style={{ textAlign: 'center', padding: '1rem' }}>
+                                        Đang tải...
                                     </td>
-                                    <td>{notification.status}</td>
-                                    <td className="pm-date-cell">{notification.createdAt}</td>
+                                </tr>
+                            )}
+                            {!loading && broadcasts.length === 0 && (
+                                <tr>
+                                    <td colSpan={4} style={{ textAlign: 'center', padding: '1rem', opacity: 0.5 }}>
+                                        Chưa có thông báo nào.
+                                    </td>
+                                </tr>
+                            )}
+                            {broadcasts.map((b) => (
+                                <tr key={b.broadcastId}>
+                                    <td className="pm-name-cell">{b.title}</td>
+                                    <td>{audienceLabels[b.audienceType] ?? b.audienceType}</td>
+                                    <td>
+                                        <span className="nm-table-badge">
+                                            {priorityLabels[b.priority] ?? b.priority}
+                                        </span>
+                                    </td>
+                                    <td className="pm-date-cell">{formatDate(b.createdAt)}</td>
                                 </tr>
                             ))}
                         </tbody>
