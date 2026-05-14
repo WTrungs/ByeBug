@@ -101,7 +101,9 @@ const Login: React.FC = () => {
                         </div>
 
                         <div className="forgot-password-container">
-                            <button className="forgot-btn">Quên mật khẩu?</button>
+                            <button className="forgot-btn" onClick={() => navigate('/forgot-password')}>
+                                Quên mật khẩu?
+                            </button>
                         </div>
 
                         <button className="btn-neo-submit" onClick={handleLogin}>

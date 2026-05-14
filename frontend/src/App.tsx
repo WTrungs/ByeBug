@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Problems from './pages/Problems';
@@ -12,7 +12,8 @@ import Home from './pages/Home';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Submission from './pages/Submission';
-import MainLayout from './components/MainLayout';
+import ForgotPassword from './pages/ForgotPassword';
+
 
 
 const App: React.FC = () => {
@@ -23,6 +24,7 @@ const App: React.FC = () => {
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
 
 
           <Route path="/home" element={<ProtectedRoute userOnly><Home /></ProtectedRoute>} />
