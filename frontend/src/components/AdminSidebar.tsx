@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import bugLogo from '../assets/bug.svg';
 import '../index.css';
 
@@ -25,17 +25,14 @@ const AdminSidebar: React.FC = () => {
 
     return (
         <div className="sidebar">
-
-            {/* LOGO */}
             <div className="sidebar-logo logo-container-admin" onClick={() => navigate('/admin/overview')}>
-                <img src={bugLogo} alt="bug logo" className="logo-icon"  />
+                <img src={bugLogo} alt="bug logo" className="logo-icon" />
                 <div>
                     <div className="logo-text-admin">BYEBUG</div>
                     <div className="sidebar-logo-sub">ADMIN PANEL</div>
                 </div>
             </div>
 
-            {/* MENU */}
             <nav className="menu">
                 {menuItems.map((item) => (
                     <div
@@ -52,12 +49,11 @@ const AdminSidebar: React.FC = () => {
                         className="btn-neo-sub"
                         onClick={() => navigate('/admin/problems/new')}
                     >
-                        ➕ Tạo bài tập mới
+                        + Tạo bài tập mới
                     </button>
                 </div>
             </nav>
 
-            {/* LOGOUT */}
             <div className="sidebar-footer">
                 <button
                     type="button"

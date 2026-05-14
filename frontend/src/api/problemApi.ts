@@ -1,4 +1,5 @@
 import api from './axios';
+import axiosInstance from './axios';
 
 export interface Problem {
     problemId: number;
@@ -59,4 +60,9 @@ export const searchProblems = async (keyword: string): Promise<Problem[]> => {
         params: { keyword }
     });
     return response.data;
+};
+
+export const getProblemDetail = async (id: number) => {
+  const response = await axiosInstance.get(`/api/problems/${id}`);
+  return response.data;
 };

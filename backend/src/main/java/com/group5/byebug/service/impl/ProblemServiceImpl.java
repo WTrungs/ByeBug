@@ -12,6 +12,7 @@ import com.group5.byebug.dto.ProblemResponseDTO;
 import com.group5.byebug.dto.TagDTO;
 import com.group5.byebug.entity.Problem;
 import com.group5.byebug.entity.ProblemExample;
+import com.group5.byebug.enums.Difficulty;
 import com.group5.byebug.repository.ProblemRepository;
 import com.group5.byebug.service.ProblemService;
 @Service
@@ -32,13 +33,14 @@ public class ProblemServiceImpl implements ProblemService {
 
     @Override
     public List<ProblemResponseDTO> getProblemsByDifficulty(String difficulty) {
-        return problemRepository.findByDifficulty(difficulty).stream()
+        Difficulty parsedDifficulty = Difficulty.valueOf(difficulty.toUpperCase());
+        return problemRepository.findByIsPublicTrueAndDifficulty(parsedDifficulty).stream()
                 .map(this::convertToDTO).collect(Collectors.toList());
     }
 
     @Override
     public List<ProblemResponseDTO> searchProblems(String keyword) {
-        return problemRepository.findByTitleContainingIgnoreCase(keyword).stream()
+        return problemRepository.findByIsPublicTrueAndTitleContainingIgnoreCase(keyword).stream()
                 .map(this::convertToDTO).collect(Collectors.toList());
     }
 
@@ -63,6 +65,7 @@ public class ProblemServiceImpl implements ProblemService {
         dto.setTimeLimitMs(problem.getTimeLimitMs());
         dto.setMemoryLimitKb(problem.getMemoryLimitKb());
         dto.setCreatedBy(problem.getCreator() != null ? problem.getCreator().getFullName() : "Unknown");
+        dto.setIsPublic(Boolean.TRUE.equals(problem.getIsPublic()));
 
         Set<TagDTO> tagDTOs = problem.getTags().stream().map(tag -> {
             TagDTO tDto = new TagDTO();

@@ -34,7 +34,6 @@ public class Submission {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private ProgrammingLanguage language;
 

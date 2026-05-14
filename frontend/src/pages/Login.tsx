@@ -19,11 +19,26 @@ const Login: React.FC = () => {
             error !== null &&
             'response' in error
         ) {
-            const response = (error as { response?: { data?: { message?: string } } }).response;
+            const response = (error as { response?: { data?: { message?: string } | string } }).response;
+            if (typeof response?.data === 'string') {
+                return response.data;
+            }
             return response?.data?.message;
         }
 
         return undefined;
+    };
+
+    const loginWithFallback = async () => {
+        try {
+            return await api.post('/users/login', { username, password });
+        } catch (userLoginError) {
+            try {
+                return await api.post('/admin/login', { username, password });
+            } catch {
+                throw userLoginError;
+            }
+        }
     };
 
     const handleLogin = async () => {
@@ -33,7 +48,7 @@ const Login: React.FC = () => {
         }
 
         try {
-            const response = await api.post('/users/login', { username, password });
+            const response = await loginWithFallback();
             localStorage.setItem('USER', JSON.stringify(response.data));
             if (response.data.token) {
                 localStorage.setItem('TOKEN', response.data.token);

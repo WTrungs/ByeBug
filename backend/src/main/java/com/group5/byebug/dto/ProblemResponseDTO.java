@@ -16,6 +16,7 @@ public class ProblemResponseDTO {
     private Difficulty difficulty;
     private Integer timeLimitMs;
     private Integer memoryLimitKb;
+    private Boolean isPublic;
     private String createdBy;
     private Set<TagDTO> tags;
     private List<ProblemExampleDTO> examples;

@@ -1,5 +1,6 @@
-import React, { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useMemo, useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getProblemDetail } from '../../api/problemApi';
 
 type ProblemFormState = {
     title: string;
@@ -40,6 +41,7 @@ const difficultyOptions: Array<{
 ];
 
 const ProblemCreate: React.FC = () => {
+    const { id } = useParams();
     const navigate = useNavigate();
     const [form, setForm] = useState<ProblemFormState>(initialForm);
 
@@ -72,17 +74,64 @@ const ProblemCreate: React.FC = () => {
         setForm((current) => ({ ...current, [field]: value }));
     };
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        console.log('Create problem payload', payloadPreview);
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    
+    try {
+        if (id) {
+            console.log('Đang CẬP NHẬT bài tập:', payloadPreview);
+            alert("Sửa xong rồi nha sếp!");
+        } else {
+            console.log('Đang TẠO MỚI bài tập:', payloadPreview);
+            alert("Tạo mới thành công!");
+        }
+        navigate('/admin/problems');
+    } catch (error) {
+        alert("Lưu thất bại, sếp kiểm tra lại thử!");
+    }
+};
+
+     useEffect(() => {
+    const fetchDetail = async () => {
+        // Nếu không có ID thì thôi, sếp đang tạo mới mà
+        if (!id) return; 
+
+        try {
+            console.log("Đang lụm dữ liệu cho bài tập ID:", id);
+            const data = await getProblemDetail(Number(id));
+            
+            // 2. Lụm xong rồi thì gắn (set) vào Form thôi
+            setForm({
+                title: data.title || '',
+                difficulty: data.difficulty || 'EASY',
+                timeLimitMs: String(data.timeLimitMs || '1000'),
+                memoryLimitKb: String(data.memoryLimitKb || '262144'),
+
+                tags: data.tags ? data.tags.join(', ') : '', 
+                description: data.description || '',
+                constraints: data.constraints || '',
+                
+                sampleInput: data.examples?.[0]?.input || '',
+                sampleOutput: data.examples?.[0]?.output || '',
+                sampleExplanation: data.examples?.[0]?.explanation || '',
+                isPublic: data.isPublic || false,
+            });
+        } catch (error) {
+            console.error("Lỗi lụm dữ liệu:", error);
+            alert("Không tìm thấy bài tập này sếp ơi!");
+            navigate('/admin/problems'); 
+        }
     };
+
+    fetchDetail();
+}, [id, navigate]);
 
     return (
         <form className="pc-wrapper" onSubmit={handleSubmit}>
             <div className="pm-card pc-hero">
                 <div>
                     <p className="pc-eyebrow">Ngân hàng đề bài</p>
-                    <h2 className="pm-table-title">Tạo mới đề bài</h2>
+                    <h2 className="pm-table-title">{id? "Chỉnh sửa đề bài": "Tạo mới đề bài"}</h2>
                     <p className="pc-subtitle">
                         Chuẩn bị metadata, nội dung Markdown và ví dụ mẫu trước khi nối API backend.
                     </p>
