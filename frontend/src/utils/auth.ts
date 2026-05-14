@@ -1,17 +1,31 @@
 export interface AuthUser {
     userId: number;
     username: string;
+    fullName?: string;
+    email?: string;
+    avatarUrl?: string;
     role: string;
 }
 
 export const getUser = (): AuthUser | null => {
-    const raw = localStorage.getItem('USER') || localStorage.getItem('user');
-    if (!raw) return null;
     try {
+        const raw = localStorage.getItem('USER') || localStorage.getItem('user');
+        if (!raw || raw === "undefined" || raw === "null") return null;
+        
         const parsed = JSON.parse(raw);
-        if (typeof parsed?.userId !== 'number' || !parsed?.username) return null;
+        if (!parsed || typeof parsed !== 'object') {
+            console.warn("Invalid USER object in localStorage", parsed);
+            return null;
+        }
+
+        if (!parsed.username) {
+            console.warn("User object found but missing username", parsed);
+            return null;
+        }
+
         return parsed as AuthUser;
-    } catch {
+    } catch (e) {
+        console.error("CRITICAL: Failed to parse USER from localStorage", e);
         return null;
     }
 };

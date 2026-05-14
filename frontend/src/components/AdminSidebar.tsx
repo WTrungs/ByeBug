@@ -4,10 +4,10 @@ import bugLogo from '../assets/bug.svg';
 import '../index.css';
 
 const menuItems = [
-    { key: 'overview',  label: 'Thống kê hệ thống', icon: '📊' },
-    { key: 'users',     label: 'Quản lý người dùng', icon: '👥' },
-    { key: 'problems',  label: 'Ngân hàng đề bài',   icon: '📚' },
-    { key: 'reports',   label: 'Báo cáo',             icon: '🚩' },
+    { key: 'overview', label: 'Thống kê hệ thống' },
+    { key: 'users', label: 'Quản lý người dùng' },
+    { key: 'problems', label: 'Ngân hàng đề bài' },
+    { key: 'notifications', label: 'Thông báo' },
 ];
 
 const AdminSidebar: React.FC = () => {
@@ -16,11 +16,17 @@ const AdminSidebar: React.FC = () => {
 
     const activeKey = location.pathname.split('/')[2] || 'overview';
 
+    const handleLogout = () => {
+        localStorage.removeItem('USER');
+        localStorage.removeItem('user');
+        navigate('/login');
+    };
+
     return (
         <div className="sidebar">
 
             {/* LOGO */}
-            <div className="sidebar-logo logo-container-admin" onClick={() => navigate('/')}>
+            <div className="sidebar-logo logo-container-admin" onClick={() => navigate('/admin/overview')}>
                 <img src={bugLogo} alt="bug logo" className="logo-icon"  />
                 <div>
                     <div className="logo-text-admin">BYEBUG</div>
@@ -36,7 +42,6 @@ const AdminSidebar: React.FC = () => {
                         className={`menu-item ${activeKey === item.key ? 'active' : ''}`}
                         onClick={() => navigate(`/admin/${item.key}`)}
                     >
-                        <span className="menu-icon">{item.icon}</span>
                         <span>{item.label}</span>
                     </div>
                 ))}
@@ -53,16 +58,13 @@ const AdminSidebar: React.FC = () => {
 
             {/* LOGOUT */}
             <div className="sidebar-footer">
-                <div
-                    className="menu-item logout-btn"
-                    onClick={() => {
-                        localStorage.removeItem('USER');
-                        navigate('/login');
-                    }}
+                <button
+                    type="button"
+                    className="admin-logout-btn"
+                    onClick={handleLogout}
                 >
-                    <span className="menu-icon">🚪</span>
                     <span>Đăng xuất</span>
-                </div>
+                </button>
             </div>
         </div>
     );

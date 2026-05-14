@@ -67,7 +67,6 @@ const Navbar = () => {
                <p>Bạn chưa có thông báo mới.</p>
             </div>
           </div>
-        </div>
 
         {/* Profile Avatar & Fallback */}
         <Link to="/profile/me" className="navbar-avatar-link" title="Hồ sơ cá nhân">

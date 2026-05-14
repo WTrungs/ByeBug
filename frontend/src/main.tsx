@@ -5,7 +5,7 @@ import './index.css'
 import './styles/admin.css';
 import './styles/ProblemManagement.css'
 import './styles/UserManagement.css'
-import './styles/modules/problems.css'
+import './styles/modules/Problems.css'
 
 import './styles/ActivityLog.css'
 import App from './App'
