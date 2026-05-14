@@ -19,13 +19,23 @@ const menuItems = [
 const UserSidebar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const user = getUser();
+  const [user, setUser] = React.useState(getUser());
   const [hasAvatarError, setHasAvatarError] = useState(false);
 
-  const displayName = user?.username ?? "Người dùng";
+  React.useEffect(() => {
+    const handleUserUpdate = () => {
+      console.log("Sidebar: User update detected, refreshing...");
+      setUser(getUser());
+    };
+
+    window.addEventListener('userUpdated', handleUserUpdate);
+    return () => window.removeEventListener('userUpdated', handleUserUpdate);
+  }, []);
+
+  const displayName = user?.fullName || user?.username || "Người dùng";
   const avatarFallback = displayName.charAt(0).toUpperCase();
-  const avatarSeed = encodeURIComponent(user?.username ?? "guest");
-  const avatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${avatarSeed}`;
+  const avatarSeed = encodeURIComponent(user?.username || "guest");
+  const avatarUrl = user?.avatarUrl || `https://api.dicebear.com/7.x/avataaars/svg?seed=${avatarSeed}`;
 
   const activeKey =
     location.pathname === "/home"
@@ -98,8 +108,8 @@ const UserSidebar: React.FC = () => {
               )}
             </div>
             <div className={s.sidebarUserMeta}>
-              <div className={s.sidebarUsername}>{displayName}</div>
-              <div className={s.sidebarRole}>{user?.role ?? ""}</div>
+              <div className={s.sidebarUsername}>{user?.username || "Người dùng"}</div>
+              <div className={s.sidebarRole}>{user?.fullName || user?.role || ""}</div>
             </div>
           </button>
 
