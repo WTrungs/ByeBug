@@ -1,5 +1,6 @@
-import React, { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useMemo, useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+
 
 type ProblemFormState = {
     title: string;
@@ -40,6 +41,7 @@ const difficultyOptions: Array<{
 ];
 
 const ProblemCreate: React.FC = () => {
+    const { id } = useParams();
     const navigate = useNavigate();
     const [form, setForm] = useState<ProblemFormState>(initialForm);
 
@@ -77,12 +79,20 @@ const ProblemCreate: React.FC = () => {
         console.log('Create problem payload', payloadPreview);
     };
 
+     useEffect(() => {
+        if (id) {
+            console.log("Đang ở chế độ SỬA bài tập ID:", id);
+            // Sếp sẽ gọi API: getProblemDetail(id) 
+            // Sau đó dùng setForm(data) để đổ dữ liệu cũ vào các ô nhập liệu
+        }
+    }, [id]);
+
     return (
         <form className="pc-wrapper" onSubmit={handleSubmit}>
             <div className="pm-card pc-hero">
                 <div>
                     <p className="pc-eyebrow">Ngân hàng đề bài</p>
-                    <h2 className="pm-table-title">Tạo mới đề bài</h2>
+                    <h2 className="pm-table-title">{id? "Chỉnh sửa đề bài": "Tạo mới đề bài"}</h2>
                     <p className="pc-subtitle">
                         Chuẩn bị metadata, nội dung Markdown và ví dụ mẫu trước khi nối API backend.
                     </p>

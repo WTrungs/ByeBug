@@ -28,6 +28,7 @@ const Admin: React.FC = () => {
                         <Route path="problems/new" element={<ProblemCreate />} />
                         <Route path="notifications" element={<NotificationManagement />} />
                         <Route path="reports" element={<Navigate to="notifications" replace />} />
+                        <Route path="problems/edit/:id" element={<ProblemCreate />} />
                     </Routes>
                 </div>
 
