@@ -28,4 +28,6 @@ public interface ProblemRepository extends JpaRepository<Problem, Long> {
     java.util.List<Problem> findByIsPublicTrue();
     java.util.List<Problem> findByDifficulty(String difficulty);
     java.util.List<Problem> findByTitleContainingIgnoreCase(String title);
+    long countByIsPublicTrue();
+    long countByIsPublicFalse();
 }

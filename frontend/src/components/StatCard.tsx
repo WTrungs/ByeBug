@@ -1,42 +1,47 @@
 import React from "react";
+import type { AdminOverview } from "../api/adminApi";
 
-const cards = [
-  {
-    key: "users",
-    label: "TỔNG NGƯỜI DÙNG",
-    value: "142,890",
-    trend: "↑ 12.4% vs tháng trước",
-    type: "normal",
-  },
-  {
-    key: "problems",
-    label: "BÀI TẬP CHỜ DUYỆT",
-    value: "12",
-    trend: "! Giao cho bạn giải",
-    type: "normal",
-  },
-  {
-    key: "load",
-    label: "TẢI HỆ THỐNG",
-    value: "88%",
-    trend: "Duy trì ở mức cao",
-    type: "normal",
-  },
-  {
-    key: "alerts",
-    label: "CẢNH BÁO QUAN TRỌNG",
-    value: "3",
-    trend: "Xem chi tiết lỗi",
-    type: "danger",
-  },
-];
+type Props = {
+  overview?: AdminOverview | null;
+};
 
-const AdminStatsCards: React.FC = () => {
+const AdminStatsCards: React.FC<Props> = ({ overview }) => {
+  const cards = [
+    {
+      key: "users",
+      label: "TỔNG NGƯỜI DÙNG",
+      value: (overview?.totalUsers ?? 0).toLocaleString(),
+      trend: `${overview?.activeUsers ?? 0} đang hoạt động / ${overview?.inactiveUsers ?? 0} bị khóa`,
+      type: "normal",
+    },
+    {
+      key: "problems",
+      label: "TỔNG BÀI TẬP",
+      value: (overview?.totalProblems ?? 0).toLocaleString(),
+      trend: `${overview?.publicProblems ?? 0} công khai / ${overview?.privateProblems ?? 0} riêng tư`,
+      type: "normal",
+    },
+    {
+      key: "submissions",
+      label: "LƯỢT NỘP BÀI",
+      value: (overview?.totalSubmissions ?? 0).toLocaleString(),
+      trend: `${overview?.acceptedSubmissions ?? 0} bài đúng`,
+      type: "normal",
+    },
+    {
+      key: "failed",
+      label: "LƯỢT CHƯA ĐÚNG",
+      value: (overview?.failedSubmissions ?? 0).toLocaleString(),
+      trend: `${overview?.acceptanceRate ?? 0}% tỉ lệ đúng`,
+      type: "danger",
+    },
+  ];
+
   return (
     <div
       style={{
         display: "grid",
-        gridTemplateColumns: "repeat(4, 1fr)",
+        gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
         gap: "20px",
         marginBottom: "24px",
       }}
@@ -67,7 +72,6 @@ const AdminStatsCards: React.FC = () => {
             </span>
           </div>
 
-          {/* VALUE */}
           <div
             style={{
               fontSize: "36px",
@@ -81,7 +85,6 @@ const AdminStatsCards: React.FC = () => {
             {card.value}
           </div>
 
-          {/* TREND */}
           <div
             style={{
               fontSize: "11px",

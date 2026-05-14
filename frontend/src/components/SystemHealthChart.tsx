@@ -3,24 +3,27 @@ import {
     AreaChart, Area, XAxis, YAxis,
     CartesianGrid, Tooltip, ResponsiveContainer,
 } from 'recharts';
+import type { AdminOverview } from '../api/adminApi';
 
-const data = [
-    { time: '00:00', cpu: 20, ram: 45 },
-    { time: '04:00', cpu: 28, ram: 50 },
-    { time: '08:00', cpu: 72, ram: 60 },
-    { time: '12:00', cpu: 60, ram: 65 },
-    { time: '16:00', cpu: 80, ram: 70 },
-    { time: '20:00', cpu: 45, ram: 55 },
-    { time: '23:59', cpu: 30, ram: 48 },
-];
+type Props = {
+    overview?: AdminOverview | null;
+};
 
-const SystemHealthChart: React.FC = () => {
+const SystemHealthChart: React.FC<Props> = ({ overview }) => {
+    const data = [
+        { label: 'Người dùng', count: overview?.totalUsers ?? 0 },
+        { label: 'Bài tập', count: overview?.totalProblems ?? 0 },
+        { label: 'Lượt nộp', count: overview?.totalSubmissions ?? 0 },
+        { label: 'Bài đúng', count: overview?.acceptedSubmissions ?? 0 },
+        { label: 'Chưa đúng', count: overview?.failedSubmissions ?? 0 },
+    ];
+
     return (
         <div className="admin-card chart-card">
             <div className="chart-header">
                 <div>
-                    <h3 className="chart-title">HIỆU SUẤT HỆ THỐNG (24H)</h3>
-                    <p className="chart-subtitle">So sánh tải CPU và mức sử dụng bộ nhớ RAM</p>
+                    <h3 className="chart-title">THỐNG KÊ HỆ THỐNG</h3>
+                    <p className="chart-subtitle">Dữ liệu tổng hợp trực tiếp từ database hiện tại</p>
                 </div>
             </div>
 
@@ -28,74 +31,50 @@ const SystemHealthChart: React.FC = () => {
                 <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                         <defs>
-                            {/* Gradient cho CPU - Đỏ rực */}
-                            <linearGradient id="colorCpu" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="#df2828" stopOpacity={0.6} />
-                                <stop offset="95%" stopColor="#df2828" stopOpacity={0.1} />
-                            </linearGradient>
-                            
-                            <linearGradient id="colorRam" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="#FFB338" stopOpacity={0.6} />
-                                <stop offset="95%" stopColor="#FFB338" stopOpacity={0.1} />
+                            <linearGradient id="colorCount" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="#fa375e" stopOpacity={0.65} />
+                                <stop offset="95%" stopColor="#fa375e" stopOpacity={0.1} />
                             </linearGradient>
                         </defs>
-                        
                         <CartesianGrid strokeDasharray="0" stroke="#f0f0f0" vertical={false} />
-                        
-                        <XAxis 
-                            dataKey="time" 
-                            tick={{ fontSize: 10, fontWeight: 700, fill: '#111' }} 
+                        <XAxis
+                            dataKey="label"
+                            tick={{ fontSize: 10, fontWeight: 700, fill: '#111' }}
                             axisLine={{ stroke: '#111', strokeWidth: 2 }}
                         />
-                        
-                        <YAxis 
-                            tick={{ fontSize: 10, fontWeight: 700, fill: '#111' }} 
+                        <YAxis
+                            tick={{ fontSize: 10, fontWeight: 700, fill: '#111' }}
                             axisLine={{ stroke: '#111', strokeWidth: 2 }}
-                            tickFormatter={(v) => `${v}%`}
+                            allowDecimals={false}
                         />
-
                         <Tooltip
                             contentStyle={{
                                 border: '3px solid #111',
                                 borderRadius: 0,
                                 boxShadow: '6px 6px 0px #111',
                                 fontSize: '11px',
-                                fontWeight: 900
+                                fontWeight: 900,
                             }}
-                            formatter={(value: any, name: any) => [`${value}%`, name.toUpperCase()]}
                         />
-
-                       
-                        <Area 
-                            name="RAM Usage"
-                            type="monotone" 
-                            dataKey="ram" 
-                            stroke="#FFB338" 
-                            strokeWidth={4} 
-                            fill="url(#colorRam)" 
-                            activeDot={{ r: 6, stroke: '#111', strokeWidth: 2 }}
-                        />
-
-                        
-                        <Area 
-                            name="CPU Load"
-                            type="monotone" 
-                            dataKey="cpu" 
-                            stroke="#fa375e" 
-                            strokeWidth={4} 
-                            fill="url(#colorCpu)" 
+                        <Area
+                            name="Count"
+                            type="monotone"
+                            dataKey="count"
+                            stroke="#fa375e"
+                            strokeWidth={4}
+                            fill="url(#colorCount)"
                             activeDot={{ r: 6, stroke: '#111', strokeWidth: 2 }}
                         />
                     </AreaChart>
                 </ResponsiveContainer>
             </div>
-            
+
             <div className="chart-legend">
                 <div className="legend-item">
-                    <span className="dot cpu-dot"></span> CPU LOAD
+                    <span className="dot cpu-dot"></span> SỐ LIỆU DB
                 </div>
                 <div className="legend-item">
-                    <span className="dot ram-dot"></span> RAM USAGE
+                    <span className="dot ram-dot"></span> TỈ LỆ ĐÚNG {overview?.acceptanceRate ?? 0}%
                 </div>
             </div>
         </div>

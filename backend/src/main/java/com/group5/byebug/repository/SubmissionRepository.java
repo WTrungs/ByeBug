@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.time.LocalDateTime;
 
 @Repository
 public interface SubmissionRepository extends JpaRepository<Submission, Long> {
@@ -29,7 +30,37 @@ public interface SubmissionRepository extends JpaRepository<Submission, Long> {
 
     Long countByUserUserId(Long userId);
 
+    Long countByVerdict(Verdict verdict);
+
+    List<Submission> findAllByOrderBySubmittedAtDesc(Pageable pageable);
+
+    @Query(
+            value = """
+                    SELECT
+                        s.submission_id AS id,
+                        s.submitted_at AS time,
+                        u.username AS username,
+                        p.title AS target,
+                        s.verdict AS status
+                    FROM submissions s
+                    JOIN users u ON u.user_id = s.user_id
+                    JOIN problems p ON p.problem_id = s.problem_id
+                    ORDER BY s.submitted_at DESC
+                    LIMIT :limit
+                    """,
+            nativeQuery = true
+    )
+    List<RecentSubmissionActivity> findRecentSubmissionActivities(@Param("limit") int limit);
+
     @Modifying
     @Query("DELETE FROM Submission s WHERE s.user = :user")
     void deleteByUser(@Param("user") User user);
+
+    interface RecentSubmissionActivity {
+        Long getId();
+        LocalDateTime getTime();
+        String getUsername();
+        String getTarget();
+        String getStatus();
+    }
 }
