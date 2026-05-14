@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -22,6 +23,7 @@ public interface SubmissionRepository extends JpaRepository<Submission, Long> {
     Long countDistinctProblemByUserId(@Param("userId") Long userId);
 
     List<Submission> findByUserOrderBySubmittedAtDesc(User user, Pageable pageable);
+    List<Submission> findByUserAndSubmittedAtAfter(User user, LocalDateTime submittedAtAfter);
 
     Long countByUserUserIdAndVerdict(Long userId, Verdict verdict);
 
