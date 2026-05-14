@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import UserStatCard from "../components/UserStatCard";
 import VerdictBadge from "../components/VerdictBadge";
 import { getUserProfile, type UserProfile } from "../api/userApi";
+import { getUser } from "../utils/auth";
 import styles from "../styles/modules/Profile.module.css";
 
 const Profile: React.FC = () => {
@@ -17,50 +18,43 @@ const Profile: React.FC = () => {
     const fetchProfile = async () => {
       if (username) {
         try {
-          // In a real app, 'me' would be replaced by the actual username from context
-          const targetUser = username === "me" ? "admin" : username;
-          const data = await getUserProfile(targetUser);
-          setProfile(data);
+          let targetUser = username;
+          const currentUser = getUser();
+          
+          if (username === "me") {
+            if (currentUser) {
+              targetUser = currentUser.username;
+            } else {
+              navigate("/login");
+              return;
+            }
+          }
+
+          try {
+            const data = await getUserProfile(targetUser);
+            setProfile(data);
+          } catch (apiError) {
+            console.error("API failed to fetch profile, using local/mock data", apiError);
+            // Fallback to basic info if it's the current user
+            if (currentUser && targetUser === currentUser.username) {
+               setProfile({
+                 username: currentUser.username,
+                 fullName: currentUser.fullName || "Người dùng",
+                 email: currentUser.email || "",
+                 avatarUrl: currentUser.avatarUrl || `https://api.dicebear.com/7.x/avataaars/svg?seed=${currentUser.username}`,
+                 totalPoints: 0,
+                 rank: 0,
+                 solvedCount: 0,
+                 attemptedCount: 0,
+                 verdictStats: { ac: 0, wa: 0, tle: 0, mle: 0, re: 0, ce: 0 },
+                 recentSubmissions: []
+               });
+            } else {
+               throw apiError;
+            }
+          }
         } catch (error) {
-          console.error("Failed to fetch profile", error);
-          // Mock data for demonstration if API fails
-          setProfile({
-            username: username === "me" ? "admin" : username,
-            fullName: "Bug Hunter",
-            email: "hunter@byebug.com",
-            avatarUrl: `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`,
-            totalPoints: 1250,
-            rank: 42,
-            solvedCount: 85,
-            attemptedCount: 120,
-            verdictStats: { ac: 85, wa: 20, tle: 5, mle: 2, re: 3, ce: 5 },
-            recentSubmissions: [
-              {
-                id: 1,
-                problemTitle: "Two Sum",
-                result: "AC",
-                time: "2024-05-12 14:30",
-              },
-              {
-                id: 2,
-                problemTitle: "Add Two Numbers",
-                result: "WA",
-                time: "2024-05-11 09:15",
-              },
-              {
-                id: 3,
-                problemTitle: "Longest Substring",
-                result: "AC",
-                time: "2024-05-10 22:45",
-              },
-              {
-                id: 4,
-                problemTitle: "Reverse Integer",
-                result: "AC",
-                time: "2024-05-09 11:20",
-              },
-            ],
-          });
+          console.error("Failed to load profile", error);
         } finally {
           setLoading(false);
         }
@@ -68,12 +62,20 @@ const Profile: React.FC = () => {
     };
 
     fetchProfile();
-  }, [username]);
+  }, [username, navigate]);
 
   if (loading) return <div className={styles.loading}>Loading profile...</div>;
-  if (!profile) return <div className={styles.error}>Profile not found</div>;
-
-  // const totalStats = profile.verdictStats.ac + profile.verdictStats.wa + profile.verdictStats.tle + profile.verdictStats.mle + profile.verdictStats.re + profile.verdictStats.ce;
+  if (!profile) return (
+    <div className={styles.pageLayout}>
+      <UserSidebar />
+      <div className={styles.mainArea}>
+        <Navbar title="HỒ SƠ CÁ NHÂN" />
+        <div className={styles.content}>
+           <div className={styles.error}>Không tìm thấy thông tin người dùng <strong>{username}</strong></div>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className={styles.pageLayout}>
@@ -100,7 +102,8 @@ const Profile: React.FC = () => {
                 alt="avatar"
                 className={styles.avatar}
               />
-              <h1 className={styles.name}>{profile.fullName}</h1>
+              <h1 className={styles.name}>{profile.username}</h1>
+              <p style={{ color: '#666', fontWeight: 600, marginTop: '-12px', marginBottom: '16px' }}>{profile.fullName}</p>
 
               <div className={styles.statsGrid}>
                 <button
@@ -111,7 +114,7 @@ const Profile: React.FC = () => {
                 >
                   <UserStatCard
                     icon=""
-                    value={`#${profile.rank}`}
+                    value={profile.rank > 0 ? `#${profile.rank}` : "N/A"}
                     label="Rank"
                     accent="yellow"
                   />
@@ -119,7 +122,7 @@ const Profile: React.FC = () => {
                 <div className={styles.statPreview}>
                   <UserStatCard
                     icon=""
-                    value={profile.totalPoints.toString()}
+                    value={(profile.totalPoints || 0).toString()}
                     label="Points"
                     accent="blue"
                   />
@@ -161,10 +164,9 @@ const Profile: React.FC = () => {
                       color: "#22C55E",
                     }}
                   >
-                    {(
-                      (profile.solvedCount / profile.attemptedCount) *
-                      100
-                    ).toFixed(1)}
+                    {profile.attemptedCount > 0
+                      ? ((profile.solvedCount / profile.attemptedCount) * 100).toFixed(1)
+                      : "0.0"}
                     %
                   </div>
                   <div

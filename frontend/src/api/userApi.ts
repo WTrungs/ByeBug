@@ -25,17 +25,17 @@ export const getUserProfile = async (username: string): Promise<UserProfile> => 
     return response.data;
 };
 
-export const updateProfile = async (data: { fullName?: string; gender?: string; avatarUrl?: string }) => {
-    const response = await api.put('/users/me', data);
+export const updateProfile = async (username: string, data: { fullName?: string; email?: string; gender?: string; avatarUrl?: string }) => {
+    const response = await api.put(`/users/${username}`, data);
     return response.data;
 };
 
-export const changePassword = async (data: { oldPassword: string; newPassword: string }) => {
-    const response = await api.post('/users/me/change-password', data);
+export const changePassword = async (username: string, data: { oldPassword: string; newPassword: string }) => {
+    const response = await api.post(`/users/change-password/${username}`, data);
     return response.data;
 };
 
-export const deleteAccount = async (password: string) => {
-    const response = await api.delete('/users/me', { data: { password } });
+export const deleteAccount = async (username: string, password: string) => {
+    const response = await api.delete(`/users/${username}`, { data: { password } });
     return response.data;
 };
