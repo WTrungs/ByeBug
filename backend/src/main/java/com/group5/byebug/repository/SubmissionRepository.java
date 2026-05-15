@@ -1,8 +1,8 @@
 package com.group5.byebug.repository;
 
-import com.group5.byebug.entity.Submission;
-import com.group5.byebug.entity.User;
-import com.group5.byebug.enums.Verdict;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -10,8 +10,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import com.group5.byebug.entity.Submission;
+import com.group5.byebug.entity.User;
+import com.group5.byebug.enums.Verdict;
 
 @Repository
 public interface SubmissionRepository extends JpaRepository<Submission, Long> {
@@ -83,4 +84,7 @@ public interface SubmissionRepository extends JpaRepository<Submission, Long> {
         Long getTotalSubmissions();
         Long getAcceptedSubmissions();
     }
+
+    List<Submission> findTopByProblemProblemIdOrderBySubmittedAtDesc(
+    Long problemId, Pageable pageable);
 }

@@ -7,6 +7,7 @@ const menuItems = [
     { key: 'overview', label: 'Thống kê hệ thống' },
     { key: 'users', label: 'Quản lý người dùng' },
     { key: 'problems', label: 'Ngân hàng đề bài' },
+    { key: 'submissions', label: 'Quản lý submissions' },
     { key: 'notifications', label: 'Thông báo' },
 ];
 
