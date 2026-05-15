@@ -244,6 +244,206 @@ VALUES
         'USER',
         35,
         false
+    ),
+    (
+        'array_ninja',
+        'Array Ninja',
+        'array.ninja@example.com',
+        '$2a$12$XrTpI8KgCw7Si5rwdXLYYe8zbH5AETiZUXahya9mzfKWSb2rxDYNW',
+        'male',
+        'USER',
+        0,
+        true
+    ),
+    (
+        'tree_sage',
+        'Tree Sage',
+        'tree.sage@example.com',
+        '$2a$12$XrTpI8KgCw7Si5rwdXLYYe8zbH5AETiZUXahya9mzfKWSb2rxDYNW',
+        'female',
+        'USER',
+        0,
+        true
+    ),
+    (
+        'string_samurai',
+        'String Samurai',
+        'string.samurai@example.com',
+        '$2a$12$XrTpI8KgCw7Si5rwdXLYYe8zbH5AETiZUXahya9mzfKWSb2rxDYNW',
+        'male',
+        'USER',
+        0,
+        true
+    ),
+    (
+        'math_mage',
+        'Math Mage',
+        'math.mage@example.com',
+        '$2a$12$XrTpI8KgCw7Si5rwdXLYYe8zbH5AETiZUXahya9mzfKWSb2rxDYNW',
+        'female',
+        'USER',
+        0,
+        true
+    ),
+    (
+        'queue_runner',
+        'Queue Runner',
+        'queue.runner@example.com',
+        '$2a$12$XrTpI8KgCw7Si5rwdXLYYe8zbH5AETiZUXahya9mzfKWSb2rxDYNW',
+        'male',
+        'USER',
+        0,
+        true
+    ),
+    (
+        'stack_artist',
+        'Stack Artist',
+        'stack.artist@example.com',
+        '$2a$12$XrTpI8KgCw7Si5rwdXLYYe8zbH5AETiZUXahya9mzfKWSb2rxDYNW',
+        'female',
+        'USER',
+        0,
+        true
+    ),
+    (
+        'bit_bandit',
+        'Bit Bandit',
+        'bit.bandit@example.com',
+        '$2a$12$XrTpI8KgCw7Si5rwdXLYYe8zbH5AETiZUXahya9mzfKWSb2rxDYNW',
+        'male',
+        'USER',
+        0,
+        true
+    ),
+    (
+        'sort_smith',
+        'Sort Smith',
+        'sort.smith@example.com',
+        '$2a$12$XrTpI8KgCw7Si5rwdXLYYe8zbH5AETiZUXahya9mzfKWSb2rxDYNW',
+        'female',
+        'USER',
+        0,
+        true
+    ),
+    (
+        'rookie_ruby',
+        'Rookie Ruby',
+        'rookie.ruby@example.com',
+        '$2a$12$XrTpI8KgCw7Si5rwdXLYYe8zbH5AETiZUXahya9mzfKWSb2rxDYNW',
+        'female',
+        'USER',
+        0,
+        true
+    ),
+    (
+        'logic_luna',
+        'Logic Luna',
+        'logic.luna@example.com',
+        '$2a$12$XrTpI8KgCw7Si5rwdXLYYe8zbH5AETiZUXahya9mzfKWSb2rxDYNW',
+        'female',
+        'USER',
+        0,
+        true
+    ),
+    (
+        'cache_knight',
+        'Cache Knight',
+        'cache.knight@example.com',
+        '$2a$12$XrTpI8KgCw7Si5rwdXLYYe8zbH5AETiZUXahya9mzfKWSb2rxDYNW',
+        'male',
+        'USER',
+        0,
+        true
+    ),
+    (
+        'heap_hero',
+        'Heap Hero',
+        'heap.hero@example.com',
+        '$2a$12$XrTpI8KgCw7Si5rwdXLYYe8zbH5AETiZUXahya9mzfKWSb2rxDYNW',
+        'male',
+        'USER',
+        0,
+        true
+    ),
+    (
+        'matrix_maker',
+        'Matrix Maker',
+        'matrix.maker@example.com',
+        '$2a$12$XrTpI8KgCw7Si5rwdXLYYe8zbH5AETiZUXahya9mzfKWSb2rxDYNW',
+        'female',
+        'USER',
+        0,
+        true
+    ),
+    (
+        'regex_ranger',
+        'Regex Ranger',
+        'regex.ranger@example.com',
+        '$2a$12$XrTpI8KgCw7Si5rwdXLYYe8zbH5AETiZUXahya9mzfKWSb2rxDYNW',
+        'male',
+        'USER',
+        0,
+        true
+    ),
+    (
+        'greedy_hacker',
+        'Greedy Hacker',
+        'greedy.hacker@example.com',
+        '$2a$12$XrTpI8KgCw7Si5rwdXLYYe8zbH5AETiZUXahya9mzfKWSb2rxDYNW',
+        'female',
+        'USER',
+        0,
+        true
+    ),
+    (
+        'lambda_lad',
+        'Lambda Lad',
+        'lambda.lad@example.com',
+        '$2a$12$XrTpI8KgCw7Si5rwdXLYYe8zbH5AETiZUXahya9mzfKWSb2rxDYNW',
+        'male',
+        'USER',
+        0,
+        true
+    ),
+    (
+        'pointer_pal',
+        'Pointer Pal',
+        'pointer.pal@example.com',
+        '$2a$12$XrTpI8KgCw7Si5rwdXLYYe8zbH5AETiZUXahya9mzfKWSb2rxDYNW',
+        'female',
+        'USER',
+        0,
+        true
+    ),
+    (
+        'recursion_ray',
+        'Recursion Ray',
+        'recursion.ray@example.com',
+        '$2a$12$XrTpI8KgCw7Si5rwdXLYYe8zbH5AETiZUXahya9mzfKWSb2rxDYNW',
+        'male',
+        'USER',
+        0,
+        true
+    ),
+    (
+        'syntax_star',
+        'Syntax Star',
+        'syntax.star@example.com',
+        '$2a$12$XrTpI8KgCw7Si5rwdXLYYe8zbH5AETiZUXahya9mzfKWSb2rxDYNW',
+        'female',
+        'USER',
+        0,
+        true
+    ),
+    (
+        'debug_dan',
+        'Debug Dan',
+        'debug.dan@example.com',
+        '$2a$12$XrTpI8KgCw7Si5rwdXLYYe8zbH5AETiZUXahya9mzfKWSb2rxDYNW',
+        'male',
+        'USER',
+        0,
+        true
     )
 ON CONFLICT (username) DO UPDATE SET
     full_name = EXCLUDED.full_name,
@@ -678,10 +878,170 @@ WHERE
 (p.title = 'Counting Bits' AND t.tag_name = 'Bitmask') OR
 (p.title = 'Palindrome String' AND t.tag_name = 'String');
 
-INSERT INTO submissions (problem_id, user_id, language, source_code, verdict, score, total_time_ms, max_memory_kb)
-VALUES 
-(1, 2, 'CPP', '#include <iostream>...', 'AC', 100, 15, 1024),
-(4, 2, 'PYTHON', 'def lcs(a, b):...', 'WA', 0, 450, 8192);
+INSERT INTO submissions (
+    problem_id,
+    user_id,
+    language,
+    source_code,
+    verdict,
+    score,
+    total_time_ms,
+    max_memory_kb,
+    submitted_at
+)
+SELECT
+    p.problem_id,
+    u.user_id,
+    seed.language,
+    '// seed submission for ' || seed.username || ' - ' || seed.problem_title,
+    seed.verdict,
+    CASE WHEN seed.verdict = 'AC' THEN 100 ELSE 0 END,
+    seed.total_time_ms,
+    seed.max_memory_kb,
+    CURRENT_TIMESTAMP - (seed.days_ago || ' days')::interval
+FROM (
+    VALUES
+        ('coder_01', 'A + B Problem', 'CPP', 'AC', 15, 1024, 1),
+        ('coder_01', 'Prime Check', 'CPP', 'AC', 24, 1536, 2),
+        ('coder_01', 'Fibonacci', 'CPP', 'AC', 18, 1024, 3),
+        ('coder_01', 'Longest Common Subsequence', 'CPP', 'WA', 450, 8192, 4),
+
+        ('algo_ace', 'A + B Problem', 'CPP', 'AC', 12, 1024, 1),
+        ('algo_ace', 'Longest Common Subsequence', 'CPP', 'AC', 210, 12288, 1),
+        ('algo_ace', 'Dijkstra Algorithm', 'CPP', 'AC', 320, 16384, 2),
+        ('algo_ace', 'Knapsack 0/1', 'CPP', 'AC', 180, 8192, 2),
+        ('algo_ace', 'N-Queens Problem', 'CPP', 'AC', 620, 32768, 3),
+        ('algo_ace', 'Segment Tree Query', 'CPP', 'AC', 350, 24576, 3),
+        ('algo_ace', 'Max Flow', 'CPP', 'AC', 720, 40960, 4),
+        ('algo_ace', 'Counting Bits', 'CPP', 'AC', 20, 1024, 4),
+        ('algo_ace', 'Convex Hull', 'CPP', 'WA', 580, 32768, 5),
+
+        ('dp_master', 'Fibonacci', 'CPP', 'AC', 25, 2048, 1),
+        ('dp_master', 'Longest Common Subsequence', 'CPP', 'AC', 190, 12288, 1),
+        ('dp_master', 'Knapsack 0/1', 'CPP', 'AC', 205, 12288, 2),
+        ('dp_master', 'Longest Palindromic Substring', 'CPP', 'AC', 155, 8192, 2),
+        ('dp_master', 'Subset Sum', 'CPP', 'AC', 175, 8192, 3),
+        ('dp_master', 'Counting Bits', 'CPP', 'AC', 18, 1024, 3),
+        ('dp_master', 'A + B Problem', 'CPP', 'AC', 11, 1024, 4),
+        ('dp_master', 'Max Flow', 'CPP', 'TLE', 2000, 40960, 5),
+
+        ('bug_hunter', 'A + B Problem', 'CPP', 'AC', 13, 1024, 1),
+        ('bug_hunter', 'Prime Check', 'CPP', 'AC', 29, 1024, 1),
+        ('bug_hunter', 'Quick Sort Implementation', 'CPP', 'AC', 44, 2048, 2),
+        ('bug_hunter', 'Palindrome String', 'CPP', 'AC', 16, 1024, 3),
+        ('bug_hunter', 'BFS Traversal', 'CPP', 'AC', 76, 4096, 4),
+        ('bug_hunter', 'Valid Parentheses', 'CPP', 'AC', 19, 1024, 5),
+        ('bug_hunter', 'Dijkstra Algorithm', 'CPP', 'RTE', 120, 4096, 6),
+
+        ('graph_guru', 'Longest Common Subsequence', 'CPP', 'AC', 220, 12288, 1),
+        ('graph_guru', 'Dijkstra Algorithm', 'CPP', 'AC', 300, 16384, 2),
+        ('graph_guru', 'Knapsack 0/1', 'CPP', 'AC', 240, 12288, 3),
+        ('graph_guru', 'Binary Search Tree Check', 'CPP', 'AC', 55, 2048, 4),
+        ('graph_guru', 'Merge Intervals', 'CPP', 'AC', 82, 4096, 5),
+        ('graph_guru', 'Max Flow', 'CPP', 'WA', 430, 16384, 6),
+
+        ('binary_wizard', 'A + B Problem', 'CPP', 'AC', 14, 1024, 1),
+        ('binary_wizard', 'Quick Sort Implementation', 'CPP', 'AC', 50, 2048, 2),
+        ('binary_wizard', 'Palindrome String', 'CPP', 'AC', 17, 1024, 3),
+        ('binary_wizard', 'Factorial Large Number', 'CPP', 'AC', 90, 4096, 4),
+        ('binary_wizard', 'Subset Sum', 'CPP', 'WA', 190, 8192, 5),
+
+        ('newbie_dev', 'A + B Problem', 'CPP', 'AC', 28, 1024, 1),
+        ('newbie_dev', 'Prime Check', 'CPP', 'WA', 35, 1024, 2),
+
+        ('sleepy_coder', 'A + B Problem', 'CPP', 'AC', 40, 1024, 7),
+        ('sleepy_coder', 'Prime Check', 'CPP', 'AC', 48, 1024, 8),
+        ('rule_breaker', 'A + B Problem', 'CPP', 'WA', 35, 1024, 2),
+
+        ('array_ninja', 'A + B Problem', 'CPP', 'AC', 12, 1024, 1),
+        ('array_ninja', 'Quick Sort Implementation', 'CPP', 'AC', 45, 2048, 1),
+        ('array_ninja', 'Merge Intervals', 'CPP', 'AC', 80, 4096, 2),
+        ('array_ninja', 'Counting Bits', 'CPP', 'AC', 22, 1024, 3),
+        ('array_ninja', 'Fibonacci', 'CPP', 'AC', 20, 1024, 4),
+        ('array_ninja', 'BFS Traversal', 'CPP', 'AC', 88, 4096, 5),
+
+        ('tree_sage', 'Binary Search Tree Check', 'CPP', 'AC', 58, 2048, 1),
+        ('tree_sage', 'Dijkstra Algorithm', 'CPP', 'AC', 315, 16384, 2),
+        ('tree_sage', 'BFS Traversal', 'CPP', 'AC', 72, 4096, 3),
+        ('tree_sage', 'Segment Tree Query', 'CPP', 'AC', 370, 24576, 4),
+        ('tree_sage', 'N-Queens Problem', 'CPP', 'AC', 650, 32768, 5),
+
+        ('string_samurai', 'Palindrome String', 'CPP', 'AC', 18, 1024, 1),
+        ('string_samurai', 'Valid Parentheses', 'CPP', 'AC', 20, 1024, 2),
+        ('string_samurai', 'Longest Palindromic Substring', 'CPP', 'AC', 170, 8192, 3),
+        ('string_samurai', 'Longest Common Subsequence', 'CPP', 'AC', 215, 12288, 4),
+
+        ('math_mage', 'A + B Problem', 'CPP', 'AC', 12, 1024, 1),
+        ('math_mage', 'Prime Check', 'CPP', 'AC', 27, 1024, 2),
+        ('math_mage', 'Factorial Large Number', 'CPP', 'AC', 92, 4096, 3),
+        ('math_mage', 'Counting Bits', 'CPP', 'AC', 21, 1024, 4),
+
+        ('queue_runner', 'BFS Traversal', 'CPP', 'AC', 85, 4096, 1),
+        ('queue_runner', 'Merge Intervals', 'CPP', 'AC', 90, 4096, 2),
+        ('queue_runner', 'A + B Problem', 'CPP', 'AC', 13, 1024, 3),
+
+        ('stack_artist', 'Valid Parentheses', 'CPP', 'AC', 18, 1024, 1),
+        ('stack_artist', 'Palindrome String', 'CPP', 'AC', 16, 1024, 2),
+        ('stack_artist', 'Binary Search Tree Check', 'CPP', 'AC', 60, 2048, 3),
+
+        ('bit_bandit', 'Counting Bits', 'CPP', 'AC', 20, 1024, 1),
+        ('bit_bandit', 'Subset Sum', 'CPP', 'AC', 185, 8192, 2),
+        ('bit_bandit', 'Knapsack 0/1', 'CPP', 'AC', 215, 12288, 3),
+        ('bit_bandit', 'Prime Check', 'CPP', 'AC', 29, 1024, 4),
+        ('bit_bandit', 'Fibonacci', 'CPP', 'AC', 22, 1024, 5),
+
+        ('sort_smith', 'Quick Sort Implementation', 'CPP', 'AC', 42, 2048, 1),
+        ('sort_smith', 'Merge Intervals', 'CPP', 'AC', 84, 4096, 2),
+        ('sort_smith', 'A + B Problem', 'CPP', 'AC', 13, 1024, 3),
+
+        ('rookie_ruby', 'A + B Problem', 'CPP', 'AC', 36, 1024, 1),
+        ('logic_luna', 'Prime Check', 'CPP', 'AC', 32, 1024, 1),
+        ('logic_luna', 'Valid Parentheses', 'CPP', 'AC', 23, 1024, 2),
+
+        ('cache_knight', 'Fibonacci', 'CPP', 'AC', 23, 1024, 1),
+        ('cache_knight', 'Counting Bits', 'CPP', 'AC', 19, 1024, 2),
+        ('cache_knight', 'Quick Sort Implementation', 'CPP', 'AC', 48, 2048, 3),
+
+        ('heap_hero', 'Dijkstra Algorithm', 'CPP', 'AC', 330, 16384, 1),
+        ('heap_hero', 'Max Flow', 'CPP', 'AC', 760, 40960, 2),
+        ('heap_hero', 'Segment Tree Query', 'CPP', 'AC', 365, 24576, 3),
+        ('heap_hero', 'A + B Problem', 'CPP', 'AC', 12, 1024, 4),
+
+        ('matrix_maker', 'Subset Sum', 'CPP', 'AC', 180, 8192, 1),
+        ('matrix_maker', 'Knapsack 0/1', 'CPP', 'AC', 230, 12288, 2),
+        ('regex_ranger', 'Valid Parentheses', 'CPP', 'AC', 22, 1024, 1),
+
+        ('greedy_hacker', 'A + B Problem', 'CPP', 'AC', 12, 1024, 1),
+        ('greedy_hacker', 'Prime Check', 'CPP', 'AC', 30, 1024, 2),
+        ('greedy_hacker', 'Quick Sort Implementation', 'CPP', 'AC', 44, 2048, 3),
+        ('greedy_hacker', 'Merge Intervals', 'CPP', 'AC', 82, 4096, 4),
+        ('greedy_hacker', 'Dijkstra Algorithm', 'CPP', 'AC', 340, 16384, 5),
+
+        ('lambda_lad', 'Fibonacci', 'CPP', 'AC', 24, 1024, 1),
+        ('lambda_lad', 'Longest Common Subsequence', 'CPP', 'AC', 225, 12288, 2),
+        ('pointer_pal', 'A + B Problem', 'CPP', 'AC', 15, 1024, 1),
+        ('pointer_pal', 'Binary Search Tree Check', 'CPP', 'AC', 62, 2048, 2),
+        ('pointer_pal', 'Segment Tree Query', 'CPP', 'AC', 390, 24576, 3),
+
+        ('recursion_ray', 'Fibonacci', 'CPP', 'AC', 24, 1024, 1),
+        ('recursion_ray', 'N-Queens Problem', 'CPP', 'AC', 690, 32768, 2),
+        ('recursion_ray', 'Factorial Large Number', 'CPP', 'AC', 96, 4096, 3),
+        ('recursion_ray', 'Subset Sum', 'CPP', 'AC', 190, 8192, 4),
+
+        ('syntax_star', 'A + B Problem', 'CPP', 'AC', 18, 1024, 1),
+        ('debug_dan', 'Prime Check', 'CPP', 'AC', 31, 1024, 1),
+        ('debug_dan', 'Palindrome String', 'CPP', 'AC', 17, 1024, 2)
+) AS seed(username, problem_title, language, verdict, total_time_ms, max_memory_kb, days_ago)
+JOIN users u ON u.username = seed.username
+JOIN problems p ON p.title = seed.problem_title;
+
+UPDATE users u
+SET total_score = COALESCE((
+    SELECT COUNT(DISTINCT s.problem_id)
+    FROM submissions s
+    WHERE s.user_id = u.user_id
+      AND s.verdict = 'AC'
+), 0) * 100;
 
 
 -- Seed notification broadcast + user inbox

@@ -4,10 +4,13 @@ import Navbar from "../components/Navbar";
 import { getLeaderboard, type LeaderboardUser } from "../api/userApi";
 import styles from "../styles/modules/Leaderboard.module.css";
 
+const INITIAL_VISIBLE_COUNT = 7;
+const SHOW_MORE_STEP = 5;
+
 const Leaderboard: React.FC = () => {
   const [leaders, setLeaders] = useState<LeaderboardUser[]>([]);
   const [loading, setLoading] = useState(true);
-  const [visibleCount, setVisibleCount] = useState(7);
+  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
@@ -26,6 +29,7 @@ const Leaderboard: React.FC = () => {
 
   const visibleLeaders = leaders.slice(0, visibleCount);
   const canShowMore = visibleCount < leaders.length;
+  const canCollapse = visibleCount > INITIAL_VISIBLE_COUNT;
 
   if (loading) return <div className={styles.loading}>Đang tải bảng xếp hạng...</div>;
 
@@ -136,12 +140,23 @@ const Leaderboard: React.FC = () => {
               type="button"
               className={styles.showMoreButton}
               onClick={() =>
-                setVisibleCount((count) => Math.min(count + 3, leaders.length))
+                setVisibleCount((count) =>
+                  Math.min(count + SHOW_MORE_STEP, leaders.length)
+                )
               }
               disabled={!canShowMore}
             >
               {canShowMore ? "XEM THÊM" : "ĐÃ HIỂN THỊ TẤT CẢ"}
             </button>
+            {canCollapse && (
+              <button
+                type="button"
+                className={styles.showMoreButton}
+                onClick={() => setVisibleCount(INITIAL_VISIBLE_COUNT)}
+              >
+                THU GỌN
+              </button>
+            )}
           </div>
         </main>
 

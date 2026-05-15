@@ -78,7 +78,6 @@ public class CppJudgeStrategy implements JudgeStrategy {
                     workDir.toString(),
                     problem.getMemoryLimitKb().longValue());
 
-            int accepted = 0;
             int totalTimeMs = 0;
             String finalStatus = "AC";
 
@@ -87,9 +86,7 @@ public class CppJudgeStrategy implements JudgeStrategy {
                 result.getTestcaseResults().add(caseResult);
                 totalTimeMs += caseResult.getTimeMs() == null ? 0 : caseResult.getTimeMs();
 
-                if ("AC".equals(caseResult.getVerdict())) {
-                    accepted++;
-                } else if ("AC".equals(finalStatus)) {
+                if (!"AC".equals(caseResult.getVerdict()) && "AC".equals(finalStatus)) {
                     finalStatus = caseResult.getVerdict();
                     result.setMessage(caseResult.getMessage());
                     result.setStderr(caseResult.getStderr());
@@ -98,7 +95,7 @@ public class CppJudgeStrategy implements JudgeStrategy {
             }
 
             result.setStatus(finalStatus);
-            result.setScore(testcases.isEmpty() ? 0 : (accepted * 100) / testcases.size());
+            result.setScore("AC".equals(finalStatus) ? 100 : 0);
             result.setTimeUsedMs(totalTimeMs);
             result.setMemoryUsedKb(0);
         } catch (IOException e) {

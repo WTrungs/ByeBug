@@ -166,7 +166,7 @@ public class UserService {
     }
 
     public List<LeaderboardResponse> getLeaderboard() {
-        List<User> topUsers = userRepository.findAllByOrderByTotalScoreDesc(org.springframework.data.domain.PageRequest.of(0, 20));
+        List<User> topUsers = userRepository.findByIsActiveTrueAndDeletedAtIsNullOrderByTotalScoreDesc();
         return topUsers.stream().map(u -> {
             return LeaderboardResponse.builder()
                     .username(u.getUsername())
