@@ -45,8 +45,9 @@ public class HomeServiceImpl implements HomeService {
                 .build();
 
         // 2. Leaderboard (Top 3)
-        List<HomeSummaryResponse.LeaderboardItem> leaderboard = userRepository.findAllByOrderByTotalScoreDesc(PageRequest.of(0, 3))
+        List<HomeSummaryResponse.LeaderboardItem> leaderboard = userRepository.findByIsActiveTrueAndDeletedAtIsNullOrderByTotalScoreDesc()
                 .stream()
+                .limit(3)
                 .map(u -> HomeSummaryResponse.LeaderboardItem.builder()
                         .username(u.getUsername())
                         .initials(getInitials(u.getUsername()))

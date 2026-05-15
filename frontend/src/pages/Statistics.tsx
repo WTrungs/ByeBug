@@ -14,6 +14,7 @@ import UserSidebar from "../components/UserSidebar";
 import UserStatCard from "../components/UserStatCard";
 import Navbar from "../components/Navbar";
 import DifficultyBadge from "../components/DifficultyBadge";
+import VerdictBadge from "../components/VerdictBadge";
 import { getUser } from "../utils/auth";
 import { getAllProblems, type Problem } from "../api/problemApi";
 import {
@@ -38,17 +39,6 @@ const Statistics: React.FC = () => {
   const [loadingProblems, setLoadingProblems] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [chartFilter, setChartFilter] = useState<"both" | "AC" | "WA">("both");
-
-  const verdictClass: Record<string, string> = {
-    AC: styles.verdictAC,
-    WA: styles.verdictWA,
-    TLE: styles.verdictTLE,
-    MLE: styles.verdictMLE,
-    RE: styles.verdictRE,
-    CE: styles.verdictCE,
-    SE: styles.verdictSE,
-    PENDING: styles.verdictPending,
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -251,11 +241,7 @@ const Statistics: React.FC = () => {
                     <td className={styles.cellProblem}>{s.problemTitle}</td>
                     <td className={styles.cellMonoMid}>C++</td>
                     <td>
-                      <span
-                        className={`${styles.verdictBadge} ${verdictClass[s.result] ?? styles.verdictPending}`}
-                      >
-                        {s.result}
-                      </span>
+                      <VerdictBadge verdict={s.result} />
                     </td>
                     <td className={styles.cellMonoMid}>—</td>
                   </tr>

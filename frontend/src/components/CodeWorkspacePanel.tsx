@@ -23,7 +23,6 @@ interface CodeWorkspacePanelProps {
   onCodeChange: (value: string) => void;
   onLangChange: (lang: Language) => void;
   onSubmit: () => void;
-  onRunTest?: () => void;
 }
 
 export default function CodeWorkspacePanel({
@@ -37,7 +36,6 @@ export default function CodeWorkspacePanel({
   onCodeChange,
   onLangChange,
   onSubmit,
-  onRunTest,
 }: CodeWorkspacePanelProps) {
   return (
     <section className={styles.rightPanel} aria-label="Code editor">
@@ -60,16 +58,6 @@ export default function CodeWorkspacePanel({
       />
 
       <div className={styles.actionBar}>
-        <button
-          onClick={
-            onRunTest ??
-            (() => console.log("Run Tests clicked - feature coming soon"))
-          }
-          title="Run sample tests"
-          className={styles.btnRun}
-        >
-          Run Tests
-        </button>
         <button
           disabled={submitting}
           onClick={onSubmit}

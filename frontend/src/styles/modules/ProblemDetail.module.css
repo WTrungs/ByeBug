@@ -683,7 +683,6 @@
   background: #fffdfb;
 }
 
-.btnRun,
 .btnSubmit {
   display: inline-flex;
   align-items: center;
@@ -697,20 +696,7 @@
   transition:
     transform 0.15s ease,
     box-shadow 0.15s ease,
-    opacity 0.15s ease;
-}
-
-.btnRun {
-  flex: 1;
-  background: #fffdfb;
-  color: #111;
-  cursor: pointer;
-}
-
-.btnRun:hover:not(:disabled) {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0 var(--black);
-  background: #f5f0ec;
+  opacity 0.15s ease;
 }
 
 .btnSubmit {
@@ -726,8 +712,7 @@
   box-shadow: 6px 6px 0 var(--black);
 }
 
-.btnSubmit:disabled,
-.btnRun:disabled {
+.btnSubmit:disabled {
   opacity: 0.86;
 }
 
@@ -1012,7 +997,6 @@
     padding-bottom: 18px;
   }
 
-  .btnRun,
   .btnSubmit {
     width: 100%;
     flex: none;
