@@ -8,7 +8,6 @@ import "../index.css";
 const menuItems = [
   { key: "home", label: "Home", icon: "", path: "/home" },
   { key: "problems", label: "Problems", icon: "", path: "/problems" },
-  { key: "submission", label: "Submission", icon: "", path: "/submissions" },
   { key: "leaderboard", label: "Leaderboard", icon: "", path: "/leaderboard" },
 
   { key: "statistics", label: "Statistics", icon: "", path: "/statistics" },
@@ -28,14 +27,16 @@ const UserSidebar: React.FC = () => {
       setUser(getUser());
     };
 
-    window.addEventListener('userUpdated', handleUserUpdate);
-    return () => window.removeEventListener('userUpdated', handleUserUpdate);
+    window.addEventListener("userUpdated", handleUserUpdate);
+    return () => window.removeEventListener("userUpdated", handleUserUpdate);
   }, []);
 
   const displayName = user?.fullName || user?.username || "Người dùng";
   const avatarFallback = displayName.charAt(0).toUpperCase();
   const avatarSeed = encodeURIComponent(user?.username || "guest");
-  const avatarUrl = user?.avatarUrl || `https://api.dicebear.com/7.x/avataaars/svg?seed=${avatarSeed}`;
+  const avatarUrl =
+    user?.avatarUrl ||
+    `https://api.dicebear.com/7.x/avataaars/svg?seed=${avatarSeed}`;
 
   const activeKey =
     location.pathname === "/home"
@@ -109,8 +110,12 @@ const UserSidebar: React.FC = () => {
               )}
             </div>
             <div className={s.sidebarUserMeta}>
-              <div className={s.sidebarUsername}>{user?.username || "Người dùng"}</div>
-              <div className={s.sidebarRole}>{user?.fullName || user?.role || ""}</div>
+              <div className={s.sidebarUsername}>
+                {user?.username || "Người dùng"}
+              </div>
+              <div className={s.sidebarRole}>
+                {user?.fullName || user?.role || ""}
+              </div>
             </div>
           </button>
 
