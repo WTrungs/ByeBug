@@ -90,6 +90,57 @@ public class SubmissionService {
                 .totalTimeMs(submission.getTotalTimeMs())
                 .maxMemoryKb(submission.getMaxMemoryKb())
                 .testcaseResults(testcaseResults)
+                .sourceCode(submission.getSourceCode())
+                .language(submission.getLanguage() != null ? submission.getLanguage().name() : null)
+                .compileError(submission.getCompileError())
+                .judgeMessage(submission.getJudgeMessage())
+                .submittedAt(submission.getSubmittedAt() != null ? submission.getSubmittedAt().toString() : null)
+                .username(submission.getUser() != null ? submission.getUser().getUsername() : null)
                 .build();
     }
+    @Transactional(readOnly = true)
+public List<SubmissionResultResponse> getRecentSubmissions(Long problemId, int limit) {
+    return submissionRepository
+        .findTopByProblemProblemIdOrderBySubmittedAtDesc(problemId, 
+            org.springframework.data.domain.PageRequest.of(0, limit))
+        .stream()
+        .map(this::toResponse)
+        .toList();
+}
+
+@Transactional
+public SubmissionResultResponse rejudge(Long submissionId) {
+    Submission submission = submissionRepository.findById(submissionId)
+        .orElseThrow(() -> new IllegalArgumentException("Submission not found"));
+
+    
+    testcaseResultRepository.deleteBySubmissionSubmissionId(submissionId);
+
+    
+    submission.setVerdict(Verdict.PENDING);
+    submission.setScore(0);
+    submission.setTotalTimeMs(null);
+    submission.setMaxMemoryKb(null);
+    submission.setCompileError(null);
+    submission.setJudgeMessage(null);
+    submissionRepository.save(submission);
+
+    
+    enqueueAfterCommit(submissionId);
+    return toResponse(submission);
+}
+
+@Transactional
+public SubmissionResultResponse manualAccept(Long submissionId) {
+    Submission submission = submissionRepository.findById(submissionId)
+        .orElseThrow(() -> new IllegalArgumentException("Submission not found"));
+
+    submission.setVerdict(Verdict.AC);
+    submission.setScore(100);
+    submission.setCompileError(null);
+    submission.setJudgeMessage("Manually accepted by admin");
+    submissionRepository.save(submission);
+
+    return toResponse(submission);
+}
 }

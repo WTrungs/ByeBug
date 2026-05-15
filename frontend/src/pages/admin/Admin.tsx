@@ -7,6 +7,7 @@ import UserManagement from './UserManagement';
 import ProblemManagement from './ProblemManagement';
 import ProblemCreate from './ProblemCreate';
 import NotificationManagement from './NotificationManagement';
+import SubmissionManagement from '../SubmissionManagement';
 
 const Admin: React.FC = () => {
     return (
@@ -29,6 +30,7 @@ const Admin: React.FC = () => {
                         <Route path="notifications" element={<NotificationManagement />} />
                         <Route path="reports" element={<Navigate to="notifications" replace />} />
                         <Route path="problems/edit/:id" element={<ProblemCreate />} />
+                        <Route path="submissions" element={<SubmissionManagement />} />
                     </Routes>
                 </div>
 

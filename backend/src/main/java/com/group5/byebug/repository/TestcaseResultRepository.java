@@ -10,4 +10,5 @@ import com.group5.byebug.entity.TestcaseResult;
 @Repository
 public interface TestcaseResultRepository extends JpaRepository<TestcaseResult, Long> {
     List<TestcaseResult> findBySubmissionSubmissionIdOrderByTestcaseDisplayOrderAsc(Long submissionId);
+    void deleteBySubmissionSubmissionId(Long submissionId);
 }

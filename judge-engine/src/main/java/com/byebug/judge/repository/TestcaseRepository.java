@@ -10,4 +10,5 @@ import com.byebug.judge.entity.Testcase;
 @Repository
 public interface TestcaseRepository extends JpaRepository<Testcase, Long> {
     Optional<Testcase> findByProblemProblemIdAndDisplayOrder(Long problemId, Integer displayOrder);
+    
 }
