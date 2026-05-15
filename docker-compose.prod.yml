@@ -1,0 +1,101 @@
+services:
+  db:
+    image: postgres:17-bookworm
+    container_name: postgres-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 30s
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis-cache
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  oj-cpp-runner:
+    profiles:
+      - build-only
+    build:
+      context: ./judge-engine/docker-env/cpp
+    image: oj-cpp:latest
+
+  judge-engine:
+    build:
+      context: ./judge-engine
+    container_name: judge-app
+    restart: unless-stopped
+    env_file:
+      - ${BYEBUG_ENV_FILE:-/home/wtrungs/byebug-prod/.env}
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${DB_NAME}
+      REDIS_HOST: redis
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/byebug/sandbox:/tmp/byebug/sandbox
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "bash -ec 'exec 3<>/dev/tcp/127.0.0.1/${JUDGE_PORT:-4000}; printf \"GET /actuator/health HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n\" >&3; cat <&3 | grep -q \"\\\"status\\\":\\\"UP\\\"\"'",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 60s
+
+  backend:
+    build:
+      context: ./backend
+    container_name: spring-boot-app
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${SPRING_PORT:-8080}:8080"
+    env_file:
+      - ${BYEBUG_ENV_FILE:-/home/wtrungs/byebug-prod/.env}
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${DB_NAME}
+      REDIS_HOST: redis
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      judge-engine:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "bash -ec 'exec 3<>/dev/tcp/127.0.0.1/8080; printf \"GET /actuator/health HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n\" >&3; cat <&3 | grep -q \"\\\"status\\\":\\\"UP\\\"\"'",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 60s
+
+volumes:
+  db-data:
+  redis-data:

@@ -51,6 +51,10 @@ online-judge/
 - Chạy lệnh ```npm install``` để cài thư viện.
 - Chạy lệnh ```npm run dev``` để mở trang web.
 
+## 🌐 Deploy production
+
+Hướng deploy production bằng WSL2, Docker Compose, Cloudflare Tunnel, Cloudflare Pages và GitHub Actions self-hosted runner nằm tại [`docs/deployment-wsl2-cloudflare.md`](docs/deployment-wsl2-cloudflare.md).
+
 
 ## 🗄 Database Schema
 

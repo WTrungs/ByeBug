@@ -1,0 +1,27 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, byebug-prod]
+
+    steps:
+      - name: Pull latest code
+        uses: actions/checkout@v4
+
+      - name: Check production environment file
+        run: test -f "$HOME/byebug-prod/.env"
+
+      - name: Build C++ runner image
+        run: docker build -t oj-cpp:latest ./judge-engine/docker-env/cpp
+
+      - name: Build and restart services
+        run: |
+          export BYEBUG_ENV_FILE="$HOME/byebug-prod/.env"
+          docker compose --env-file "$BYEBUG_ENV_FILE" -f docker-compose.prod.yml up -d --build
+
+      - name: Remove unused images
+        run: docker image prune -f
