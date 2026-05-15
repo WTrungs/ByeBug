@@ -1,6 +1,12 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getProblemDetail } from '../../api/problemApi';
+import {
+    createAdminProblem,
+    getAdminProblemDetail,
+    updateAdminProblem,
+    uploadProblemTests,
+    type AdminProblemPayload,
+} from '../../api/adminApi';
 
 type ProblemFormState = {
     title: string;
@@ -15,6 +21,8 @@ type ProblemFormState = {
     sampleExplanation: string;
     isPublic: boolean;
 };
+
+type UploadState = 'idle' | 'selected' | 'uploading' | 'success' | 'error';
 
 const initialForm: ProblemFormState = {
     title: '',
@@ -44,8 +52,13 @@ const ProblemCreate: React.FC = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [form, setForm] = useState<ProblemFormState>(initialForm);
+    const [testsFile, setTestsFile] = useState<File | null>(null);
+    const [uploadState, setUploadState] = useState<UploadState>('idle');
+    const [uploadMessage, setUploadMessage] = useState('Chưa chọn file');
+    const [isSaving, setIsSaving] = useState(false);
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-    const payloadPreview = useMemo(() => ({
+    const payloadPreview = useMemo<AdminProblemPayload>(() => ({
         title: form.title.trim(),
         difficulty: form.difficulty,
         timeLimitMs: Number(form.timeLimitMs) || 0,
@@ -67,6 +80,8 @@ const ProblemCreate: React.FC = () => {
         isPublic: form.isPublic,
     }), [form]);
 
+    const isBusy = isSaving || uploadState === 'uploading';
+
     const updateField = <K extends keyof ProblemFormState>(
         field: K,
         value: ProblemFormState[K],
@@ -74,22 +89,56 @@ const ProblemCreate: React.FC = () => {
         setForm((current) => ({ ...current, [field]: value }));
     };
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    
-    try {
-        if (id) {
-            console.log('Đang CẬP NHẬT bài tập:', payloadPreview);
-            alert("Sửa xong rồi nha sếp!");
-        } else {
-            console.log('Đang TẠO MỚI bài tập:', payloadPreview);
-            alert("Tạo mới thành công!");
+    const handleTestsFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0] ?? null;
+
+        if (!file) {
+            setTestsFile(null);
+            setUploadState('idle');
+            setUploadMessage('Chưa chọn file');
+            return;
         }
-        navigate('/admin/problems');
-    } catch (error) {
-        alert("Lưu thất bại, sếp kiểm tra lại thử!");
-    }
-};
+
+        if (file.name !== 'tests.zip') {
+            setTestsFile(null);
+            setUploadState('error');
+            setUploadMessage('File phải có tên tests.zip');
+            event.target.value = '';
+            return;
+        }
+
+        setTestsFile(file);
+        setUploadState('selected');
+        setUploadMessage(`Đã chọn ${file.name}`);
+    };
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setIsSaving(true);
+        setUploadState(testsFile ? 'uploading' : uploadState);
+        setUploadMessage(testsFile ? 'Đang upload tests.zip...' : uploadMessage);
+
+        try {
+            const savedProblem = id
+                ? await updateAdminProblem(Number(id), payloadPreview)
+                : await createAdminProblem(payloadPreview);
+
+            if (testsFile) {
+                await uploadProblemTests(savedProblem.problemId, testsFile);
+                setUploadState('success');
+                setUploadMessage('Đã upload tests.zip thành công');
+            }
+
+            alert(id ? 'Sửa xong rồi nha sếp!' : 'Tạo mới thành công!');
+            navigate('/admin/problems');
+        } catch (error) {
+            setUploadState(testsFile ? 'error' : uploadState);
+            setUploadMessage('Lưu hoặc upload thất bại, sếp kiểm tra lại thử!');
+            alert('Lưu thất bại, sếp kiểm tra lại thử!');
+        } finally {
+            setIsSaving(false);
+        }
+    };
 
      useEffect(() => {
     const fetchDetail = async () => {
@@ -98,7 +147,13 @@ const ProblemCreate: React.FC = () => {
 
         try {
             console.log("Đang lụm dữ liệu cho bài tập ID:", id);
-            const data = await getProblemDetail(Number(id));
+            const data = await getAdminProblemDetail(Number(id));
+            const tagNames = Array.isArray(data.tags)
+                ? data.tags
+                    .map((tag) => typeof tag === 'string' ? tag : tag.tagName)
+                    .filter(Boolean)
+                    .join(', ')
+                : '';
             
             // 2. Lụm xong rồi thì gắn (set) vào Form thôi
             setForm({
@@ -107,7 +162,7 @@ const ProblemCreate: React.FC = () => {
                 timeLimitMs: String(data.timeLimitMs || '1000'),
                 memoryLimitKb: String(data.memoryLimitKb || '262144'),
 
-                tags: data.tags ? data.tags.join(', ') : '', 
+                tags: tagNames,
                 description: data.description || '',
                 constraints: data.constraints || '',
                 
@@ -141,12 +196,13 @@ const ProblemCreate: React.FC = () => {
                     <button
                         type="button"
                         className="pc-secondary-btn"
+                        disabled={isBusy}
                         onClick={() => navigate('/admin/problems')}
                     >
                         Quay lại
                     </button>
-                    <button type="submit" className="btn-neo-sub pc-submit-btn">
-                        Lưu bản nháp
+                    <button type="submit" className="btn-neo-sub pc-submit-btn" disabled={isBusy}>
+                        {isBusy ? 'Đang lưu...' : 'Lưu bản nháp'}
                     </button>
                 </div>
             </div>
@@ -274,6 +330,42 @@ const ProblemCreate: React.FC = () => {
                             placeholder="VD: 1 <= n <= 10^5"
                         />
                     </label>
+                </div>
+            </section>
+
+            <section className={`pm-card pc-section pc-upload-card pc-upload-${uploadState}`}>
+                <div className="pm-card-header">
+                    <h3 className="pm-card-title">Testcase judge</h3>
+                </div>
+
+                <div className="pc-upload-body">
+                    <div>
+                        <p className="pc-upload-title">Upload tests.zip</p>
+                        <p className="pc-upload-copy">
+                            File sẽ được lưu tại problems/{id ? id : '{problemId}'}/tests.zip sau khi bài được lưu.
+                        </p>
+                    </div>
+
+                    <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept=".zip,application/zip"
+                        className="pc-upload-input"
+                        onChange={handleTestsFileChange}
+                        disabled={isBusy}
+                    />
+
+                    <div className="pc-upload-actions">
+                        <button
+                            type="button"
+                            className="pc-secondary-btn"
+                            disabled={isBusy}
+                            onClick={() => fileInputRef.current?.click()}
+                        >
+                            Chọn tests.zip
+                        </button>
+                        <span className="pc-upload-status">{uploadMessage}</span>
+                    </div>
                 </div>
             </section>
 

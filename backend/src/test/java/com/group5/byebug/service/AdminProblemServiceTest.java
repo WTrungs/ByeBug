@@ -1,16 +1,20 @@
 package com.group5.byebug.service;
 
 import com.group5.byebug.dto.AdminProblemPageResponse;
+import com.group5.byebug.dto.AdminProblemRequest;
 import com.group5.byebug.dto.AdminProblemResponse;
+import com.group5.byebug.dto.ProblemResponseDTO;
 import com.group5.byebug.entity.Problem;
 import com.group5.byebug.enums.Difficulty;
 import com.group5.byebug.repository.ProblemRepository;
 import com.group5.byebug.repository.SubmissionRepository;
+import com.group5.byebug.repository.TagRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +29,8 @@ import static org.mockito.Mockito.when;
 class AdminProblemServiceTest {
     private final ProblemRepository problemRepository = mock(ProblemRepository.class);
     private final SubmissionRepository submissionRepository = mock(SubmissionRepository.class);
-    private final AdminProblemService adminProblemService = new AdminProblemService(problemRepository, submissionRepository);
+    private final TagRepository tagRepository = mock(TagRepository.class);
+    private final AdminProblemService adminProblemService = new AdminProblemService(problemRepository, submissionRepository, tagRepository);
 
     @Test
     @SuppressWarnings("unchecked")
@@ -61,6 +66,22 @@ class AdminProblemServiceTest {
         );
     }
 
+    @Test
+    void createProblemWorksWithoutTestsUpload() {
+        AdminProblemRequest request = request();
+        when(problemRepository.save(any(Problem.class))).thenAnswer(invocation -> {
+            Problem saved = invocation.getArgument(0);
+            saved.setProblemId(7L);
+            return saved;
+        });
+
+        ProblemResponseDTO response = adminProblemService.createProblem(request);
+
+        assertEquals(7L, response.getProblemId());
+        assertEquals("Two Sum", response.getTitle());
+        verify(problemRepository).save(any(Problem.class));
+    }
+
     private Problem problem(Long id, String title, boolean isPublic) {
         Problem problem = new Problem();
         problem.setProblemId(id);
@@ -69,6 +90,20 @@ class AdminProblemServiceTest {
         problem.setDifficulty(Difficulty.EASY);
         problem.setIsPublic(isPublic);
         problem.setTags(new java.util.HashSet<>());
+        problem.setExamples(new ArrayList<>());
         return problem;
+    }
+
+    private AdminProblemRequest request() {
+        AdminProblemRequest request = new AdminProblemRequest();
+        request.setTitle("Two Sum");
+        request.setDescription("Description");
+        request.setDifficulty(Difficulty.EASY);
+        request.setTimeLimitMs(1000);
+        request.setMemoryLimitKb(262144);
+        request.setIsPublic(false);
+        request.setTags(List.of());
+        request.setExamples(List.of());
+        return request;
     }
 }
