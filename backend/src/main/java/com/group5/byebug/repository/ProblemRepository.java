@@ -29,6 +29,9 @@ public interface ProblemRepository extends JpaRepository<Problem, Long>, JpaSpec
     @Query("SELECT DISTINCT p FROM Problem p LEFT JOIN FETCH p.tags LEFT JOIN FETCH p.examples WHERE p.problemId = :id AND p.isPublic = true")
     Optional<Problem> findByIdWithTags(@Param("id") Long id);
 
+    @Query("SELECT DISTINCT p FROM Problem p LEFT JOIN FETCH p.tags LEFT JOIN FETCH p.examples WHERE p.problemId = :id")
+    Optional<Problem> findAdminByIdWithTags(@Param("id") Long id);
+
     @Query("SELECT DISTINCT p FROM Problem p LEFT JOIN FETCH p.tags WHERE p.difficulty = :difficulty AND p.isPublic = true")
     List<Problem> findByDifficultyWithTags(@Param("difficulty") Difficulty difficulty);
 

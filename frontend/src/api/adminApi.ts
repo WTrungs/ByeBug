@@ -74,6 +74,30 @@ export interface AdminProblemPage {
   totalPages: number;
 }
 
+export interface AdminProblemExamplePayload {
+  input: string;
+  output: string;
+  explanation?: string | null;
+  displayOrder: number;
+}
+
+export interface AdminProblemPayload {
+  title: string;
+  difficulty: 'EASY' | 'MEDIUM' | 'HARD';
+  timeLimitMs: number;
+  memoryLimitKb: number;
+  tags: string[];
+  description: string;
+  constraints: string;
+  examples: AdminProblemExamplePayload[];
+  isPublic: boolean;
+}
+
+export interface AdminProblemDetail extends Omit<AdminProblemPayload, 'tags'> {
+  problemId: number;
+  tags: Array<string | AdminProblemTag>;
+}
+
 export const getAdminUsers = async (params?: {
   page?: number;
   size?: number;
@@ -138,6 +162,39 @@ export const setAdminProblemVisibility = async (
   isPublic: boolean,
 ): Promise<AdminProblem> => {
   const response = await api.patch(`/admin/problems/${problemId}/visibility`, { isPublic });
+  return response.data;
+};
+
+export const getAdminProblemDetail = async (problemId: number): Promise<AdminProblemDetail> => {
+  const response = await api.get(`/admin/problems/${problemId}`);
+  return response.data;
+};
+
+export const createAdminProblem = async (payload: AdminProblemPayload): Promise<AdminProblemDetail> => {
+  const response = await api.post('/admin/problems', payload);
+  return response.data;
+};
+
+export const updateAdminProblem = async (
+  problemId: number,
+  payload: AdminProblemPayload,
+): Promise<AdminProblemDetail> => {
+  const response = await api.put(`/admin/problems/${problemId}`, payload);
+  return response.data;
+};
+
+export const uploadProblemTests = async (
+  problemId: number,
+  file: File,
+): Promise<{ message: string; objectKey: string }> => {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const response = await api.post(`/admin/problems/${problemId}/tests`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
   return response.data;
 };
 
