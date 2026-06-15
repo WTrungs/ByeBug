@@ -1,141 +1,134 @@
-# ByeBug
-# 🐛 ByeBug - Online Judge System - Đồ án Lập trình Web
-Đây là dự án Hệ thống chấm bài trực tuyến được thực hiện cho môn Lập trình Web. Nền tảng cho phép người dùng luyện tập lập trình bằng cách nộp code giải các bài toán thuật toán. Hệ thống tự động chấm bài trong sandbox cách ly, trả về kết quả realtime với các verdict: **AC / WA / TLE / MLE / RE / CE**.
+# 🐞 ByeBug - Online Judge Platform
 
+## 📖 Giới thiệu
 
-## 🛠 Công nghệ sử dụng (Tech Stack)
-Để hoàn thành đồ án này, nhóm mình sử dụng các công nghệ chính:
-- **Frontend:** ReactJS  (JavaScript) để xây dựng giao diện người dùng.
-- **Backend:** Spring Boot (Java) xử lý logic hệ thống và quản lý bài tập.
-- **Cơ sở dữ liệu:** PostgreSQL để lưu trữ thông tin user và bài tập.
-- **Lưu trữ:** MinIO để quản lý cái file testcase và code nộp.
+**ByeBug** là một nền tảng Online Judge hỗ trợ luyện tập lập trình và đánh giá lời giải tự động.
 
+Người dùng có thể lựa chọn bài toán, nộp mã nguồn và nhận kết quả chấm bài theo thời gian thực. Hệ thống được thiết kế theo hướng mở rộng, hỗ trợ xử lý bất đồng bộ thông qua Redis Queue và thực thi chương trình trong Docker Sandbox nhằm đảm bảo tính an toàn và ổn định.
+<br>
 
-## ✨ Tính năng
-### 1. Dành cho người dùng (User)
-- **Xác thực:** Đăng ký, đăng nhập, quên mật khẩu và lấy lại mật khẩu qua mã OTP gửi tới Email.
-- **Luyện tập:** Xem, lọc danh sách bài tập theo độ khó, chủ đề, trạng thái, phân trang.
-- **Chấm bài:** Nộp code trực tuyến hoặc upload file. Kết quả trả về gồm: AC(Đúng), WA(Sai), TLE(Quá thời gian)...
-- **Xếp hạng:** Xem bảng vinh danh những người dùng có tổng điểm cao nhất.
-- **Cá nhân:** Theo dõi lịch sử làm bài và biểu đồ thống kê kết quả của bản thân.
+## 🚀 Chức năng chính
 
-### 2. Dành cho quản trị viên (Admin) 
-- **Dashboard:** Theo dõi biểu đồ submission và thống kê hệ thống realtime.
-- **Quản lý bài tập:** Thêm, sửa, xóa bài toán và bộ testcase tương ứng.
-- **Quản lý người dùng:** Theo dõi danh sách, khóa tài khoản hoặc xem lịch sử của bất kỳ user nào.
-- **Giám sát hệ thống:** Xem toàn bộ các bài nộp để hỗ trợ người dùng kịp thời.
+### Người dùng
 
+* Đăng ký, đăng nhập và khôi phục mật khẩu bằng OTP Email.
+* Xem và tìm kiếm bài tập theo độ khó, chủ đề.
+* Nộp mã nguồn trực tuyến.
+* Theo dõi kết quả chấm bài.
+* Xem lịch sử làm bài.
+* Theo dõi bảng xếp hạng.
+* Xem thống kê kết quả cá nhân.
 
-## 📁 Cấu trúc thư mục dự án
-Chia dự án thành 2 phần chính để quản lý:
+### Quản trị viên
 
-```plaintext
-online-judge/
-├── frontend/           
-├── backend/            
-├── database/          
-└── README.md           
+* Quản lý người dùng.
+* Quản lý bài toán và testcase.
+* Theo dõi hoạt động hệ thống.
+* Gửi thông báo tới người dùng.
+* Giám sát các bài nộp.
+
+<br>
+
+## 🏗️ Kiến trúc hệ thống
+
+### Công nghệ sử dụng
+
+| Thành phần     | Công nghệ                         |
+| -------------- | --------------------------------- |
+| Frontend       | React, TypeScript, Vite           |
+| Backend API    | Spring Boot, Spring Security, JWT |
+| Database       | PostgreSQL                        |
+| Message Queue  | Redis                             |
+| Object Storage | MinIO                             |
+| Judge Engine   | Spring Boot Worker                |
+| Sandbox        | Docker                            |
+
+### Kiến trúc tổng thể
+
+* Frontend gửi yêu cầu tới Backend API.
+* Backend lưu dữ liệu vào PostgreSQL.
+* Submission được đưa vào Redis Queue.
+* Judge Engine lấy Job từ Queue để xử lý.
+* Docker Sandbox thực hiện biên dịch và chạy chương trình.
+* Kết quả được cập nhật vào cơ sở dữ liệu và trả về người dùng.
+
+<br>
+
+### Cấu trúc dự án
+
+```text
+ByeBug/
+├── frontend/
+├── backend/
+├── judge-engine/
+├── database/
+├── docs/
+└── README.md
 ```
-## 🚀 Cách chạy đồ án trên máy (Local)
-### 1. Chuẩn bị
-- Cài đặt Java 17 và Node.js.
-- Cài đtặ PostgreSQL để chạy database.
 
-### 2. Chạy Backend
-- Mở thư mục ```backend/``` bằng IntelliJ hoặc VS Code.
-- Cấu hình thông tin database trong file ```application.yml```.
-- Chạy ứng dụng Spring Boot.
+<br>
 
-### 3. Chạy Frontend
-- Mở terminal tại thư mục ```frontend/```.
-- Chạy lệnh ```npm install``` để cài thư viện.
-- Chạy lệnh ```npm run dev``` để mở trang web.
+## ⚙️ Hướng dẫn chạy dự án
 
-## 🌐 Deploy production
+### Yêu cầu
 
-Hướng deploy production bằng WSL2, Docker Compose, Cloudflare Tunnel, Cloudflare Pages và GitHub Actions self-hosted runner nằm tại [`docs/deployment-wsl2-cloudflare.md`](docs/deployment-wsl2-cloudflare.md).
+* Java 17+
+* Node.js 20+
+* PostgreSQL
+* Redis
+* MinIO
+* Docker
 
+### Backend
 
-## 🗄 Database Schema
+```bash
+cd backend
+./mvnw spring-boot:run
+```
 
-Gồm 6 bảng chính:
+### Frontend
 
-| Bảng | Mô tả |
-|------|-------|
-| `users` | Thông tin người dùng, role, điểm |
-| `problems` | Bài toán, Markdown đề, time/memory limit |
-| `testcases` | Input/output lưu path MinIO |
-| `submissions` | Kết quả mỗi lần nộp bài |
-| `testcase_results` | Kết quả từng testcase trong 1 lần nộp |
-| `notifications` | Thông báo hệ thống |
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-> Migration tự động bằng **Flyway** khi khởi động backend.
+<br>
 
----
+## 📄 Tài liệu
 
-## 🗺 Pages Map
+Toàn bộ tài liệu thiết kế hệ thống được lưu trong thư mục:
 
-| Route | Trang | Quyền |
-|-------|-------|-------|
-| `/login` | Đăng nhập | Public |
-| `/register` | Đăng ký | Public |
-| `/forgot-password` | Quên mật khẩu | Public |
-| `/` | Trang chủ | User |
-| `/problems` | Danh sách bài tập | User |
-| `/problems/:id` | Chi tiết & nộp bài | User |
-| `/submissions/:id` | Chi tiết lần nộp | User |
-| `/ranking` | Bảng xếp hạng | User |
-| `/profile/:username` | Hồ sơ cá nhân | User |
-| `/settings` | Cài đặt tài khoản | User |
-| `/admin` | Dashboard | Admin |
-| `/admin/users` | Quản lý Users | Admin |
-| `/admin/problems` | Quản lý Bài tập | Admin |
-| `/admin/problems/:id/edit` | Sửa bài toán | Admin |
-| `/admin/submissions` | Quản lý Submissions | Admin |
-| `/admin/notifications` | Quản lý Thông báo | Admin |
+```text
+BAOCAO_LATEX/
+```
 
----
+Bao gồm:
 
-## 📡 API Endpoints
+* Thiết kế hệ thống
+* Thiết kế cơ sở dữ liệu
+* Đặc tả REST API
+* Kiến trúc triển khai
+* Đánh giá hiệu năng
 
-### Auth
-| Method | Endpoint | Mô tả |
-|--------|----------|-------|
-| POST | `/api/auth/register` | Đăng ký tài khoản |
-| POST | `/api/auth/login` | Đăng nhập, nhận JWT |
-| POST | `/api/auth/forgot-password` | Gửi OTP về email |
-| POST | `/api/auth/reset-password` | Đặt mật khẩu mới |
+<br>
 
-### Problems
-| Method | Endpoint | Mô tả |
-|--------|----------|-------|
-| GET | `/api/problems` | Danh sách bài (filter, phân trang) |
-| GET | `/api/problems/:id` | Chi tiết bài toán |
-| POST | `/api/admin/problems` | Tạo bài mới |
-| PUT | `/api/admin/problems/:id` | Sửa bài |
-| DELETE | `/api/admin/problems/:id` | Xóa bài |
+## 👨‍💻 Nhóm thực hiện
 
-### Submissions
-| Method | Endpoint | Mô tả |
-|--------|----------|-------|
-| POST | `/api/submissions` | Nộp bài |
-| GET | `/api/submissions/:id` | Chi tiết lần nộp |
-| GET | `/api/problems/:id/my-submissions` | Lịch sử nộp của tôi |
-| POST | `/api/admin/submissions/:id/rejudge` | Re-judge |
+| MSSV     | Họ và tên             |
+| -------- | --------------------- |
+| 24520403 | Trần Nhật Duy         |
+| 24521885 | Nguyễn Cao Xuân Trung |
+| 24521238 | Tô Công Hữu Nhân      |
+| 24520063 | Nguyễn Ngọc Thu An    |
 
-### Users & Ranking
-| Method | Endpoint | Mô tả |
-|--------|----------|-------|
-| GET | `/api/ranking` | Bảng xếp hạng |
-| GET | `/api/users/:username` | Hồ sơ user |
-| PUT | `/api/users/me` | Cập nhật thông tin |
+**Giảng viên hướng dẫn:** ThS. Nghi Hoàng Khoa
 
-## 📝 Lời kết
+**Môn học:** Lập trình Ứng dụng Web (NT208)
 
-Dự án **ByeBug** 🐛 là kết quả của quá trình học tập và nghiên cứu về lập trình Web  với **ReactJS** và **Spring Boot**. Hy vọng hệ thống này sẽ là một công cụ hữu ích cho các bạn sinh viên trong việc rèn luyện tư duy thuật toán và kỹ năng lập trình.
+<br>
 
-Do thời gian thực hiện có hạn, dự án chắc chắn không tránh khỏi những thiếu sót. Rất mong nhận được sự góp ý và phản hồi từ Thầy/Cô và các bạn để hệ thống ngày càng hoàn thiện hơn.
+## 📌 Ghi chú
 
-**Xin chân thành cảm ơn!**
-
----
+Dự án được phát triển phục vụ mục đích học tập và nghiên cứu trong học phần Lập trình Ứng dụng Web tại Trường Đại học Công nghệ Thông tin - ĐHQG TP.HCM.
